@@ -1,5 +1,7 @@
 @extends('admin/layout')
 @section('page_title', 'Dashboard | The Ethical Man')
+@section('dashboard_select', 'active')
+
 @section('main_content')
     <div class="content-header">
         <div class="container-fluid">

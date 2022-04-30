@@ -47,7 +47,7 @@
                                         placeholder="Enter coupon title"
                                         value="@if (isset($data)) {{ $data[0]->title }} @endif" required>
                                     @if (isset($data))
-                                        <input type="text" class="form-control" id="exampleInputCategory" name="catid"
+                                        <input type="text" class="form-control" id="exampleInputCategory" name="coupon_id"
                                             value=" {{ $data[0]->id }} " hidden>
                                     @endif
                                     <p class="text-danger">

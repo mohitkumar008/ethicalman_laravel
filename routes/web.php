@@ -36,6 +36,7 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::post('admin/category/manage-category/add', [CategoryController::class, 'add']);
     Route::post('admin/category/manage-category/update', [CategoryController::class, 'update']);
     Route::get('admin/category/delete/{id}', [CategoryController::class, 'delete']);
+    Route::post('admin/category/status/{type}/{id}', [CategoryController::class, 'status']);
 
     // CouponController
     Route::get('admin/coupon', [CouponController::class, 'index']);

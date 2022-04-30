@@ -1,5 +1,6 @@
 @extends('admin/layout')
 @section('page_title', 'Coupons | The Ethical Man')
+@section('coupon_select', 'active')
 {{-- Additional CSS --}}
 @section('additional_css')
 @endsection

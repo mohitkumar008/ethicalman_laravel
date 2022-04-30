@@ -237,7 +237,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="{{ url('admin/dashboard') }}" class="nav-link active">
+                            <a href="{{ url('admin/dashboard') }}" class="nav-link @yield('dashboard_select')">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -245,16 +245,16 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/category') }}" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <a href="{{ url('admin/category') }}" class="nav-link @yield('category_select')">
+                                <i class="nav-icon fas fa-list-alt"></i>
                                 <p>
                                     Category
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/coupon') }}" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <a href="{{ url('admin/coupon') }}" class="nav-link @yield('coupon_select')">
+                                <i class="nav-icon fas fa-gem"></i>
                                 <p>
                                     Coupons
                                 </p>
@@ -262,7 +262,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ url('admin/logout') }}" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>
                                     Logout
                                 </p>

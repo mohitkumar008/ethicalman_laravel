@@ -1,5 +1,6 @@
 @extends('admin/layout')
 @section('page_title', 'Category | The Ethical Man')
+@section('category_select', 'active')
 {{-- Additional CSS --}}
 @section('additional_css')
 @endsection
@@ -89,6 +90,17 @@
                                                                 class="btn btn-app m-0 p-1 h-auto">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
+                                                            @if ($list->status == '1')
+                                                                <a href="{{ url('admin/category/status/deactivate/' . $list->id) }}"
+                                                                    class="btn btn-app m-0 p-1 h-auto">
+                                                                    <i class="fas fa-eye-slash"></i>
+                                                                </a>
+                                                            @else
+                                                                <a href="{{ url('admin/category/status/activate/' . $list->id) }}"
+                                                                    class="btn btn-app m-0 p-1 h-auto">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </a>
+                                                            @endif
                                                             <a href="{{ url('admin/category/delete/' . $list->id) }}"
                                                                 class="btn btn-app m-0 p-1 h-auto">
                                                                 <i class="fas fa-trash"></i>
