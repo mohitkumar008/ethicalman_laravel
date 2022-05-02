@@ -1,6 +1,7 @@
 @extends('admin/layout')
-@section('page_title', 'Category | The Ethical Man')
-@section('category_select', 'active')
+@section('page_title', 'Size | The Ethical Man')
+@section('size_select', 'active')
+@section('drop_select', 'active')
 {{-- Additional CSS --}}
 @section('additional_css')
 @endsection
@@ -11,12 +12,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Category</h1>
+                    <h1 class="m-0">Size</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Category</li>
+                        <li class="breadcrumb-item">Product</li>
+                        <li class="breadcrumb-item active">Size</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -29,19 +31,19 @@
                 <div class="col-lg-12 col-md-12">
                     <div class="card">
                         <div class="card-header  d-flex justify-content-between align-items-center">
-                            @if (session('add_cat_msg'))
+                            @if (session('add_size_msg'))
                                 <h6 class="card-title text-success">
-                                    {{ session('add_cat_msg') }}
+                                    {{ session('add_size_msg') }}
                                 </h6>
                             @endif
-                            @if (session('update_cat_msg'))
+                            @if (session('update_size_msg'))
                                 <h6 class="card-title text-success">
-                                    {{ session('update_cat_msg') }}
+                                    {{ session('update_size_msg') }}
                                 </h6>
                             @endif
-                            @if (session('delete_cat_msg'))
+                            @if (session('delete_size_msg'))
                                 <h6 class="card-title text-warning">
-                                    {{ session('delete_cat_msg') }}
+                                    {{ session('delete_size_msg') }}
                                 </h6>
                             @endif
                             @if (session('activate_msg'))
@@ -54,8 +56,8 @@
                                     {{ session('deactivate_msg') }}
                                 </h6>
                             @endif
-                            <a href="{{ url('admin/category/add-category') }}" class="btn bg-gradient-primary ml-auto">Add
-                                Category</a>
+                            <a href="{{ url('admin/product/size/add-size') }}" class="btn bg-gradient-primary ml-auto">Add
+                                Size</a>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -76,12 +78,8 @@
                                                         aria-sort="descending">S.No</th>
                                                     <th class="sorting" tabindex="0" aria-controls="example2"
                                                         rowspan="1" colspan="1"
-                                                        aria-label="Category Name: activate to sort column ascending">
-                                                        Category Name</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="example2"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Category Slug: activate to sort column ascending">
-                                                        Category Slug</th>
+                                                        aria-label="Size: activate to sort column ascending">
+                                                        Size</th>
                                                     <th class="sorting" tabindex="0" aria-controls="example2"
                                                         rowspan="1" colspan="1"
                                                         aria-label="Action: activate to sort column ascending">
@@ -93,25 +91,24 @@
                                                     <tr class="odd">
                                                         <td class="dtr-control sorting_1" tabindex="0">
                                                             {{ $loop->iteration }}</td>
-                                                        <td>{{ $list->category_name }}</td>
-                                                        <td>{{ $list->category_slug }}</td>
+                                                        <td>{{ $list->size }}</td>
                                                         <td>
-                                                            <a href="{{ url('admin/category/edit-category/' . $list->id) }}"
+                                                            <a href="{{ url('admin/product/size/edit-size/' . $list->id) }}"
                                                                 class="btn btn-app m-0 p-1 h-auto">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
                                                             @if ($list->status == '1')
-                                                                <a href="{{ url('admin/category/status/deactivate/' . $list->id) }}"
+                                                                <a href="{{ url('admin/product/size/status/deactivate/' . $list->id) }}"
                                                                     class="btn btn-app m-0 p-1 h-auto">
                                                                     <i class="fas fa-eye-slash"></i>
                                                                 </a>
                                                             @else
-                                                                <a href="{{ url('admin/category/status/activate/' . $list->id) }}"
+                                                                <a href="{{ url('admin/product/size/status/activate/' . $list->id) }}"
                                                                     class="btn btn-app m-0 p-1 h-auto">
                                                                     <i class="fas fa-eye"></i>
                                                                 </a>
                                                             @endif
-                                                            <a href="{{ url('admin/category/delete/' . $list->id) }}"
+                                                            <a href="{{ url('admin/product/size/delete/' . $list->id) }}"
                                                                 class="btn btn-app m-0 p-1 h-auto">
                                                                 <i class="fas fa-trash"></i>
                                                             </a>

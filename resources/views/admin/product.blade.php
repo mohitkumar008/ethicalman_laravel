@@ -11,12 +11,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Category</h1>
+                    <h1 class="m-0">Product List</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Category</li>
+                        <li class="breadcrumb-item active">Product</li>
+                        <li class="breadcrumb-item active">Product List</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -29,19 +30,19 @@
                 <div class="col-lg-12 col-md-12">
                     <div class="card">
                         <div class="card-header  d-flex justify-content-between align-items-center">
-                            @if (session('add_cat_msg'))
+                            @if (session('add_msg'))
                                 <h6 class="card-title text-success">
-                                    {{ session('add_cat_msg') }}
+                                    {{ session('add_msg') }}
                                 </h6>
                             @endif
-                            @if (session('update_cat_msg'))
+                            @if (session('update_msg'))
                                 <h6 class="card-title text-success">
-                                    {{ session('update_cat_msg') }}
+                                    {{ session('update_msg') }}
                                 </h6>
                             @endif
-                            @if (session('delete_cat_msg'))
+                            @if (session('delete_msg'))
                                 <h6 class="card-title text-warning">
-                                    {{ session('delete_cat_msg') }}
+                                    {{ session('delete_msg') }}
                                 </h6>
                             @endif
                             @if (session('activate_msg'))
@@ -54,20 +55,16 @@
                                     {{ session('deactivate_msg') }}
                                 </h6>
                             @endif
-                            <a href="{{ url('admin/category/add-category') }}" class="btn bg-gradient-primary ml-auto">Add
-                                Category</a>
+                            <a href="{{ url('admin/product/add-product') }}" class="btn bg-gradient-primary ml-auto">Add
+                                Product</a>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-6"></div>
-                                    <div class="col-sm-12 col-md-6"></div>
-                                </div>
+                            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
-                                            role="grid" aria-describedby="example2_info">
+                                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline"
+                                            role="grid" aria-describedby="example1_info">
                                             <thead>
                                                 <tr role="row">
                                                     <th class="sorting sorting_desc" tabindex="0" aria-controls="example2"
@@ -76,12 +73,48 @@
                                                         aria-sort="descending">S.No</th>
                                                     <th class="sorting" tabindex="0" aria-controls="example2"
                                                         rowspan="1" colspan="1"
-                                                        aria-label="Category Name: activate to sort column ascending">
-                                                        Category Name</th>
+                                                        aria-label="Image: activate to sort column ascending">
+                                                        Image</th>
                                                     <th class="sorting" tabindex="0" aria-controls="example2"
                                                         rowspan="1" colspan="1"
-                                                        aria-label="Category Slug: activate to sort column ascending">
-                                                        Category Slug</th>
+                                                        aria-label="Name: activate to sort column ascending">
+                                                        Name</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Slug: activate to sort column ascending">
+                                                        Slug</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Category: activate to sort column ascending">
+                                                        Category</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="MRP: activate to sort column ascending">
+                                                        MRP</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Price: activate to sort column ascending">
+                                                        Price</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Qty: activate to sort column ascending">
+                                                        Qty</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Stock: activate to sort column ascending">
+                                                        Stock</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Featured: activate to sort column ascending">
+                                                        Featured</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="SKU: activate to sort column ascending">
+                                                        SKU</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Keywords: activate to sort column ascending">
+                                                        Keywords</th>
                                                     <th class="sorting" tabindex="0" aria-controls="example2"
                                                         rowspan="1" colspan="1"
                                                         aria-label="Action: activate to sort column ascending">
@@ -93,25 +126,36 @@
                                                     <tr class="odd">
                                                         <td class="dtr-control sorting_1" tabindex="0">
                                                             {{ $loop->iteration }}</td>
-                                                        <td>{{ $list->category_name }}</td>
-                                                        <td>{{ $list->category_slug }}</td>
+                                                        <td><img style="width:100px"
+                                                                src="{{ asset('storage/media/' . $list->image . '') }}"
+                                                                alt=""></td>
+                                                        <td>{{ $list->name }}</td>
+                                                        <td>{{ $list->slug }}</td>
+                                                        <td>{{ $list->cid }}</td>
+                                                        <td>{{ $list->mrp }}</td>
+                                                        <td>{{ $list->price }}</td>
+                                                        <td>{{ $list->quantity }}</td>
+                                                        <td>{{ $list->stock }}</td>
+                                                        <td>{{ $list->featured }}</td>
+                                                        <td>{{ $list->sku }}</td>
+                                                        <td>{{ $list->keywords }}</td>
                                                         <td>
-                                                            <a href="{{ url('admin/category/edit-category/' . $list->id) }}"
+                                                            <a href="{{ url('admin/product/edit-product/' . $list->slug . '') }}"
                                                                 class="btn btn-app m-0 p-1 h-auto">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
                                                             @if ($list->status == '1')
-                                                                <a href="{{ url('admin/category/status/deactivate/' . $list->id) }}"
+                                                                <a href="{{ url('admin/product/status/deactivate/' . $list->id) }}"
                                                                     class="btn btn-app m-0 p-1 h-auto">
                                                                     <i class="fas fa-eye-slash"></i>
                                                                 </a>
                                                             @else
-                                                                <a href="{{ url('admin/category/status/activate/' . $list->id) }}"
+                                                                <a href="{{ url('admin/product/status/activate/' . $list->id) }}"
                                                                     class="btn btn-app m-0 p-1 h-auto">
                                                                     <i class="fas fa-eye"></i>
                                                                 </a>
                                                             @endif
-                                                            <a href="{{ url('admin/category/delete/' . $list->id) }}"
+                                                            <a href="{{ url('admin/product/delete/' . $list->id) }}"
                                                                 class="btn btn-app m-0 p-1 h-auto">
                                                                 <i class="fas fa-trash"></i>
                                                             </a>
@@ -143,15 +187,6 @@
                 "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
         });
     </script>
 @endsection

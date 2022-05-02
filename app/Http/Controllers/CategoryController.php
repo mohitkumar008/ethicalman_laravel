@@ -68,4 +68,19 @@ class CategoryController extends Controller
         $model->delete();
         return redirect('admin/category')->with('delete_cat_msg', "Category deleted successfully!");
     }
+
+    public function status(Request $request, $type, $id)
+    {
+        if ($type == 'activate') {
+            $model = Category::find($id);
+            $model->status = '1';
+            $model->save();
+            return redirect('admin/category')->with('activate_msg', "Category activated successfully!");
+        } elseif ($type == 'deactivate') {
+            $model = Category::find($id);
+            $model->status = '0';
+            $model->save();
+            return redirect('admin/category')->with('deactivate_msg', "Category deactivated successfully!");
+        }
+    }
 }
