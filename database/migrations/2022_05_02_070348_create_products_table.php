@@ -18,14 +18,9 @@ return new class extends Migration
             $table->integer('cid');
             $table->string('name');
             $table->string('slug');
-            $table->integer('mrp');
-            $table->integer('price');
-            $table->integer('quantity');
             $table->integer('stock');
             $table->integer('featured');
-            $table->string('sku');
             $table->string('image');
-            $table->string('image_gallery');
             $table->longText('short_desc');
             $table->longText('desc');
             $table->longText('keywords');

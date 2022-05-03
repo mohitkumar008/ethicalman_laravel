@@ -1,5 +1,5 @@
 @extends('admin/layout')
-@section('page_title', 'Category | The Ethical Man')
+@section('page_title', 'Product | The Ethical Man')
 @section('category_select', 'active')
 {{-- Additional CSS --}}
 @section('additional_css')
@@ -89,28 +89,12 @@
                                                         Category</th>
                                                     <th class="sorting" tabindex="0" aria-controls="example2"
                                                         rowspan="1" colspan="1"
-                                                        aria-label="MRP: activate to sort column ascending">
-                                                        MRP</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="example2"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Price: activate to sort column ascending">
-                                                        Price</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="example2"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Qty: activate to sort column ascending">
-                                                        Qty</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="example2"
-                                                        rowspan="1" colspan="1"
                                                         aria-label="Stock: activate to sort column ascending">
                                                         Stock</th>
                                                     <th class="sorting" tabindex="0" aria-controls="example2"
                                                         rowspan="1" colspan="1"
                                                         aria-label="Featured: activate to sort column ascending">
                                                         Featured</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="example2"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="SKU: activate to sort column ascending">
-                                                        SKU</th>
                                                     <th class="sorting" tabindex="0" aria-controls="example2"
                                                         rowspan="1" colspan="1"
                                                         aria-label="Keywords: activate to sort column ascending">
@@ -132,12 +116,16 @@
                                                         <td>{{ $list->name }}</td>
                                                         <td>{{ $list->slug }}</td>
                                                         <td>{{ $list->cid }}</td>
-                                                        <td>{{ $list->mrp }}</td>
-                                                        <td>{{ $list->price }}</td>
-                                                        <td>{{ $list->quantity }}</td>
-                                                        <td>{{ $list->stock }}</td>
-                                                        <td>{{ $list->featured }}</td>
-                                                        <td>{{ $list->sku }}</td>
+                                                        @if ($list->stock == 1)
+                                                            <td class="text-success">In Stock</td>
+                                                        @else
+                                                            <td class="text-danger">Out of Stock</td>
+                                                        @endif
+                                                        @if ($list->featured == 1)
+                                                            <td class="text-success">Yes</td>
+                                                        @else
+                                                            <td class="text-danger">No</td>
+                                                        @endif
                                                         <td>{{ $list->keywords }}</td>
                                                         <td>
                                                             <a href="{{ url('admin/product/edit-product/' . $list->slug . '') }}"
