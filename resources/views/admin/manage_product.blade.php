@@ -109,11 +109,11 @@
                                             <label for="exampleSelectRounded0">Stock</label>
                                             <select class="custom-select rounded-0" name="stock" id="exampleSelectRounded0">
                                                 <option value="0"
-                                                    @if ($data[0]->stock == 0) {{ 'selected' }} @endif>Out of
+                                                    @if (isset($data) && $data[0]->stock == 0) {{ 'selected' }} @endif>Out of
                                                     Stock
                                                 </option>
                                                 <option value="1"
-                                                    @if ($data[0]->stock == 1) {{ 'selected' }} @endif>In Stock
+                                                    @if (isset($data) && $data[0]->stock == 1) {{ 'selected' }} @endif>In Stock
                                                 </option>
                                             </select>
                                             <p class="text-danger">
@@ -130,10 +130,10 @@
                                             <select class="custom-select rounded-0" name="featured"
                                                 id="exampleSelectRounded0">
                                                 <option value="0"
-                                                    @if ($data[0]->featured == 0) {{ 'selected' }} @endif>No
+                                                    @if (isset($data) && $data[0]->featured == 0) {{ 'selected' }} @endif>No
                                                 </option>
                                                 <option value="1"
-                                                    @if ($data[0]->featured == 1) {{ 'selected' }} @endif>Yes
+                                                    @if (isset($data) && $data[0]->featured == 1) {{ 'selected' }} @endif>Yes
                                                 </option>
                                             </select>
                                             <p class="text-danger">
@@ -491,12 +491,17 @@
                             <div class="card">
                                 <div class="card-body" id="product_images">
                                     <h4>Product Images</h4>
-                                    <div class="row" id="product_img_1">
+                                    @foreach ($productImageArr as $key => $val)
+                                    <div class="row" id="product_img_{{ $loop->iteration }}">
                                         <div class="col-lg-9 col-md-9 col-12">
                                             {{-- Image Gallery --}}
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <div class="custom-file">
+                                                        {{-- paid --}}
+                                                        <input type="text" class="form-control" id="exampleInputCategory"
+                                                        value="@if (isset($val)) {{ $val->id }} @endif"
+                                                        name="piid[]" hidden>
                                                         <input type="file" class="custom-file-input" name="productimg[]"
                                                             id="exampleInputFile">
                                                         <label class="custom-file-label" for="exampleInputFile">Choose
@@ -511,13 +516,20 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-12">
-                                            <img src="" alt="">
+                                            <img style="width:100px"
+                                                        src="{{ asset('storage/media/' . $val->images . '') }}" alt="">
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-12">
+                                            @if ($loop->iteration > 1)
+                                                    <a href="{{ url('admin/product/edit-product/delete-image/' . $val->id . '/' . $data[0]->slug . '') }}"
+                                                        class="btn btn-danger" type="button">Remove</a>
+                                                @else
                                             <button class="btn btn-success" type="button" onclick="add_more_img()">Add
                                                 More</button>
+                                                @endif
                                         </div>
                                     </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -740,7 +752,12 @@
             $('#product_attr_' + loop_count).remove()
         }
 
-        var img_loop = 1;
+        // var img_loop = 1;
+        @if (isset($productImageArr))
+            let img_loop = {{ count($productImageArr) }};
+        @else
+            let img_loop = 1;
+        @endif
 
         function add_more_img() {
             img_loop++;
@@ -754,6 +771,8 @@
                         <label for="exampleSelectRounded0">Image</label>
                         <div class="input-group">
                             <div class="custom-file">
+                                {{-- paid --}}
+                                <input type="text" class="form-control" id="exampleInputCategory" name="piid[]" hidden>
                                 <input type="file" class="custom-file-input" name="productimg[]"
                                     id="exampleInputFile">
                                 <label class="custom-file-label" for="exampleInputFile">Choose

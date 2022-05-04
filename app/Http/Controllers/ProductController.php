@@ -73,11 +73,14 @@ class ProductController extends Controller
 
             if ($request->hasFile("attrimg." . $key)) {
                 // die('ss');
+                $rand = rand('111111111', '999999999');
                 $attrimage = $request->file("attrimg." . $key);
                 $ext = $attrimage->extension();
-                $image_name = time() . '.' . $ext;
+                $image_name = $rand . '.' . $ext;
                 $request->file("attrimg." . $key)->storeAs('/public/media', $image_name);
                 $productAttrArr['attr_img'] = $image_name;
+            }else{
+                $productAttrArr['attr_img'] = '';
             }
 
             DB::table('product_attr')->insert($productAttrArr);
@@ -107,6 +110,10 @@ class ProductController extends Controller
         $result['size'] = DB::table('sizes')->where(['status' => 1])->get();
         $product = DB::table('products')->where(['slug' => $slug])->get();
         $result['productAttrArr'] = DB::table('product_attr')->where(['pid' => $product[0]->id])->get();
+        $result['productImageArr'] = DB::table('product_images')->where(['pid' => $product[0]->id])->get();
+        // echo '<pre>';
+        // print_r($result);
+        // die();
         return view('admin/manage_product', $result);
     }
 
@@ -147,17 +154,6 @@ class ProductController extends Controller
         $model->status = '1';
         $model->save();
 
-        // Product images start
-        // $productImgArr = $request->post('productimg');
-        // echo '<pre>';
-        // print_r($productImgArr);
-        // die();
-        // foreach ($productImgArr as $key => $val) {
-        //     $productImgAttrArr['images'] = $productImgArr[$key];
-        //     DB::table('product_images')->insert($productImgAttrArr);
-        // }
-        // Product images ends
-
         // Product Attribute start
         $paidArr = $request->post('paid');
         $skuArr = $request->post('sku');
@@ -194,6 +190,26 @@ class ProductController extends Controller
             }
         }
         // Product Attribute ends
+
+        
+        // Product images start
+        $piidArr = $request->post('paid');
+        // $productImgArr = $request->post('productimg');
+        // echo '<pre>';
+        // print_r($productImgArr);
+        // die();
+        foreach ($piidArr as $key => $val) {
+            $productImgAttrArr['pid'] = $request->post('pid');
+            if ($request->hasFile("productimg." . $key)) {
+                $attrimage = $request->file("productimg." . $key);
+                $ext = $attrimage->extension();
+                $image_name = time() . '.' . $ext;
+                $request->file("productimg." . $key)->storeAs('/public/media', $image_name);
+                $productImgAttrArr['images'] = $image_name;
+            }
+            DB::table('product_images')->insert($productImgAttrArr);
+        }
+        // Product images ends
 
 
 
