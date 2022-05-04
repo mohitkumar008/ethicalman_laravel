@@ -1,4 +1,4 @@
-@extends('admin/layout');
+@extends('admin/layout')
 @section('page_title', 'Manage Category | The Ethical Man')
 {{-- Additional CSS --}}
 @section('additional_css')
@@ -53,7 +53,7 @@
                                 {{-- Product Name --}}
                                 <div class="form-group">
                                     <label for="exampleInputCategory">Name</label>
-                                    <input type="text" class="form-control" id="exampleInputCategory" name="product_name"
+                                    <input type="text" id="pname" class="form-control" name="product_name"
                                         placeholder="Enter Product Name"
                                         value="@if (isset($data)) {{ $data[0]->name }} @endif">
                                     <p class="text-danger">
@@ -66,9 +66,9 @@
                                 {{-- Product Slug --}}
                                 <div class="form-group">
                                     <label for="exampleInputCategory">Slug</label>
-                                    <input type="text" class="form-control" id="exampleInputCategory"
+                                    <input type="text" class="form-control"
                                         value="@if (isset($data)) {{ $data[0]->slug }} @endif" name="slug"
-                                        placeholder="Enter category name">
+                                        id="pslug" placeholder="Enter category name">
                                     <p class="text-danger">
                                         @error('slug')
                                             {{ $message }}
@@ -147,22 +147,34 @@
                                 </div>
 
 
-
-                                {{-- Image --}}
-                                <div class="form-group">
-                                    <label for="exampleInputFile">Image</label>
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" name="image" id="exampleInputFile">
-                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                <div class="row">
+                                    <div class="col-lg-10 col-md-10 col-12">
+                                        {{-- Image --}}
+                                        <div class="form-group">
+                                            <label for="exampleInputFile">Image</label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" name="image"
+                                                        id="exampleInputFile">
+                                                    <label class="custom-file-label" for="exampleInputFile">Choose
+                                                        file</label>
+                                                </div>
+                                            </div>
+                                            <p class="text-danger">
+                                                @error('image')
+                                                    {{ $message }}
+                                                @enderror
+                                            </p>
                                         </div>
                                     </div>
-                                    <p class="text-danger">
-                                        @error('image')
-                                            {{ $message }}
-                                        @enderror
-                                    </p>
+                                    <div class="col-lg-2 col-md-2 col-12">
+                                        @if (isset($data))
+                                            <img style="width:100px"
+                                                src="{{ asset('storage/media/' . $data[0]->image . '') }}" alt="">
+                                        @endif
+                                    </div>
                                 </div>
+
                                 {{-- Short Description --}}
                                 <div class="form-group">
                                     <label>Short Description</label>
@@ -210,7 +222,10 @@
                         </div>
 
                         <div id="product_attr">
-                            @if (!isset($productAttrArr))
+                            <?php
+                            $arrAttr = array_values((array) $productAttrArr);
+                            ?>
+                            @if (empty($arrAttr[0]))
                                 <div class="card" id='product_attr_1'>
                                     <div class="card-body">
                                         <div class="row">
@@ -491,45 +506,84 @@
                             <div class="card">
                                 <div class="card-body" id="product_images">
                                     <h4>Product Images</h4>
-                                    @foreach ($productImageArr as $key => $val)
-                                    <div class="row" id="product_img_{{ $loop->iteration }}">
-                                        <div class="col-lg-9 col-md-9 col-12">
-                                            {{-- Image Gallery --}}
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <div class="custom-file">
-                                                        {{-- paid --}}
-                                                        <input type="text" class="form-control" id="exampleInputCategory"
-                                                        value="@if (isset($val)) {{ $val->id }} @endif"
-                                                        name="piid[]" hidden>
-                                                        <input type="file" class="custom-file-input" name="productimg[]"
-                                                            id="exampleInputFile">
-                                                        <label class="custom-file-label" for="exampleInputFile">Choose
-                                                            Image</label>
+                                    <?php
+                                    $arrimg = array_values((array) $productImageArr);
+                                    ?>
+                                    @if (empty($arrimg[0]))
+                                        <div class="row" id="product_img_1">
+                                            <div class="col-lg-9 col-md-9 col-12">
+                                                {{-- Image Gallery --}}
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="custom-file">
+                                                            {{-- paid --}}
+                                                            <input type="text" class="form-control"
+                                                                id="exampleInputCategory" value="" name="piid[]" hidden>
+                                                            <input type="file" class="custom-file-input"
+                                                                name="productimg[]" id="exampleInputFile">
+                                                            <label class="custom-file-label" for="exampleInputFile">Choose
+                                                                Image</label>
+                                                        </div>
                                                     </div>
+                                                    <p class="text-danger">
+                                                        @error('productimg')
+                                                            {{ $message }}
+                                                        @enderror
+                                                    </p>
                                                 </div>
-                                                <p class="text-danger">
-                                                    @error('productimg')
-                                                        {{ $message }}
-                                                    @enderror
-                                                </p>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-12">
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <button class="btn btn-success" type="button" onclick="add_more_img()">Add
+                                                    More</button>
                                             </div>
                                         </div>
-                                        <div class="col-lg-3 col-md-3 col-12">
-                                            <img style="width:100px"
-                                                        src="{{ asset('storage/media/' . $val->images . '') }}" alt="">
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-12">
-                                            @if ($loop->iteration > 1)
-                                                    <a href="{{ url('admin/product/edit-product/delete-image/' . $val->id . '/' . $data[0]->slug . '') }}"
-                                                        class="btn btn-danger" type="button">Remove</a>
-                                                @else
-                                            <button class="btn btn-success" type="button" onclick="add_more_img()">Add
-                                                More</button>
-                                                @endif
-                                        </div>
-                                    </div>
-                                    @endforeach
+                                    @else
+                                        @foreach ($productImageArr as $key => $val)
+                                            <div class="row" id="product_img_{{ $loop->iteration }}">
+                                                <div class="col-lg-9 col-md-9 col-12">
+                                                    {{-- Image Gallery --}}
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="custom-file">
+                                                                {{-- paid --}}
+                                                                <input type="text" class="form-control"
+                                                                    id="exampleInputCategory"
+                                                                    value="@if (isset($val)) {{ $val->id }} @endif"
+                                                                    name="piid[]" hidden>
+                                                                <input type="file" class="custom-file-input"
+                                                                    name="productimg[]" id="exampleInputFile">
+                                                                <label class="custom-file-label"
+                                                                    for="exampleInputFile">Choose
+                                                                    Image</label>
+                                                            </div>
+                                                        </div>
+                                                        <p class="text-danger">
+                                                            @error('productimg')
+                                                                {{ $message }}
+                                                            @enderror
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 col-12">
+                                                    <img style="width:100px"
+                                                        src="{{ asset('storage/media/' . $val->images . '') }}"
+                                                        alt="sdfs">
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-12">
+                                                    @if ($loop->iteration > 1)
+                                                        <a href="{{ url('admin/product/edit-product/delete-image/' . $val->id . '/' . $data[0]->slug . '') }}"
+                                                            class="btn btn-danger" type="button">Remove</a>
+                                                    @else
+                                                        <button class="btn btn-success" type="button"
+                                                            onclick="add_more_img()">Add
+                                                            More</button>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -554,6 +608,14 @@
 
 {{-- Additional JS --}}
 @section('additional_js')
+    <script>
+        $(document).ready(function() {
+            $("#pname").change(function() {
+                let pname = $("#pname").val();
+                $("#pslug").val(pname.toLowerCase().replace(/ /g, "-"));
+            });
+        });
+    </script>
     <!-- bs-custom-file-input -->
     <script src="{{ asset('admin_assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <!-- Summernote -->
@@ -601,7 +663,7 @@
         });
     </script>
     <script>
-        @if (isset($productAttrArr))
+        @if (!empty($arrAttr[0]))
             let loop_count = {{ count($productAttrArr) }};
         @else
             let loop_count = 1;
@@ -752,8 +814,7 @@
             $('#product_attr_' + loop_count).remove()
         }
 
-        // var img_loop = 1;
-        @if (isset($productImageArr))
+        @if (!empty($arrimg[0]))
             let img_loop = {{ count($productImageArr) }};
         @else
             let img_loop = 1;

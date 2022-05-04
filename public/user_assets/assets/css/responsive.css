@@ -1,0 +1,51 @@
+/* This is for devices below tablets */
+@media (max-width: 500px) {
+
+    /* Navbar */
+    .navbar-brand {
+        width: 60%;
+    }
+
+    /* Banner */
+    .carousel-inner,
+    .carousel-item {
+        height: 480px;
+    }
+
+    .carousel-inner .carousel-item>img {
+        height: 100%;
+    }
+
+    .carousel-inner .carousel-item .carousel-caption .row {
+        flex-direction: column-reverse;
+    }
+
+    .carousel-inner .carousel-item .carousel-caption .col-lg-6 {
+        text-align: center !important;
+    }
+
+    .carousel-inner .carousel-item .carousel-caption .col-lg-6 img {
+        width: 90%;
+    }
+
+    .carousel-inner .carousel-item .carousel-caption .col-lg-6 button {
+        margin: auto !important;
+        font-size: .8rem;
+    }
+
+    .carousel-inner .carousel-item .carousel-caption .col-lg-6 h2 {
+        line-height: 1.2;
+        font-size: calc(1.475rem + 1.5vw);
+    }
+
+}
+
+/* This is for tablets only */
+@media (max-width: 800px) and (min-width: 500px) {
+
+    .carousel-inner .carousel-item .carousel-caption .col-lg-6 h2 {
+        font-size: calc(1.475rem + 1vw);
+    }
+
+
+}

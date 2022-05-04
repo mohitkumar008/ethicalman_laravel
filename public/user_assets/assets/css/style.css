@@ -1,0 +1,386 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Fonts */
+@font-face {
+    font-family: NotoBold;
+    src: url(../fonts/NotoSerif-Bold.ttf);
+}
+
+@font-face {
+    font-family: Noto;
+    src: url(../fonts/NotoSerif-Regular.ttf);
+}
+
+@font-face {
+    font-family: Poppins;
+    src: url(../fonts/Poppins-Regular.ttf);
+}
+
+/* Deafult Class */
+a {
+    text-decoration: none;
+    transition: all .3s ease-in-out;
+}
+
+a:hover {
+    color: #ff5151
+}
+
+.vstar {
+    color: #ff5151
+}
+
+.active,
+.text-red {
+    color: #ff5151 !important;
+}
+
+label {
+    color: RGBA(11, 44, 77, 1) !important;
+}
+
+.text-black {
+    color: RGBA(11, 44, 77, 1) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    color: RGBA(11, 44, 77, 1);
+    font-family: Poppins;
+}
+
+.bg-red {
+    background-color: #ff5151 !important;
+}
+
+.bg-grey {
+    background-color: #f2f2f2 !important;
+}
+
+.cursor-grab {
+    cursor: grab;
+}
+
+.btn-red {
+    background-color: #ff5151;
+    color: white;
+    border-radius: 5px;
+    transition: all .2s ease-in-out;
+}
+
+.btn-red:hover {
+    background-color: #f64242;
+    color: white;
+}
+
+.vertical-middle {
+    vertical-align: middle;
+}
+
+/* Padding */
+.pad50 {
+    padding: 50px 0;
+}
+
+/* Font-weight */
+.f-400 {
+    font-weight: 400;
+}
+
+.f-500 {
+    font-weight: 500;
+}
+
+.f-600 {
+    font-weight: 600;
+}
+
+.f-700 {
+    font-weight: 700;
+}
+
+.f-800 {
+    font-weight: 800;
+}
+
+
+/* Width: */
+.w-10 {
+    width: 10%;
+}
+
+.w-20 {
+    width: 20%;
+}
+
+.w-60 {
+    width: 60%;
+}
+
+.w-70 {
+    width: 70%;
+}
+
+.w-80 {
+    width: 80%;
+}
+
+.w-90 {
+    width: 90%;
+}
+
+/* Root Classes */
+.section-title {
+    margin: 0 0 80px;
+}
+
+.section-title h2 {
+    position: relative;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: 700;
+
+}
+
+.section-title h2:after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 70px;
+    height: 2px;
+    margin: -20px auto;
+    content: '';
+    opacity: 1;
+    background: #ff5151;
+}
+
+/* Navbar */
+nav .navbar-nav li a {
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+}
+
+nav .navbar-nav li a:hover {
+    color: #ff5151 !important;
+}
+
+nav .navbar-nav li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-icon:after {
+    content: attr(value);
+    font-size: 16px;
+    color: #ff5151;
+    border-radius: 50%;
+    padding: 0 5px;
+    position: relative;
+    left: -23px;
+    top: -1.5px;
+    opacity: 0.9;
+}
+
+
+/* Banner */
+.carousel-caption {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.banner-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Noto;
+}
+
+/* Products */
+.product-list .row .col-lg-3,
+.related-products .row .col-lg-3,
+section.products .row .col-lg-3 {
+    margin-bottom: 1.5rem;
+}
+
+
+.product-list .product-detail .product-rating i,
+.related-products .product-detail .product-rating i,
+section.products .product-detail .product-rating i {
+    color: #ff5151;
+}
+
+.product-list .product-category,
+.related-products .product-category,
+section.products .product-category {
+    font-size: .85em;
+    margin-bottom: 0.5em;
+    display: block;
+    line-height: 1.3;
+    opacity: .6;
+}
+
+.product-list .product-name,
+.product-list .product-pricing,
+.related-products .product-name,
+.related-products .product-pricing,
+section.products .product-name,
+section.products .product-pricing {
+    font-family: Poppins;
+    font-size: .9rem;
+    font-weight: 600;
+    margin-bottom: .25rem;
+}
+
+/* Bottom Banner */
+section.bottom-banner {
+    background-position: center right;
+    background-size: cover;
+    height: 500px;
+    background-attachment: fixed;
+    position: relative;
+    background-repeat: no-repeat;
+    padding: 160px 100px 160px 100px;
+}
+
+/* Footer */
+footer,
+section.copyright {
+    background-color: black;
+    padding: 30px 0;
+}
+
+footer .tem-heading h5 {
+    color: white;
+    font-family: Poppins;
+}
+
+footer .tem-text p,
+footer .tem-text ul li a {
+    color: rgba(255, 255, 255, 0.63);
+    font-family: Poppins;
+}
+
+footer .tem-text ul li {
+    margin-bottom: 5px;
+}
+
+footer .tem-text ul li a:hover {
+    color: #ff5151;
+}
+
+footer .first .tem-social i {
+    color: white;
+    text-align: center;
+}
+
+footer .first .tem-social {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+section.copyright {
+    border-top: 1px solid grey;
+}
+
+section.copyright p {
+    color: rgba(255, 255, 255, 0.63);
+    font-size: .8rem;
+}
+
+/* Product Page */
+section.product-page .product-list .col-lg-4 {
+    display: flex;
+    justify-content: center;
+
+}
+
+/* About us page */
+section.about-banner .banner-text {
+    font-family: Poppins;
+    font-weight: bolder;
+    font-size: 3em;
+}
+
+section.about-get-started h3 {
+    font-size: 2rem;
+    font-weight: bolder;
+    color: white;
+    margin: 0;
+}
+
+section.about-get-started button {
+    background: transparent;
+    border: 2px solid white;
+    padding: 10px 30px;
+    border-radius: 5px;
+    color: white;
+    transition: all 0.4s ease-in-out;
+    font-family: Poppins;
+}
+
+section.about-get-started button:hover {
+    color: #ff5151;
+    background: white;
+
+}
+
+/* Login-register */
+section.login-register .login form,
+section.login-register .register form {
+    border: 1px solid #bbb6b6;
+    padding: 2px 20px 30px 20px;
+    border-radius: 5px;
+}
+
+/* My Account */
+section.my-account button.nav-link {
+    color: #f64242;
+}
+
+section.my-account button.nav-link.active {
+    color: #fff !important;
+    background-color: #f64242;
+}
+
+section.my-account a {
+    color: #f64242;
+}
+
+section.my-account table td {
+    vertical-align: middle;
+}
+
+/* Cart */
+section.cart .alert-box p {
+    background: rgb(239 239 239 / 65%);
+    border-top: 2px solid #f64242;
+    padding: 15px;
+}
+
+section.cart .checkout-row .row {
+    padding: 10px;
+}
+
+/* Contact form */
+section.contact {
+    background: #fbfcff;
+}
+
+section.contact .contact-form {
+    background: white;
+    padding: 2.5em;
+}

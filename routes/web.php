@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CouponController;
-use App\Http\Controllers\SizeController;
-use App\Http\Controllers\ColorController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,9 +21,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+/* ------------------
+=====================
+// Admin Routes
+=====================
+ ------------------*/
 
 Route::get('admin', [AdminController::class, 'index']);
 Route::post('admin/auth', [AdminController::class, 'auth'])->name('admin.auth');
@@ -76,4 +81,27 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/product/delete/{id}', [ProductController::class, 'delete']);
     Route::get('admin/product/status/{type}/{id}', [ProductController::class, 'status']);
     Route::get('admin/product/edit-product/delete-attr/{id}/{slug}', [ProductController::class, 'deleteAttr']);
+    Route::get('admin/product/edit-product/delete-image/{id}/{slug}', [ProductController::class, 'deleteimage']);
+
+    // CustomerController
+    Route::get('admin/customer', [CustomerController::class, 'index']);
+    Route::get('admin/customer/add-customer', [CustomerController::class, 'create']);
+    Route::get('admin/customer/edit-customer/{id}', [CustomerController::class, 'edit']);
+    Route::post('admin/customer/manage-customer/add', [CustomerController::class, 'add']);
+    Route::post('admin/customer/manage-customer/update', [CustomerController::class, 'update']);
+    Route::get('admin/customer/delete/{id}', [CustomerController::class, 'delete']);
+    Route::get('admin/customer/status/{type}/{id}', [CustomerController::class, 'status']);
+    Route::get('admin/customer/edit-customer/delete-attr/{id}/{slug}', [CustomerController::class, 'deleteAttr']);
+    Route::get('admin/customer/edit-customer/delete-image/{id}/{slug}', [CustomerController::class, 'deleteimage']);
 });
+
+
+
+/* ------------------
+=====================
+// Public Routes
+=====================
+ ------------------*/
+
+
+Route::get('/', [UserController::class, 'index']);
