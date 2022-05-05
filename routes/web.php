@@ -105,3 +105,4 @@ Route::group(['middleware' => 'admin_auth'], function () {
 
 
 Route::get('/', [UserController::class, 'index']);
+Route::get('product/{slug}', [UserController::class, 'product_info']);

@@ -253,36 +253,25 @@
                                 </p>
                             </a>
                         </li>
+
                         <li class="nav-item">
-                            <a href="#" class="nav-link  @yield('drop_select')">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>
-                                    Product
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
+                            <a href="{{ url('admin/product/product-list') }}"
+                                class="nav-link @yield('product_select')">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Products</p>
                             </a>
-                            <ul class="nav nav-treeview" style="display: none;">
-                                <li class="nav-item">
-                                    <a href="{{ url('admin/product/product-list') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Product List</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('admin/product/size') }}"
-                                        class="nav-link @yield('size_select')">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Size</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('admin/product/color') }}"
-                                        class="nav-link @yield('color_select')">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Color</p>
-                                    </a>
-                                </li>
-                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/product/size') }}" class="nav-link @yield('size_select')">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Size</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/product/color') }}" class="nav-link @yield('color_select')">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Color</p>
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ url('admin/coupon') }}" class="nav-link @yield('coupon_select')">

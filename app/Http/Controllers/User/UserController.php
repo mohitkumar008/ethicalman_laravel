@@ -20,13 +20,32 @@ class UserController extends Controller
     {
         $result['data'] = Product::where('status', '1')->get();
         foreach ($result['data'] as $list) {
-            $result['prod_attr'] = DB::table('product_attr')
+            $result['prod_attr'][$list->id] = DB::table('product_attr')
                 ->where('pid', $list->id)
                 ->get();
             // echo "<pre>";
-            // print_r($result['prod_attr']);
+            // print_r($result);
+            // die();
         }
-        // die();
         return view('user.index', $result);
+    }
+
+    public function product_info(Request $request, $slug)
+    {
+        $result['data'] = Product::where('slug', $slug)->get();
+        foreach ($result['data'] as $list) {
+            $result['prod_attr'][$list->id] = DB::table('product_attr')
+                ->where('pid', $list->id)
+                ->get();
+        }
+        foreach ($result['data'] as $list) {
+            $result['prod_img'][$list->id] = DB::table('product_images')
+                ->where('pid', $list->id)
+                ->get();
+        }
+        // echo "<pre>";
+        // print_r($result);
+        // die();
+        return view('user/product_info', $result);
     }
 }

@@ -11,12 +11,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    @section('additional_css')
+    @show
+
     <link rel="stylesheet" href="{{ asset('user_assets/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('user_assets/assets/css/responsive.css') }}">
 
     <title>@yield('page_title')</title>
-    @section('additional_css')
-    @show
 </head>
 
 <body>
@@ -147,9 +148,9 @@
         </div>
     </section>
 
-    <script src="{{ asset('user_assets/assets/js/bootstrap.bundle.min.js') }}"></script>
     @section('additional_js')
     @show
+    <script src="{{ asset('user_assets/assets/js/bootstrap.bundle.min.js') }}"></script>
 </body>
 
 </html>

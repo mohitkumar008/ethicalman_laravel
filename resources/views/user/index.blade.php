@@ -117,13 +117,13 @@
                 @foreach ($data as $list)
                     <div class="col-lg-3 col-md-3 col-sm-6">
                         <div class="card border-0" style="width: 90%;">
-                            <a href="" class="product-img-link">
+                            <a href="{{ url('product/' . $list->slug . '') }}" class="product-img-link">
                                 <img src="{{ asset('storage/media/' . $list->image . '') }}" class="card-img-top"
                                     alt="...">
                             </a>
                             <div class="card-body px-1 py-2 product-detail">
                                 <span class="product-category">Shirt</span>
-                                <a href="">
+                                <a href="{{ url('product/' . $list->slug . '') }}">
                                     <h6 class="product-name">{{ $list->name }}</h6>
                                 </a>
                                 <span class="product-rating">
@@ -133,165 +133,11 @@
                                     <i class="bi bi-star"></i>
                                     <i class="bi bi-star"></i>
                                 </span>
-                                <p class="product-pricing">₹{{ $prod_attr[$data]->price }}</p>
+                                <p class="product-pricing">₹{{ $prod_attr[$list->id][0]->price }}</p>
                             </div>
                         </div>
                     </div>
                 @endforeach
-                {{-- <div class="col-lg-3 col-md-3 col-sm-6">
-                    <div class="card border-0" style="width: 90%;">
-                        <a href="" class="product-img-link">
-                            <img src="{{ asset('user_assets/images/product/Ethical-Man-Denim-Blue-Shirt.jpg') }}"
-                                class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body px-1 py-2 product-detail">
-                            <span class="product-category">Shirt</span>
-                            <a href="">
-                                <h6 class="product-name">The Ethical Man Denim Blue Shirt</h6>
-                            </a>
-                            <span class="product-rating">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </span>
-                            <p class="product-pricing">₹1,499.00</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6">
-                    <div class="card border-0" style="width: 90%;">
-                        <a href="" class="product-img-link">
-                            <img src="{{ asset('user_assets/images/product/Ethical-man-denim-purple-shirt.jpg') }}"
-                                class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body px-1 py-2 product-detail">
-                            <span class="product-category">Shirt</span>
-                            <a href="">
-                                <h6 class="product-name">The Ethical Man Denim Purple Shirt</h6>
-                            </a>
-                            <span class="product-rating">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </span>
-                            <p class="product-pricing">₹1,499.00</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6">
-                    <div class="card border-0" style="width: 90%;">
-                        <a href="" class="product-img-link">
-                            <img src="{{ asset('user_assets/images/product/Ethical-Man-Fiery-Red-Shirt.jpg') }}"
-                                class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body px-1 py-2 product-detail">
-                            <span class="product-category">Shirt</span>
-                            <a href="">
-                                <h6 class="product-name">The Ethical Man Fiery Red Shirt</h6>
-                            </a>
-                            <span class="product-rating">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </span>
-                            <p class="product-pricing">₹1,499.00</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6">
-                    <div class="card border-0" style="width: 90%;">
-                        <a href="" class="product-img-link">
-                            <img src="{{ asset('user_assets/images/product/Ethical-Man-Forest-Green-Shirt.jpg') }}"
-                                class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body px-1 py-2 product-detail">
-                            <span class="product-category">Shirt</span>
-                            <a href="">
-                                <h6 class="product-name">The Ethical Man Forest Green Shirt</h6>
-                            </a>
-                            <span class="product-rating">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </span>
-                            <p class="product-pricing">₹1,499.00</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6">
-                    <div class="card border-0" style="width: 90%;">
-                        <a href="" class="product-img-link">
-                            <img src="{{ asset('user_assets/images/product/Ethical-Man-Lava-Orange-Shirt.jpg') }}"
-                                class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body px-1 py-2 product-detail">
-                            <span class="product-category">Shirt</span>
-                            <a href="">
-                                <h6 class="product-name">The Ethical Man Lava Orange Shirt</h6>
-                            </a>
-                            <span class="product-rating">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </span>
-                            <p class="product-pricing">₹1,499.00</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6">
-                    <div class="card border-0" style="width: 90%;">
-                        <a href="" class="product-img-link">
-                            <img src="{{ asset('user_assets/images/product/Ethical-Man-Light-Blue-Shirt.jpg') }}"
-                                class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body px-1 py-2 product-detail">
-                            <span class="product-category">Shirt</span>
-                            <a href="">
-                                <h6 class="product-name">The Ethical Man Light Blue Shirt</h6>
-                            </a>
-                            <span class="product-rating">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </span>
-                            <p class="product-pricing">₹1,499.00</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6">
-                    <div class="card border-0" style="width: 90%;">
-                        <a href="" class="product-img-link">
-                            <img src="{{ asset('user_assets/images/product/Ethical-Man-Phantom-Black-Shirt.jpg') }}"
-                                class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body px-1 py-2 product-detail">
-                            <span class="product-category">Shirt</span>
-                            <a href="">
-                                <h6 class="product-name">The Ethical Man Phantom Black Shirt</h6>
-                            </a>
-                            <span class="product-rating">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </span>
-                            <p class="product-pricing">₹1,499.00</p>
-                        </div>
-                    </div>
-                </div> --}}
             </div>
         </div>
     </section>

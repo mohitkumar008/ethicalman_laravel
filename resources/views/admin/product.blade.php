@@ -1,6 +1,6 @@
 @extends('admin/layout')
 @section('page_title', 'Product | The Ethical Man')
-@section('category_select', 'active')
+@section('product_select', 'active')
 {{-- Additional CSS --}}
 @section('additional_css')
 @endsection
