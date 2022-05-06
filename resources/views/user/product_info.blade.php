@@ -1,5 +1,5 @@
 @extends('user/layout')
-@section('page_title', 'Homepage | The Ethical Man')
+@section('page_title', $data[0]->name . ' | The Ethical Man')
 @section('additional_css')
     <!-- xZoom Plugin -->
     <script src="{{ asset('user_assets/assets/plugins/xZoom/jquery.js') }}"></script>
@@ -25,32 +25,13 @@
                                         xoriginal="{{ asset('storage/media/' . $data[0]->image . '') }}" />
                                     <div class="xzoom-thumbs">
                                         @foreach ($prod_img[$data[0]->id] as $list)
-                                            <?php
-                                            // echo '<pre>';
-                                            // print_r($list);
-                                            ?>
+                                            <a href="{{ asset('storage/media/' . $list->images . '') }}">
+                                                <img class="xzoom-gallery5" width="80"
+                                                    src="{{ asset('storage/media/' . $list->images . '') }}"
+                                                    xpreview="{{ asset('storage/media/' . $list->images . '') }}"
+                                                    title="The description goes here">
+                                            </a>
                                         @endforeach
-                                        <a href="{{ asset('storage/media/' . $list->images . '') }}">
-                                            <img class="xzoom-gallery5" width="80"
-                                                src="{{ asset('storage/media/' . $list->images . '') }}"
-                                                xpreview="{{ asset('storage/media/' . $list->images . '') }}"
-                                                title="The description goes here">
-                                        </a>
-                                        <a href="{{ asset('storage/media/' . $list->images . '') }}">
-                                            <img class="xzoom-gallery5" width="80"
-                                                src="{{ asset('storage/media/' . $list->images . '') }}"
-                                                title="The description goes here">
-                                        </a>
-                                        <a href="{{ asset('storage/media/' . $list->images . '') }}">
-                                            <img class="xzoom-gallery5" width="80"
-                                                src="{{ asset('storage/media/' . $list->images . '') }}"
-                                                title="The description goes here">
-                                        </a>
-                                        <a href="{{ asset('storage/media/' . $list->images . '') }}">
-                                            <img class="xzoom-gallery5" width="80"
-                                                src="{{ asset('storage/media/' . $list->images . '') }}"
-                                                title="The description goes here">
-                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -86,11 +67,9 @@
                         <div class="col-6">
                             <h6>Size</h6>
                             <select class="form-select" aria-label="Default select example">
-                                <option selected value="">38</option>
-                                <option value="">40</option>
-                                <option value="">42</option>
-                                <option value="">44</option>
-                                <option value="">46</option>
+                                @foreach ($product_attr[$data[0]->id] as $sizelist)
+                                    <option selected value="{{ $sizelist->size_id }}">{{ $sizelist->size }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>

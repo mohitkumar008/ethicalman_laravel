@@ -47,16 +47,16 @@
                         <a class="nav-link active px-3 fs-6" aria-current="page" href="{{ url('/') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-3 fs-6" href="product">Product</a>
+                        <a class="nav-link px-3 fs-6" href="{{ url('/product') }}">Product</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-3 fs-6" href="about">About</a>
+                        <a class="nav-link px-3 fs-6" href="{{ url('/about') }}">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-3 fs-6" href="#">Contact</a>
+                        <a class="nav-link px-3 fs-6" href="{{ url('/contact') }}">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-3 fs-6" href="#">My Account</a>
+                        <a class="nav-link px-3 fs-6" href="{{ url('/my-account') }}">My Account</a>
                     </li>
                     <li class="nav-item d-flex">
                         <a class="nav-link px-2 fs-5 text-red" href="#"><i class="bi bi-search"></i></a>
@@ -110,9 +110,9 @@
                     <div class="tem-text">
                         <ul class="list-unstyled">
                             <li><a href="{{ url('/') }}">Home</a></li>
-                            <li><a href="">Cart</a></li>
-                            <li><a href="">About</a></li>
-                            <li><a href="">Contact Us</a></li>
+                            <li><a href="{{ url('/cart') }}">Cart</a></li>
+                            <li><a href="{{ url('/about') }}">About</a></li>
+                            <li><a href="{{ url('/contact') }}">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>
@@ -122,11 +122,11 @@
                     </div>
                     <div class="tem-text">
                         <ul class="list-unstyled">
-                            <li><a href="">Terms & Conditions</a></li>
-                            <li><a href="">Privacy Policy</a></li>
-                            <li><a href="">Refund and Returns Policy</a></li>
-                            <li><a href="">Product</a></li>
-                            <li><a href="">My account</a></li>
+                            <li><a href="{{ url('/terms-conditions') }}">Terms & Conditions</a></li>
+                            <li><a href="{{ url('/privacy-policy') }}">Privacy Policy</a></li>
+                            <li><a href="{{ url('/refund_returns') }}">Refund and Returns Policy</a></li>
+                            <li><a href="{{ url('/product') }}">Product</a></li>
+                            <li><a href="{{ url('/my-account') }}">My account</a></li>
                         </ul>
                     </div>
                 </div>
