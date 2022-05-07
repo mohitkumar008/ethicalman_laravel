@@ -66,7 +66,7 @@
                     <div class="size-option row">
                         <div class="col-6">
                             <h6>Size</h6>
-                            <select class="form-select" aria-label="Default select example">
+                            <select class="form-select" aria-label="Default select example" id="size_id">
                                 @foreach ($product_attr[$data[0]->id] as $sizelist)
                                     <option selected value="{{ $sizelist->size_id }}">{{ $sizelist->size }}</option>
                                 @endforeach
@@ -76,8 +76,10 @@
                     <div class="row my-2">
                         <hr class="mb-3 w-70">
                         <div class="col-12 d-flex">
-                            <input type="number" value="1" style="width: 10%;height: 100%;" class="mx-2 text-center"><button
-                                class="btn bg-red text-white">Add To Cart</button>
+                            <input type="number" value="1" id="quantity" min="1" style="width: 10%;height: 100%;"
+                                class="mx-2 text-center">
+                            <button class="btn bg-red text-white" onclick="add_to_cart('{{ $data[0]->id }}');">Add To
+                                Cart</button>
                         </div>
                         <hr class="mt-3 w-70">
                     </div>
@@ -278,6 +280,12 @@
             </div>
         </div>
     </section>
+    <form action="" id="addtocartform">
+        @csrf
+        <input type="hidden" id="size" name="size" />
+        <input type="hidden" id="pid" name="pid" />
+        <input type="hidden" id="qty" name="qty" />
+    </form>
 @endsection
 @section('additional_js')
     <script src="{{ asset('user_assets/assets/plugins/xZoom/setup.js') }}"></script>

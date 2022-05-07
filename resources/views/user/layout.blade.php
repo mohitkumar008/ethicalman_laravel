@@ -151,6 +151,7 @@
     @section('additional_js')
     @show
     <script src="{{ asset('user_assets/assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('user_assets/assets/js/custom.js') }}"></script>
 </body>
 
 </html>

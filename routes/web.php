@@ -113,3 +113,14 @@ Route::get('about', function () {
 Route::get('contact', function () {
     return view('user.contact');
 });
+Route::get('terms-conditions', function () {
+    return view('user.terms-conditions');
+});
+Route::get('privacy-policy', function () {
+    return view('user.privacy-policy');
+});
+Route::get('refund_returns', function () {
+    return view('user.refund-returns');
+});
+Route::post('add_to_cart', [UserController::class, 'add_to_cart']);
+Route::get('cart', [UserController::class, 'cart']);
