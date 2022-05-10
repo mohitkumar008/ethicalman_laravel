@@ -122,5 +122,10 @@ Route::get('privacy-policy', function () {
 Route::get('refund_returns', function () {
     return view('user.refund-returns');
 });
-Route::post('add_to_cart', [UserController::class, 'add_to_cart']);
+Route::post('/add_to_cart', [UserController::class, 'add_to_cart']);
 Route::get('cart', [UserController::class, 'cart']);
+Route::post('/update_cart', [UserController::class, 'update_cart']);
+Route::get('cart/removeItem/{id}', [UserController::class, 'remove_item_from_cart']);
+Route::get('my-account', [UserController::class, 'user_account']);
+
+Route::post('register', [UserController::class, 'register']);

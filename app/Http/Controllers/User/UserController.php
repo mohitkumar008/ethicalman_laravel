@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 
+use App\Models\Admin\Customer;
 use Illuminate\Http\Request;
 use App\Models\Admin\Product;
 use Illuminate\Support\Facades\Hash;
@@ -77,6 +78,7 @@ class UserController extends Controller
         } else {
             $uid = getUserTempId();
             $usertype = "Guest";
+            // die($uid);
         }
 
         $pid = $request->post('pid');
@@ -131,10 +133,73 @@ class UserController extends Controller
             ->leftJoin('products', 'cart.pid', '=', 'products.id')
             ->leftJoin('product_attr', 'cart.pattrid', '=', 'product_attr.id')
             ->leftJoin('sizes', 'product_attr.size_id', '=', 'sizes.id')
-            ->select('cart.qty', 'products.name', 'products.image', 'sizes.size', 'product_attr.price')
+            ->select('cart.id', 'cart.qty', 'products.name', 'products.image', 'sizes.size', 'product_attr.price', 'products.id as pid', 'product_attr.id as attrid')
             ->get();
 
         // prx($result);
         return view('user.cart', $result);
+    }
+
+    public function update_cart(Request $request)
+    {
+        if ($request->session()->has('USER_LOGGEDIN')) {
+            $uid = $request->session()->get('USER_LOGGEDIN');
+            $usertype = "Customer";
+        } else {
+            $uid = getUserTempId();
+            $usertype = "Guest";
+        }
+
+        $result['cart'] = DB::table('cart')
+            ->where(['pattrid' => $request->post('aid')])
+            ->where(['pid' => $request->post('pid')])
+            ->update(['qty' => $request->post('qty')]);
+
+        return view('user.cart');
+    }
+
+    public function remove_item_from_cart(Request $request, $id)
+    {
+        if ($request->session()->has('USER_LOGGEDIN')) {
+            $uid = $request->session()->get('USER_LOGGEDIN');
+            $usertype = "Customer";
+        } else {
+            $uid = getUserTempId();
+            $usertype = "Guest";
+        }
+
+        $result['cart'] = DB::table('cart')
+            ->where(['id' => $id])
+            ->delete();
+
+        return redirect('cart');
+    }
+
+    public function user_account(Request $request)
+    {
+        if ($request->session()->has('USER_LOGGEDIN')) {
+            return view('user.my-account');
+        } else {
+            return view('user.login-register');
+        }
+    }
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'email' => 'required|unique:customers,email',
+            'password' => 'required',
+            'phone' => 'required',
+        ]);
+
+        $model = new Customer();
+        $model->name = $request->post('username');
+        $model->email = $request->post('email');
+        $model->phone = $request->post('phone');
+        $model->password = Hash::make($request->post('password'));
+        $model->status = '1';
+        $model->save();
+        return redirect('my-account')->with('register_msg', "Account created successfully. Please login to continue...");
     }
 }

@@ -8,11 +8,17 @@ function prx($arr)
 
 function getUserTempId()
 {
-    if (session()->has('USER_TEMP_ID') === null) {
-        $rand = rand(11111111, 999999999);
+    if (session()->has('USER_TEMP_ID') == '') {
+        $rand = rand(0, PHP_INT_MAX);
         session()->put('USER_TEMP_ID', $rand);
         return $rand;
     } else {
+        // return '1234';
         return session()->get('USER_TEMP_ID');
     }
+}
+
+function test()
+{
+    dd(":(");
 }

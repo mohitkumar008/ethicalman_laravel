@@ -1,6 +1,7 @@
 @extends('user/layout')
 @section('page_title', 'Cart | The Ethical Man')
 @section('additional_css')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 @endsection
 
 @section('content-wrapper')
@@ -40,7 +41,8 @@
                             <tbody>
                                 @foreach ($cart as $list)
                                     <tr class="vertical-middle">
-                                        <td><a href="" class="text-red"><i class="bi bi-x-circle"></i></a></td>
+                                        <td><a href="{{ url('cart/removeItem/' . $list->id . '') }}"
+                                                class="text-red"><i class="bi bi-x-circle"></i></a></td>
                                         <td class="w-10"><a href=""><img
                                                     src="{{ asset('storage/media/' . $list->image . '') }}" alt=""
                                                     class="img-fluid"></a></td>
@@ -48,8 +50,14 @@
                                                 {{ $list->size }}</a><br><span>Return 7 days</span></td>
                                         <td>₹{{ $list->price }}</td>
                                         <td class="w-10"><input class="w-50 text-center p-1 form-control"
-                                                value='{{ $list->qty }}' type="number" min="1"></td>
-                                        <td><b> ₹{{ $list->price * $list->qty }}</b></td>
+                                                value='{{ $list->qty }}' type="number" id="qty{{ $list->attrid }}"
+                                                min="1"
+                                                onchange="updatecart('{{ $list->pid }}', '{{ $list->attrid }}', '{{ $list->price }}')">
+                                            <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                                        </td>
+                                        <td><b> ₹ <span
+                                                    id="total_cart_price_{{ $list->attrid }}">{{ $list->price * $list->qty }}</span></b>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -63,10 +71,10 @@
                                     </div>
                                 </td>
                                 <td colspan="3">
-                                    <div class="input-group">
+                                    {{-- <div class="input-group">
                                         <button class="btn bg-red f-600 fs-6 ms-auto text-white" type="button"
                                             id="button-addon2" style="z-index: 0;">UPDATE CART</button>
-                                    </div>
+                                    </div> --}}
                                 </td>
                             </tfoot>
                         </table>
@@ -118,7 +126,8 @@
                 <div class="row">
                     <div class="col-lg-10 col-md-10 col-12 mx-auto text-center">
 
-                        <img src="{{ asset('user_assets/images/empty-cart.jpg') }}" class="img-fluid w-50 mx-auto" alt="">
+                        <img src="{{ asset('user_assets/images/empty-cart.jpg') }}" class="img-fluid w-50 mx-auto"
+                            alt="">
 
                     </div>
                 </div>

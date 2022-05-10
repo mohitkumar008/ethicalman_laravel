@@ -2,6 +2,7 @@
 @section('page_title', $data[0]->name . ' | The Ethical Man')
 @section('additional_css')
     <!-- xZoom Plugin -->
+
     <script src="{{ asset('user_assets/assets/plugins/xZoom/jquery.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('user_assets/plugins/xZoom/xzoom.css') }}" media="all" />
     <link type="text/css" rel="stylesheet" media="all"
@@ -280,7 +281,7 @@
             </div>
         </div>
     </section>
-    <form action="" id="addtocartform">
+    <form id="addtocartform" method="post">
         @csrf
         <input type="hidden" id="size" name="size" />
         <input type="hidden" id="pid" name="pid" />

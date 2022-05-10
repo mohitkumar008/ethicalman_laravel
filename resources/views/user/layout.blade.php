@@ -60,7 +60,7 @@
                     </li>
                     <li class="nav-item d-flex">
                         <a class="nav-link px-2 fs-5 text-red" href="#"><i class="bi bi-search"></i></a>
-                        <a class="nav-link px-2 fs-3 py-0 text-red" href="#"><i class="bi bi-bag cart-icon"
+                        <a class="nav-link px-2 fs-3 py-0 text-red" href="/cart"><i class="bi bi-bag cart-icon"
                                 value='0'></i></a>
                     </li>
 
