@@ -129,3 +129,7 @@ Route::get('cart/removeItem/{id}', [UserController::class, 'remove_item_from_car
 Route::get('my-account', [UserController::class, 'user_account']);
 
 Route::post('register', [UserController::class, 'register']);
+Route::post('login', [UserController::class, 'login']);
+Route::get('logout', [UserController::class, 'logout']);
+Route::get('verify_email/{id}', [UserController::class, 'verify_email']);
+Route::get('checkout', [UserController::class, 'checkout']);

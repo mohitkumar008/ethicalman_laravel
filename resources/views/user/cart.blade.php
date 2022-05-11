@@ -71,10 +71,6 @@
                                     </div>
                                 </td>
                                 <td colspan="3">
-                                    {{-- <div class="input-group">
-                                        <button class="btn bg-red f-600 fs-6 ms-auto text-white" type="button"
-                                            id="button-addon2" style="z-index: 0;">UPDATE CART</button>
-                                    </div> --}}
                                 </td>
                             </tfoot>
                         </table>
@@ -114,7 +110,7 @@
                                     <div class="col-lg-12 col-12">
                                         <button class="btn bg-red f-600 fs-6 text-white w-100" type="button"
                                             id="button-addon2" style="z-index: 0;"
-                                            onclick="window.location.href='checkout'">PROCEED TO
+                                            onclick="window.location.href='{{ url('checkout') }}'">PROCEED TO
                                             CHECKOUT</button>
                                     </div>
                                 </div>

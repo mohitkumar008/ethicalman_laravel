@@ -9,8 +9,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center">
+                    @if (session('verify_msg'))
+                        <h6 class="text-success">{{ session('verify_msg') }}</h6>
+                    @endif
                     @if (session('register_msg'))
                         <h6 class="text-success">{{ session('register_msg') }}</h6>
+                    @endif
+                    @if (session('logout_msg'))
+                        <h6 class="text-success">{{ session('logout_msg') }}</h6>
                     @endif
                     <div class="section-title">
                         <h2 class="fs-3">
@@ -22,17 +28,32 @@
             <div class="row justify-content-evenly">
                 <div class="col-lg-4 login">
                     <h4 class="mb-4 fs-4 f-700">Login</h4>
-                    <form class="row g-3">
+                    <form class="row g-3" method="post" action="{{ url('login') }}">
+                        @csrf
                         <div class="col-md-12">
-                            <label for="inputUsername4" class="form-label fs-6 f-600">Username<span
+                            <label for="inputUsername4" class="form-label fs-6 f-600">Email<span
                                     class="vstar">*</span></label>
-                            <input type="text" class="form-control" id="inputUsername4">
+                            <input type="text" class="form-control" id="inputUsername4" name="login_email">
+                            <p class="text-danger m-0 small">
+                                @error('email')
+                                    {{ $message }}
+                                @enderror
 
+                            </p>
                         </div>
                         <div class="col-md-12">
                             <label for="inputPassword4" class="form-label fs-6 f-600">Password<span
                                     class="vstar">*</span></label>
-                            <input type="password" class="form-control" id="inputPassword4">
+                            <input type="password" class="form-control" id="inputPassword4" name="login_password">
+                            <p class="text-danger m-0 small">
+                                @error('password')
+                                    {{ $message }}
+                                @enderror
+
+                            </p>
+                            @if (session('login_error'))
+                                <p class="text-danger">{{ session('login_error') }}</p>
+                            @endif
                         </div>
                         <div class="col-12">
                             <button type="submit" class="btn btn-red">Login</button>

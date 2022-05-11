@@ -9,6 +9,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center">
+                    @if (session('verify_msg'))
+                        <h6 class="text-success">{{ session('verify_msg') }}</h6>
+                    @endif
                     <div class="section-title">
                         <h2 class="fs-3">
                             My Account
@@ -46,7 +49,7 @@
                     <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade show active" id="v-pills-dashboard" role="tabpanel"
                             aria-labelledby="v-pills-dashboard-tab">
-                            <p>Hello <b>admin</b> (not <b>admin</b>? <a href="">Log out</a> )</p>
+                            <p>Hello <b>admin</b> (not <b>admin</b>? <a href="{{ url('logout') }}">Log out</a> )</p>
                             <p>From your account dashboard you can view your <a href="">recent orders</a>, manage your <a
                                     href="">shipping and billing addresses</a>, and <a href="">edit your password and
                                     account details</a>.</p>

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Admin\Product;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -73,7 +74,7 @@ class UserController extends Controller
     public function add_to_cart(Request $request)
     {
         if ($request->session()->has('USER_LOGGEDIN')) {
-            $uid = $request->session()->get('USER_LOGGEDIN');
+            $uid = $request->session()->get('USER_ID');
             $usertype = "Customer";
         } else {
             $uid = getUserTempId();
@@ -102,7 +103,7 @@ class UserController extends Controller
             $update_id = $check[0]->id;
             $check = DB::table('cart')
                 ->where(['id' => $update_id])
-                ->update(['qty' => $qty]);
+                ->update(['qty' => $qty, 'updated_at' => date("Y-m-d h:i:s")]);
             $msg = "Updated";
         } else {
             $id = DB::table('cart')->insertGetId([
@@ -110,7 +111,9 @@ class UserController extends Controller
                 'pattrid' => $pattrid,
                 'uid' => $uid,
                 'usertype' => $usertype,
-                'qty' => $qty
+                'qty' => $qty,
+                'created_at' => date("Y-m-d h:i:s"),
+                'updated_at' => date("Y-m-d h:i:s")
             ]);
             $msg = "Added";
         }
@@ -120,7 +123,7 @@ class UserController extends Controller
     public function cart(Request $request)
     {
         if ($request->session()->has('USER_LOGGEDIN')) {
-            $uid = $request->session()->get('USER_LOGGEDIN');
+            $uid = $request->session()->get('USER_ID');
             $usertype = "Customer";
         } else {
             $uid = getUserTempId();
@@ -153,7 +156,7 @@ class UserController extends Controller
         $result['cart'] = DB::table('cart')
             ->where(['pattrid' => $request->post('aid')])
             ->where(['pid' => $request->post('pid')])
-            ->update(['qty' => $request->post('qty')]);
+            ->update(['qty' => $request->post('qty'), 'updated_at' => date("Y-m-d h:i:s")]);
 
         return view('user.cart');
     }
@@ -193,13 +196,85 @@ class UserController extends Controller
             'phone' => 'required',
         ]);
 
+        $rand_id = rand(111111111, 999999999);
         $model = new Customer();
         $model->name = $request->post('username');
         $model->email = $request->post('email');
         $model->phone = $request->post('phone');
         $model->password = Hash::make($request->post('password'));
         $model->status = '1';
+        $model->rand_id = $rand_id;
         $model->save();
+
+        // Send verificaton mail
+        $data = ['name' => $request->post('username'), 'rand_id' => $rand_id];
+        $user['to'] = $request->post('email');
+        Mail::send('user/email_verification', $data, function ($messages) use ($user) {
+            $messages->to($user['to']);
+            $messages->subject('Email Verification | The Ethical Man');
+        });
+
         return redirect('my-account')->with('register_msg', "Account created successfully. Please login to continue...");
+    }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'login_email' => 'required',
+            'login_password' => 'required',
+        ]);
+
+        $email = $request->post('login_email');
+        $password = $request->post('login_password');
+
+        $result = Customer::where(['email' => $email, 'status' => 1])->first();
+
+        if ($result) {
+            if (Hash::check($password, $result->password)) {
+                $request->session()->put('USER_LOGGEDIN', 'ture');
+                $request->session()->put('USER_ID', $result->id);
+
+                $uid = getUserTempId();
+                DB::table('cart')
+                    ->where(['uid' => $uid])
+                    ->where(['usertype' => 'Guest'])
+                    ->update(['uid' => $result->id, 'usertype' => 'Customer']);
+
+                return redirect('/');
+            } else {
+                return redirect('my-account')->with('login_error', '*Incorrect Password!');
+            }
+        } else {
+            return redirect('my-account')->with('login_error', '*Email address not found!');
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        $request->session()->forget('USER_LOGGEDIN');
+        $request->session()->forget('USER_ID');
+        $request->session()->forget('USER_TEMP_ID');
+        return redirect('my-account')->with('logout_msg', 'Logout successfully:)');
+    }
+
+    public function verify_email(Request $request, $id)
+    {
+
+        $result = DB::table('customers')
+            ->where(['rand_id' => $id])
+            ->update(['is_verify' => '1']);
+
+        return redirect('my-account')->with('verify_msg', 'Email verified successfully :)');
+    }
+
+    public function checkout(Request $request)
+    {
+        $result['cartData'] = getTotalCartItems();
+        // prx($result);
+        if (isset($result['cartData'][0])) {
+            return view('user.checkout', $result);
+        } else {
+            return redirect('/');
+        }
     }
 }
