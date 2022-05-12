@@ -39,7 +39,13 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $totalPrice = 0;
+                                @endphp
                                 @foreach ($cart as $list)
+                                    @php
+                                        $totalPrice += $list->qty * $list->price;
+                                    @endphp
                                     <tr class="vertical-middle">
                                         <td><a href="{{ url('cart/removeItem/' . $list->id . '') }}"
                                                 class="text-red"><i class="bi bi-x-circle"></i></a></td>
@@ -63,14 +69,19 @@
                             </tbody>
                             <tfoot class="vertical-middle">
                                 <td colspan="3">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Coupon Code"
-                                            aria-label="Enter Coupon" aria-describedby="button-addon2">
-                                        <button class="btn bg-red f-600 fs-6 text-white" type="button" id="button-addon2"
-                                            style="z-index: 0;">APPLY COUPON</button>
-                                    </div>
+                                    <form action="{{ url('/apply_coupon') }}" method="post">
+                                        @csrf
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="coupon"
+                                                placeholder="Coupon Code" aria-label="Enter Coupon"
+                                                aria-describedby="button-addon2" required>
+                                            <button class="btn bg-red f-600 fs-6 text-white" type="submit"
+                                                id="button-addon2" style="z-index: 0;">APPLY COUPON</button>
+                                        </div>
+                                    </form>
                                 </td>
                                 <td colspan="3">
+                                    <h6>Total Amount - ₹{{ $totalPrice }}</h6>
                                 </td>
                             </tfoot>
                         </table>
@@ -86,7 +97,7 @@
                             <div class="card-body px-3">
                                 <div class="row">
                                     <div class="col-lg-6 col-6"><b>Subtotal</b></div>
-                                    <div class="col-lg-6 col-6"><b>₹1,499.00</b></div>
+                                    <div class="col-lg-6 col-6"><b>₹{{ $totalPrice }}</b></div>
                                 </div>
                                 <hr class="m-0">
                                 <div class="row">

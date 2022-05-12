@@ -240,12 +240,12 @@ class UserController extends Controller
                     ->where(['usertype' => 'Guest'])
                     ->update(['uid' => $result->id, 'usertype' => 'Customer']);
 
-                return redirect('/');
+                return redirect()->back();
             } else {
-                return redirect('my-account')->with('login_error', '*Incorrect Password!');
+                return redirect()->back()->with('login_error', '*Incorrect Password!');
             }
         } else {
-            return redirect('my-account')->with('login_error', '*Email address not found!');
+            return redirect()->back()->with('login_error', '*Email address not found!');
         }
     }
 
@@ -276,5 +276,61 @@ class UserController extends Controller
         } else {
             return redirect('/');
         }
+    }
+
+    public function apply_coupon(Request $request)
+    {
+        $coupon = $request->post('coupon');
+        $findCoupon = DB::table('coupons')
+            ->where(['code' => $coupon])
+            ->get();
+        if (isset($findCoupon[0])) {
+            $msg_type = 'success';
+            $msg = 'Coupon code found';
+            // prx($findCoupon);
+            if ($findCoupon[0]->status == 1) {
+                $msg_type = 'success';
+                $msg = 'Coupon code activated';
+                if ($findCoupon[0]->is_one_time == 1) {
+                    $msg_type = 'success';
+                    $msg = 'Coupon code is for one time use only';
+                } else {
+                    $totalCartAmount = 0;
+                    $getTotalCartItems = getTotalCartItems();
+                    // prx($getTotalCartItems);
+                    foreach ($getTotalCartItems as $list) {
+                        $totalCartAmount += $list->price * $list->qty;
+                    }
+                    // die($totalCartAmount);
+                    if ($findCoupon[0]->min_order_amount > 0) {
+                        $msg_type = 'success';
+                        $msg = 'minimum order amount limit is ' . $findCoupon[0]->min_order_amount;
+                        if ($totalCartAmount  >= $findCoupon[0]->min_order_amount) {
+                            $msg_type = 'success';
+                            $msg = 'Order amount is greater than minimum order amount so u can use that coupon';
+                        } else {
+
+                            $msg_type = 'error';
+                            $msg = 'Order amount is not greater than minimum order amount so u can use that coupon';
+                        }
+                    } else {
+
+                        $msg_type = 'error';
+                        $msg = 'No minimum order amount limit';
+                    }
+                }
+            } else {
+
+                $msg_type = 'error';
+                $msg = 'Coupon code deactivated';
+            }
+        } else {
+            $msg_type = 'error';
+            $msg = 'Coupon code not found';
+        }
+
+        echo $msg_type;
+        echo '<br />';
+        echo $msg;
     }
 }

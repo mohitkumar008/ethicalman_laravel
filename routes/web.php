@@ -133,3 +133,5 @@ Route::post('login', [UserController::class, 'login']);
 Route::get('logout', [UserController::class, 'logout']);
 Route::get('verify_email/{id}', [UserController::class, 'verify_email']);
 Route::get('checkout', [UserController::class, 'checkout']);
+
+Route::post('/apply_coupon', [UserController::class, 'apply_coupon']);
