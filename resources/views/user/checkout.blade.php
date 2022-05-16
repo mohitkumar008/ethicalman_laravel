@@ -1,7 +1,7 @@
 @extends('user/layout')
 @section('page_title', 'Cart | The Ethical Man')
 @section('additional_css')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{{asset('user_assets/assets/js/jquery.min.js')}}"></script>
 @endsection
 
 @section('content-wrapper')
@@ -73,6 +73,9 @@
                 {{-- <div class="col-lg-10 col-md-10 col-12 mx-auto">
                     <p><i class="bi bi-patch-check-fill text-red me-2"></i> Coupon code applied successfully</p>
                 </div> --}}
+                <div class="col-lg-10 col-md-10 col-12 mx-auto" id="coupon_code_msg">
+                        
+                </div>
             </div>
 
             <div class="row justify-content-center py-2">
@@ -82,15 +85,10 @@
                             <h5 class="fs-6 f-700">Billing Details</h5>
                             <hr>
                             <form class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="inputFirst4" class="form-label fs-6 f-600">First Name<span
+                                <div class="col-md-12">
+                                    <label for="inputFirst4" class="form-label fs-6 f-600">Full Name<span
                                             class="vstar">*</span></label>
                                     <input type="text" class="form-control" id="inputFirst4">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="inputLast4" class="form-label fs-6 f-600">Last Name<span
-                                            class="vstar">*</span></label>
-                                    <input type="text" class="form-control" id="inputLast4">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="inputEmail4" class="form-label fs-6 f-600">Address<span
@@ -121,21 +119,23 @@
                                     <label for="inputDisplayname4" class="form-label fs-6 f-600">GSTIN (optional)</label>
                                     <input type="text" class="form-control" id="inputDisplayname4">
                                 </div>
-                                <div class="col-md-12">
-                                    <label for="inputEmail4" class="form-label fs-6 f-600">Phone<span
-                                            class="vstar">*</span></label>
-                                    <input type="email" class="form-control" id="inputEmail4">
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="inputEmail4" class="form-label fs-6 f-600">Account Email<span
-                                            class="vstar">*</span></label>
-                                    <input type="email" class="form-control" id="inputEmail4">
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="inputEmail4" class="form-label fs-6 f-600">Account Password<span
-                                            class="vstar">*</span></label>
-                                    <input type="email" class="form-control" id="inputEmail4">
-                                </div>
+                                @if (!session()->has('USER_LOGGEDIN'))
+                                    <div class="col-md-12">
+                                        <label for="inputEmail4" class="form-label fs-6 f-600">Phone<span
+                                                class="vstar">*</span></label>
+                                        <input type="email" class="form-control" id="inputEmail4">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="inputEmail4" class="form-label fs-6 f-600">Account Email<span
+                                                class="vstar">*</span></label>
+                                        <input type="email" class="form-control" id="inputEmail4">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="inputEmail4" class="form-label fs-6 f-600">Account Password<span
+                                                class="vstar">*</span></label>
+                                        <input type="email" class="form-control" id="inputEmail4">
+                                    </div>
+                                @endif
 
                             </form>
                         </div>
@@ -229,18 +229,32 @@
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-lg-6 col-6"><b>Coupon: <span>temoffer25</span></b></div>
-                            <div class="col-lg-6 col-6"><b>-₹374.00</b>, Free shipping coupon</div>
-                        </div>
-                        <hr>
-                        <div class="row">
                             <div class="col-lg-6 col-6"><b>Shipping</b></div>
                             <div class="col-lg-6 col-6">Free shipping</div>
                         </div>
                         <hr>
+                        <div class="">
+                            <div id="coupon-applied" class="row">
+                                
+                            </div>
+
+                            <div id="enter-coupon">
+                                <form>
+                                    <div class="input-group">
+                                        <input type="hidden" name="_token" id="coupon_token" value="{{ csrf_token() }}">
+                                        <input type="text" class="form-control" name="coupon_code" id="coupon_code"
+                                            placeholder="Coupon Code" aria-label="Enter Coupon"
+                                            aria-describedby="applyCoupon" required>
+                                        <button class="btn bg-red f-600 fs-6 text-white" type="button"
+                                            id="applyCoupon" style="z-index: 0;" onclick="apply_coupon()">APPLY COUPON</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="row">
                             <div class="col-lg-6 col-6"><b>Total</b></div>
-                            <div class="col-lg-6 col-6"><b>₹1,125.00</b></div>
+                            <div class="col-lg-6 col-6" id="totalAmount"><b>₹{{ $totalPrice }}</b></div>
                         </div>
                         <hr>
                         <div class="row">

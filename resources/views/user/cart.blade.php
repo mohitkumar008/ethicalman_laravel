@@ -1,7 +1,7 @@
 @extends('user/layout')
 @section('page_title', 'Cart | The Ethical Man')
 @section('additional_css')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{{asset('user_assets/assets/js/jquery.min.js')}}"></script>
 @endsection
 
 @section('content-wrapper')
@@ -21,8 +21,8 @@
                     <div class="col-lg-10 col-md-10 col-12 mx-auto">
                         <p><i class="bi bi-patch-check-fill text-red me-2"></i> Customer matched zone "India"</p>
                     </div>
-                    <div class="col-lg-10 col-md-10 col-12 mx-auto">
-                        <p><i class="bi bi-patch-check-fill text-red me-2"></i> Coupon code applied successfully</p>
+                    <div class="col-lg-10 col-md-10 col-12 mx-auto" id="coupon_code_msg">
+                        
                     </div>
                 </div>
                 <div class="row">
@@ -68,65 +68,16 @@
                                 @endforeach
                             </tbody>
                             <tfoot class="vertical-middle">
-                                <td colspan="3">
-                                    <form action="{{ url('/apply_coupon') }}" method="post">
-                                        @csrf
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" name="coupon"
-                                                placeholder="Coupon Code" aria-label="Enter Coupon"
-                                                aria-describedby="button-addon2" required>
-                                            <button class="btn bg-red f-600 fs-6 text-white" type="submit"
-                                                id="button-addon2" style="z-index: 0;">APPLY COUPON</button>
-                                        </div>
-                                    </form>
+                                <td colspan="4">
                                 </td>
-                                <td colspan="3">
-                                    <h6>Total Amount - ₹{{ $totalPrice }}</h6>
-                                </td>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-                <div class="row checkout-row">
-                    <div class="col-lg-4 col-md-6 col-12 mx-auto">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between py-3">
-                                <span class="fs-6 f-700 text-black">Billing address</span>
-                                <span><a href="">Edit</a></span>
-                            </div>
-                            <div class="card-body px-3">
-                                <div class="row">
-                                    <div class="col-lg-6 col-6"><b>Subtotal</b></div>
-                                    <div class="col-lg-6 col-6"><b>₹{{ $totalPrice }}</b></div>
-                                </div>
-                                <hr class="m-0">
-                                <div class="row">
-                                    <div class="col-lg-6 col-6"><b>Coupon: <span>temoffer25</span></b></div>
-                                    <div class="col-lg-6 col-6"><b>-₹374.00</b>, Free shipping coupon</div>
-                                </div>
-                                <hr class="m-0">
-                                <div class="row">
-                                    <div class="col-lg-6 col-6"><b>Shipping</b></div>
-                                    <div class="col-lg-6 col-6">Free shipping Shipping to <b>Sector-3, Noida, E-46,
-                                            Basement,
-                                            Noida 201301, Uttar Pradesh.</b></div>
-                                </div>
-                                <hr class="m-0">
-                                <div class="row">
-                                    <div class="col-lg-6 col-6"><b>Total</b></div>
-                                    <div class="col-lg-6 col-6"><b>₹1,125.00</b></div>
-                                </div>
-                                <hr class="m-0">
-                                <div class="row">
-                                    <div class="col-lg-12 col-12">
-                                        <button class="btn bg-red f-600 fs-6 text-white w-100" type="button"
+                                <td colspan="2">
+                                    <button class="btn bg-red f-600 fs-6 text-white w-100" type="button"
                                             id="button-addon2" style="z-index: 0;"
                                             onclick="window.location.href='{{ url('checkout') }}'">PROCEED TO
                                             CHECKOUT</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                </td>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
             @else

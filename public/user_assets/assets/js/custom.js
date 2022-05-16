@@ -27,3 +27,62 @@ function updatecart(pid, aid, price) {
         }
     })
 }
+
+function apply_coupon() {
+    jQuery('#coupon_code_msg').html('')
+    var coupon_code = jQuery('#coupon_code').val();
+    var token = $('#coupon_token').val();
+    if(coupon_code != ""){
+        jQuery.ajax({
+            url: '/apply_coupon',
+            data: `coupon=${coupon_code}&_token=${token}`,
+            type: 'post',
+            success: function (data) {
+                if(data.status == 'success'){
+                    jQuery('#totalAmount').html(`<b>₹${data.totalCartAmount}</b>`);
+                    jQuery('#coupon_code_msg').html(`<p><i class="bi bi-patch-check-fill text-red me-2"></i> ${data.msg}</p>`);
+                    jQuery('#coupon-applied').html(`
+                        <div class="col-lg-6 col-6"><b>Coupon: <span>${data.coupon}</span></b></div>
+                        <div class="col-lg-6 col-6"><b>-₹${data.discount_price}</b>, ${data.title} <a href="javascript:void(0)" onclick="remove_coupon()">Remove</a></div>
+                    `);
+                    jQuery('#enter-coupon').hide();
+                }else{
+                    jQuery('#coupon_code_msg').html(`<p><i class="bi bi-patch-check-fill text-red me-2"></i> ${data.msg}</p>`);
+                }
+            }
+        })
+    }else{
+        jQuery('#coupon_code_msg').html('<p><i class="bi bi-patch-check-fill text-red me-2"></i> Please enter the coupon code</p>');
+    }
+}
+
+function remove_coupon() {
+    // alert('s');
+    jQuery('#coupon_code_msg').html('')
+    var coupon_code = jQuery('#coupon_code').val();
+    var token = $('#coupon_token').val();
+    if(coupon_code != ""){
+        jQuery.ajax({
+            url: '/remove_coupon',
+            data: `coupon=${coupon_code}&_token=${token}`,
+            type: 'post',
+            success: function (data) {
+                if(data.status == 'success'){
+                    jQuery('#totalAmount').html(`<b>₹${data.totalCartAmount}</b>`);
+                    jQuery('#coupon_code_msg').html(`<p><i class="bi bi-patch-check-fill text-red me-2"></i> ${data.msg}</p>`);
+                    jQuery('#coupon-applied').html(`
+                        <div class="col-lg-6 col-6"><b>Coupon: <span>${data.coupon}</span></b></div>
+                        <div class="col-lg-6 col-6"><b>-₹${data.discount_price}</b>, ${data.title} <a href="javascript.void(0)" onclick="remove_coupon()">Remove</a></div>
+                    `);
+                    jQuery('#enter-coupon').show();
+                    jQuery('#coupon-applied').html('');
+                    jQuery('#coupon_code').val('');
+                }else{
+                    jQuery('#coupon_code_msg').html(`<p><i class="bi bi-patch-check-fill text-red me-2"></i> ${data.msg}</p>`);
+                }
+            }
+        })
+    }else{
+        jQuery('#coupon_code_msg').html('<p><i class="bi bi-patch-check-fill text-red me-2"></i> Please enter the coupon code</p>');
+    }
+}

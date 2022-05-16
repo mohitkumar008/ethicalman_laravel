@@ -1,7 +1,7 @@
 @extends('user/layout')
 @section('page_title', 'Cart | The Ethical Man')
 @section('additional_css')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{{asset('user_assets/assets/js/jquery.min.js')}}"></script>
 @endsection
 
 @section('content-wrapper')

@@ -284,15 +284,19 @@ class UserController extends Controller
         $findCoupon = DB::table('coupons')
             ->where(['code' => $coupon])
             ->get();
+        $discount_price = "";
+        $title = "";
+        $totalCartAmount = "";
+        $coupon = "";
         if (isset($findCoupon[0])) {
-            $msg_type = 'success';
-            $msg = 'Coupon code found';
             // prx($findCoupon);
             if ($findCoupon[0]->status == 1) {
-                $msg_type = 'success';
-                $msg = 'Coupon code activated';
+                $value = $findCoupon[0]->value;
+                $type = $findCoupon[0]->type;
+                $coupon = $findCoupon[0]->code;
+                $title = $findCoupon[0]->title;
                 if ($findCoupon[0]->is_one_time == 1) {
-                    $msg_type = 'success';
+                    $status = 'success';
                     $msg = 'Coupon code is for one time use only';
                 } else {
                     $totalCartAmount = 0;
@@ -303,34 +307,69 @@ class UserController extends Controller
                     }
                     // die($totalCartAmount);
                     if ($findCoupon[0]->min_order_amount > 0) {
-                        $msg_type = 'success';
-                        $msg = 'minimum order amount limit is ' . $findCoupon[0]->min_order_amount;
                         if ($totalCartAmount  >= $findCoupon[0]->min_order_amount) {
-                            $msg_type = 'success';
-                            $msg = 'Order amount is greater than minimum order amount so u can use that coupon';
+                            $status = 'success';
+                            $msg = 'Coupon code applied successfully';
                         } else {
 
-                            $msg_type = 'error';
+                            $status = 'error';
                             $msg = 'Order amount is not greater than minimum order amount so u can use that coupon';
                         }
                     } else {
 
-                        $msg_type = 'error';
+                        $status = 'error';
                         $msg = 'No minimum order amount limit';
                     }
                 }
             } else {
 
-                $msg_type = 'error';
+                $status = 'error';
                 $msg = 'Coupon code deactivated';
             }
         } else {
-            $msg_type = 'error';
+            $status = 'error';
             $msg = 'Coupon code not found';
         }
+        if($status == 'success') {
+            if($type == 'Value'){
+                $discount_price = $value;
+                $totalCartAmount -= $discount_price;
+            }elseif($type == 'Per'){
+                $discount_price = ($value/100)*$totalCartAmount;
+                $totalCartAmount -= $discount_price;
+            }
+        }
 
-        echo $msg_type;
-        echo '<br />';
-        echo $msg;
+        return response()->json([
+            'status'=>$status,
+            'msg'=>$msg,
+            'title'=>$title,
+            'coupon'=>$coupon,
+            'discount_price'=>$discount_price,
+            'totalCartAmount' => $totalCartAmount
+            ]);
+
+    }
+
+    public function remove_coupon(Request $request)
+    {
+        $coupon = $request->post('coupon');
+        $findCoupon = DB::table('coupons')
+            ->where(['code' => $coupon])
+            ->get();
+
+        $totalCartAmount = 0;
+        $getTotalCartItems = getTotalCartItems();
+        foreach ($getTotalCartItems as $list) {
+            $totalCartAmount += $list->price * $list->qty;
+        }
+        // die($totalCartAmount);
+
+        return response()->json([
+            'status'=>'success',
+            'msg'=>'Coupon Removed successfully',
+            'totalCartAmount' => $totalCartAmount
+            ]);
+
     }
 }
