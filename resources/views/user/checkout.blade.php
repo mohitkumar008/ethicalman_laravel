@@ -1,7 +1,7 @@
 @extends('user/layout')
 @section('page_title', 'Cart | The Ethical Man')
 @section('additional_css')
-<script src="{{asset('user_assets/assets/js/jquery.min.js')}}"></script>
+    <script src="{{ asset('user_assets/assets/js/jquery.min.js') }}"></script>
 @endsection
 
 @section('content-wrapper')
@@ -74,7 +74,7 @@
                     <p><i class="bi bi-patch-check-fill text-red me-2"></i> Coupon code applied successfully</p>
                 </div> --}}
                 <div class="col-lg-10 col-md-10 col-12 mx-auto" id="coupon_code_msg">
-                        
+
                 </div>
             </div>
 
@@ -84,56 +84,57 @@
                         <div class="col-12">
                             <h5 class="fs-6 f-700">Billing Details</h5>
                             <hr>
-                            <form class="row g-3">
+                            <form class="row g-3" id="billing-address-from">
+                                @csrf
                                 <div class="col-md-12">
                                     <label for="inputFirst4" class="form-label fs-6 f-600">Full Name<span
                                             class="vstar">*</span></label>
-                                    <input type="text" class="form-control" id="inputFirst4">
+                                    <input type="text" class="form-control" name="b-name" id="inputFirst4">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="inputEmail4" class="form-label fs-6 f-600">Address<span
                                             class="vstar">*</span></label>
-                                    <input type="email" class="form-control" id="inputEmail4">
+                                    <input type="email" class="form-control" name="b-address" id="inputEmail4">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="inputEmail4" class="form-label fs-6 f-600">Town / City<span
                                             class="vstar">*</span></label>
-                                    <input type="email" class="form-control" id="inputEmail4">
+                                    <input type="email" class="form-control" name="b-city" id="inputEmail4">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="inputEmail4" class="form-label fs-6 f-600">State<span
                                             class="vstar">*</span></label>
-                                    <input type="email" class="form-control" id="inputEmail4">
+                                    <input type="email" class="form-control" name="b-state" id="inputEmail4">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="inputEmail4" class="form-label fs-6 f-600">PIN<span
                                             class="vstar">*</span></label>
-                                    <input type="email" class="form-control" id="inputEmail4">
+                                    <input type="email" class="form-control" name="b-pin" id="inputEmail4">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="inputDisplayname4" class="form-label fs-6 f-600">Company name
                                         (optional)</label>
-                                    <input type="text" class="form-control" id="inputDisplayname4">
+                                    <input type="text" class="form-control" name="b-company" id="inputDisplayname4">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="inputDisplayname4" class="form-label fs-6 f-600">GSTIN (optional)</label>
-                                    <input type="text" class="form-control" id="inputDisplayname4">
+                                    <input type="text" class="form-control" name="b-gstin" id="inputDisplayname4">
                                 </div>
                                 @if (!session()->has('USER_LOGGEDIN'))
                                     <div class="col-md-12">
                                         <label for="inputEmail4" class="form-label fs-6 f-600">Phone<span
                                                 class="vstar">*</span></label>
-                                        <input type="email" class="form-control" id="inputEmail4">
+                                        <input type="email" class="form-control" name="b-phone" id="inputEmail4">
                                     </div>
                                     <div class="col-md-12">
                                         <label for="inputEmail4" class="form-label fs-6 f-600">Account Email<span
                                                 class="vstar">*</span></label>
-                                        <input type="email" class="form-control" id="inputEmail4">
+                                        <input type="email" class="form-control" name="b-email" id="inputEmail4">
                                     </div>
                                     <div class="col-md-12">
                                         <label for="inputEmail4" class="form-label fs-6 f-600">Account Password<span
                                                 class="vstar">*</span></label>
-                                        <input type="email" class="form-control" id="inputEmail4">
+                                        <input type="email" class="form-control" name="b-password" id="inputEmail4">
                                     </div>
                                 @endif
 
@@ -153,46 +154,45 @@
                                 <div id="flush-collapseTwo" class="accordion-collapse collapse"
                                     aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample2">
                                     <div class="accordion-body p-0">
-                                        <form class="row g-3">
-                                            <div class="col-md-6">
-                                                <label for="inputFirst4" class="form-label fs-6 f-600">First Name<span
+                                        <form class="row g-3" id="shipping-address-from">
+                                            @csrf
+                                            <div class="col-md-12">
+                                                <label for="inputFirst4" class="form-label fs-6 f-600">Full Name<span
                                                         class="vstar">*</span></label>
-                                                <input type="text" class="form-control" id="inputFirst4">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="inputLast4" class="form-label fs-6 f-600">Last Name<span
-                                                        class="vstar">*</span></label>
-                                                <input type="text" class="form-control" id="inputLast4">
+                                                <input type="text" class="form-control" name="s-name" id="inputFirst4">
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="inputEmail4" class="form-label fs-6 f-600">Address<span
                                                         class="vstar">*</span></label>
-                                                <input type="email" class="form-control" id="inputEmail4">
+                                                <input type="email" class="form-control" name="s-address"
+                                                    id="inputEmail4">
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="inputEmail4" class="form-label fs-6 f-600">Town / City<span
                                                         class="vstar">*</span></label>
-                                                <input type="email" class="form-control" id="inputEmail4">
+                                                <input type="email" class="form-control" name="s-city" id="inputEmail4">
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="inputEmail4" class="form-label fs-6 f-600">State<span
                                                         class="vstar">*</span></label>
-                                                <input type="email" class="form-control" id="inputEmail4">
+                                                <input type="email" class="form-control" name="s-state" id="inputEmail4">
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="inputEmail4" class="form-label fs-6 f-600">PIN<span
                                                         class="vstar">*</span></label>
-                                                <input type="email" class="form-control" id="inputEmail4">
+                                                <input type="email" class="form-control" name="s-pin" id="inputEmail4">
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="inputDisplayname4" class="form-label fs-6 f-600">Company name
                                                     (optional)</label>
-                                                <input type="text" class="form-control" id="inputDisplayname4">
+                                                <input type="text" class="form-control" name="s-comapny"
+                                                    id="inputDisplayname4">
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="inputDisplayname4" class="form-label fs-6 f-600">GSTIN
                                                     (optional)</label>
-                                                <input type="text" class="form-control" id="inputDisplayname4">
+                                                <input type="text" class="form-control" name="s-gstin"
+                                                    id="inputDisplayname4">
                                             </div>
                                         </form>
                                     </div>
@@ -235,18 +235,18 @@
                         <hr>
                         <div class="">
                             <div id="coupon-applied" class="row">
-                                
+
                             </div>
 
                             <div id="enter-coupon">
-                                <form>
+                                <form id="coupon_code_form">
                                     <div class="input-group">
                                         <input type="hidden" name="_token" id="coupon_token" value="{{ csrf_token() }}">
                                         <input type="text" class="form-control" name="coupon_code" id="coupon_code"
                                             placeholder="Coupon Code" aria-label="Enter Coupon"
                                             aria-describedby="applyCoupon" required>
-                                        <button class="btn bg-red f-600 fs-6 text-white" type="button"
-                                            id="applyCoupon" style="z-index: 0;" onclick="apply_coupon()">APPLY COUPON</button>
+                                        <button class="btn bg-red f-600 fs-6 text-white" type="button" id="applyCoupon"
+                                            style="z-index: 0;" onclick="apply_coupon()">APPLY COUPON</button>
                                     </div>
                                 </form>
                             </div>
@@ -259,20 +259,22 @@
                         <hr>
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault1">
-                                    <label class="form-check-label" for="flexRadioDefault1">
-                                        Cash on delivery
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault2" checked>
-                                    <label class="form-check-label" for="flexRadioDefault2">
-                                        Credit Card/Debit Card/NetBanking
-                                    </label>
-                                </div>
+                                <form id="payment_method_form">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" value="COD" name="payment_method"
+                                            id="flexRadioDefault1" checked>
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Cash on delivery
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" value="Gateway" name="payment_method"
+                                            id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Credit Card/Debit Card/NetBanking
+                                        </label>
+                                    </div>
+                                </form>
                             </div>
                             <div class="col-12 my-2">
                                 <p class="fs-6">Your personal data will be used to process your order, support
@@ -289,8 +291,8 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn bg-red f-600 fs-6 text-white w-100" type="button" id="button-addon2"
-                                    style="z-index: 0;" onclick="window.location.href='checkout'">PLACE ORDER</button>
+                                <button class="btn bg-red f-600 fs-6 text-white w-100" type="button" id="place-order-btn"
+                                    style="z-index: 0;" onclick="place_order();">PLACE ORDER</button>
                             </div>
                         </div>
                     </div>

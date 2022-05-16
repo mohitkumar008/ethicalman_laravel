@@ -32,7 +32,8 @@
     <!-- Topbar ends -->
 
     <!-- Navbar -->
-    <nav class="navbar sticky-top navbar-expand-lg navbar-light border-bottom bg-white">
+    {{-- <nav class="navbar sticky-top navbar-expand-lg navbar-light border-bottom bg-white"> --}}
+    <nav class="navbar navbar-expand-lg navbar-light border-bottom bg-white">
         <div class="container">
             <a class="navbar-brand" href="#">
                 <img src="{{ asset('user_assets/images/ethicalman-logo.png') }}" alt="" class="img-fluid">

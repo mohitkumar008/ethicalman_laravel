@@ -1,7 +1,7 @@
 @extends('user/layout')
 @section('page_title', 'Cart | The Ethical Man')
 @section('additional_css')
-<script src="{{asset('user_assets/assets/js/jquery.min.js')}}"></script>
+    <script src="{{ asset('user_assets/assets/js/jquery.min.js') }}"></script>
 @endsection
 
 @section('content-wrapper')
@@ -49,7 +49,8 @@
                     <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade show active" id="v-pills-dashboard" role="tabpanel"
                             aria-labelledby="v-pills-dashboard-tab">
-                            <p>Hello <b>admin</b> (not <b>admin</b>? <a href="{{ url('logout') }}">Log out</a> )</p>
+                            <p>Hello <b>{{ $userinfo[0]->name }}</b> (not <b>{{ $userinfo[0]->name }}</b>? <a
+                                    href="{{ url('logout') }}">Log out</a> )</p>
                             <p>From your account dashboard you can view your <a href="">recent orders</a>, manage your <a
                                     href="">shipping and billing addresses</a>, and <a href="">edit your password and
                                     account details</a>.</p>
@@ -67,27 +68,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><a href="">#352</a></td>
-                                        <td>February 21, 2022</td>
-                                        <td>Completed</td>
-                                        <td><b>₹1,125.00</b> for 1 item</td>
-                                        <td><button class="btn bg-red text-white">View</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="">#352</a></td>
-                                        <td>February 21, 2022</td>
-                                        <td>Completed</td>
-                                        <td><b>₹1,125.00</b> for 1 item</td>
-                                        <td><button class="btn bg-red text-white">View</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="">#352</a></td>
-                                        <td>February 21, 2022</td>
-                                        <td>Completed</td>
-                                        <td><b>₹1,125.00</b> for 1 item</td>
-                                        <td><button class="btn bg-red text-white">View</button></td>
-                                    </tr>
+                                    @foreach ($orders as $list)
+                                        <tr>
+                                            <td><a href="">{{ $list->order_id }}</a></td>
+                                            <td>
+                                                {{ \Carbon\Carbon::parse($list->created_at)->isoFormat('MMM Do, YYYY') }}
+                                            </td>
+                                            <td>{{ $list->order_status }} </td>
+                                            @php
+                                                $i = 0;
+                                            @endphp
+                                            @foreach ($orders_detail[$list->order_id] as $data)
+                                                @php
+                                                    $i++;
+                                                @endphp
+                                            @endforeach
+                                            <td><b>₹{{ $list->total_amount }}</b> for @php echo $i; @endphp item</td>
+                                            <td><a href="{{ url('my-account/order-details/' . $list->order_id . '') }}"
+                                                    class="btn bg-red text-white">View</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

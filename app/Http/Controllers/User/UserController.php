@@ -181,7 +181,22 @@ class UserController extends Controller
     public function user_account(Request $request)
     {
         if ($request->session()->has('USER_LOGGEDIN')) {
-            return view('user.my-account');
+            $uid = $request->session()->get('USER_ID');
+            $result['userinfo'] = DB::table('customers')
+                ->where(['id' => $uid])
+                ->get();
+            $result['orders'] = DB::table('orders')
+                ->where(['user_id' => $uid])
+                ->leftJoin('order_status', 'orders.order_status', '=', 'order_status.id')
+                ->select('orders.id as order_id', 'orders.total_amount', 'orders.created_at', 'order_status.order_status')
+                ->get();
+            foreach ($result['orders'] as $list) {
+                $result['orders_detail'][$list->order_id] = DB::table('order_details')
+                    ->where(['order_id' => $list->order_id])
+                    ->get();
+            }
+            // prx($result);
+            return view('user.my-account', $result);
         } else {
             return view('user.login-register');
         }
@@ -280,75 +295,8 @@ class UserController extends Controller
 
     public function apply_coupon(Request $request)
     {
-        $coupon = $request->post('coupon');
-        $findCoupon = DB::table('coupons')
-            ->where(['code' => $coupon])
-            ->get();
-        $discount_price = "";
-        $title = "";
-        $totalCartAmount = "";
-        $coupon = "";
-        if (isset($findCoupon[0])) {
-            // prx($findCoupon);
-            if ($findCoupon[0]->status == 1) {
-                $value = $findCoupon[0]->value;
-                $type = $findCoupon[0]->type;
-                $coupon = $findCoupon[0]->code;
-                $title = $findCoupon[0]->title;
-                if ($findCoupon[0]->is_one_time == 1) {
-                    $status = 'success';
-                    $msg = 'Coupon code is for one time use only';
-                } else {
-                    $totalCartAmount = 0;
-                    $getTotalCartItems = getTotalCartItems();
-                    // prx($getTotalCartItems);
-                    foreach ($getTotalCartItems as $list) {
-                        $totalCartAmount += $list->price * $list->qty;
-                    }
-                    // die($totalCartAmount);
-                    if ($findCoupon[0]->min_order_amount > 0) {
-                        if ($totalCartAmount  >= $findCoupon[0]->min_order_amount) {
-                            $status = 'success';
-                            $msg = 'Coupon code applied successfully';
-                        } else {
-
-                            $status = 'error';
-                            $msg = 'Order amount is not greater than minimum order amount so u can use that coupon';
-                        }
-                    } else {
-
-                        $status = 'error';
-                        $msg = 'No minimum order amount limit';
-                    }
-                }
-            } else {
-
-                $status = 'error';
-                $msg = 'Coupon code deactivated';
-            }
-        } else {
-            $status = 'error';
-            $msg = 'Coupon code not found';
-        }
-        if($status == 'success') {
-            if($type == 'Value'){
-                $discount_price = $value;
-                $totalCartAmount -= $discount_price;
-            }elseif($type == 'Per'){
-                $discount_price = ($value/100)*$totalCartAmount;
-                $totalCartAmount -= $discount_price;
-            }
-        }
-
-        return response()->json([
-            'status'=>$status,
-            'msg'=>$msg,
-            'title'=>$title,
-            'coupon'=>$coupon,
-            'discount_price'=>$discount_price,
-            'totalCartAmount' => $totalCartAmount
-            ]);
-
+        $coupon = apply_coupon($request->post('coupon'));
+        return json_decode($coupon, true);
     }
 
     public function remove_coupon(Request $request)
@@ -366,10 +314,142 @@ class UserController extends Controller
         // die($totalCartAmount);
 
         return response()->json([
-            'status'=>'success',
-            'msg'=>'Coupon Removed successfully',
+            'status' => 'success',
+            'msg' => 'Coupon Removed successfully',
             'totalCartAmount' => $totalCartAmount
+        ]);
+    }
+
+    public function place_order(Request $request)
+    {
+        if ($request->session()->has('USER_LOGGEDIN')) {
+            $uid = $request->session()->get('USER_ID');
+            $usertype = "Customer";
+
+            $totalCartAmount = 0;
+            $coupon_id = 0;
+            $getTotalCartItems = getTotalCartItems();
+            // prx($getTotalCartItems);
+            foreach ($getTotalCartItems as $list) {
+                $totalCartAmount += $list->price * $list->qty;
+            }
+            if ($request->post('coupon_code') != "") {
+                $coupon = apply_coupon($request->post('coupon_code'));
+                $coupon_data = json_decode($coupon, true);
+                if ($coupon_data['status'] == 'success') {
+                    $totalCartAmount = $coupon_data['totalCartAmount'];
+                    $coupon_id = $coupon_data['coupon_id'];
+                }
+            }
+
+            $b_name = $request->post('b-name');
+            $b_address = $request->post('b-address');
+            $b_city = $request->post('b-city');
+            $b_state = $request->post('b-state');
+            $b_pin = $request->post('b-pin');
+            $b_company = $request->post('b-company');
+            $b_gstin = $request->post('b-gstin');
+            $s_name = $request->post('s-name');
+            $s_address = $request->post('s-address');
+            $s_city = $request->post('s-city');
+            $s_state = $request->post('s-state');
+            $s_pin = $request->post('s-pin');
+            $s_company = $request->post('s-company');
+            $s_gstin = $request->post('s-gstin');
+            $payment_type = $request->post('payment_method');
+
+            if ($s_name == "" || $s_address == "" || $s_city == "" || $s_state == "" || $s_pin == "") {
+                $s_name = $b_name;
+                $s_address = $b_address;
+                $s_city = $b_city;
+                $s_state = $b_state;
+                $s_pin = $b_pin;
+                $s_company = $b_company;
+                $s_gstin = $b_gstin;
+            }
+
+
+            $billing_address_id = DB::table('customer_address')->insertGetId([
+                'uid' => $uid,
+                'address_id' => 1,
+                'name' => $b_name,
+                'address' => $b_address,
+                'city' => $b_city,
+                'state' => $b_state,
+                'zip' => $b_pin,
+                'company' => $b_company,
+                'gstin' => $b_gstin,
+                'created_at' => date("Y-m-d h:i:s"),
+                'updated_at' => date("Y-m-d h:i:s")
             ]);
 
+            $shipping_address_id = DB::table('customer_address')->insertGetId([
+                'uid' => $uid,
+                'address_id' => 2,
+                'name' => $s_name,
+                'address' => $s_address,
+                'city' => $s_city,
+                'state' => $s_state,
+                'zip' => $s_pin,
+                'company' => $s_company,
+                'gstin' => $s_gstin,
+                'created_at' => date("Y-m-d h:i:s"),
+                'updated_at' => date("Y-m-d h:i:s")
+            ]);
+
+            $order_id = DB::table('orders')->insertGetId([
+                'user_id' => $uid,
+                'billing_address_id' => $billing_address_id,
+                'shipping_address_id' => $shipping_address_id,
+                'coupon_id' => $coupon_id,
+                'order_status' => 1,
+                'payment_type' => $payment_type,
+                'payment_status' => 1,
+                'payment_id' => 'TEM' . rand(111111111, 999999999),
+                'total_amount' => $totalCartAmount,
+                'created_at' => date("Y-m-d h:i:s"),
+                'updated_at' => date("Y-m-d h:i:s")
+            ]);
+
+            if ($order_id > 0) {
+                foreach ($getTotalCartItems as $list) {
+                    $getTotalCartItemsArr['order_id'] = $order_id;
+                    $getTotalCartItemsArr['product_id'] = $list->pid;
+                    $getTotalCartItemsArr['product_attr_id'] = $list->attrid;
+                    $getTotalCartItemsArr['price'] = $list->price;
+                    $getTotalCartItemsArr['qty'] = $list->qty;
+                    $getTotalCartItemsArr['created_at'] = date("Y-m-d h:i:s");
+                    $getTotalCartItemsArr['updated_at'] = date("Y-m-d h:i:s");
+                    DB::table('order_details')->insert($getTotalCartItemsArr);
+                }
+
+                DB::table('cart')->where(['uid' => $uid, 'usertype' => 'Customer'])->delete();
+
+                $request->session()->put('ORDER_ID', $order_id);
+
+                $status = "success";
+                $msg = "Order placed successfully";
+            } else {
+                $status = "error";
+                $msg = "Please try after sometime!";
+            }
+        } else {
+            // Guest Checkout
+        }
+
+        return response()->json([
+            'status' => $status,
+            'msg' => $msg
+        ]);
+    }
+
+
+    public function order_placed(Request $request)
+    {
+        if ($request->session()->has('ORDER_ID')) {
+            return view('user.order-placed');
+        } else {
+            return redirect('/');
+        }
     }
 }

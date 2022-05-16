@@ -136,3 +136,5 @@ Route::get('checkout', [UserController::class, 'checkout']);
 
 Route::post('/apply_coupon', [UserController::class, 'apply_coupon']);
 Route::post('/remove_coupon', [UserController::class, 'remove_coupon']);
+Route::post('/place_order', [UserController::class, 'place_order']);
+Route::get('/order_placed', [UserController::class, 'order_placed']);
