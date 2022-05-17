@@ -195,6 +195,12 @@ class UserController extends Controller
                     ->where(['order_id' => $list->order_id])
                     ->get();
             }
+            $result['billingAddress'] = DB::table('customer_address')
+                ->where(['uid' => $uid, 'address_id' => 1])
+                ->get();
+            $result['shippingAddress'] = DB::table('customer_address')
+                ->where(['uid' => $uid, 'address_id' => 2])
+                ->get();
             // prx($result);
             return view('user.my-account', $result);
         } else {
@@ -284,7 +290,19 @@ class UserController extends Controller
 
     public function checkout(Request $request)
     {
+        if ($request->session()->has('USER_LOGGEDIN')) {
+            $uid = $request->session()->get('USER_ID');
+        } else {
+            $uid = getUserTempId();
+        }
+
         $result['cartData'] = getTotalCartItems();
+        $result['billingAddress'] = DB::table('customer_address')
+            ->where(['uid' => $uid, 'address_id' => 1])
+            ->get();
+        $result['shippingAddress'] = DB::table('customer_address')
+            ->where(['uid' => $uid, 'address_id' => 2])
+            ->get();
         // prx($result);
         if (isset($result['cartData'][0])) {
             return view('user.checkout', $result);
@@ -325,6 +343,14 @@ class UserController extends Controller
         if ($request->session()->has('USER_LOGGEDIN')) {
             $uid = $request->session()->get('USER_ID');
             $usertype = "Customer";
+            $userinfo = DB::table('customers')
+                ->where(['id' => $uid])
+                ->get();
+
+            // prx($userinfo);
+            $user_name = $userinfo[0]->name;
+            $user_email = $userinfo[0]->email;
+            $user_phone = $userinfo[0]->phone;
 
             $totalCartAmount = 0;
             $coupon_id = 0;
@@ -397,6 +423,7 @@ class UserController extends Controller
                 'updated_at' => date("Y-m-d h:i:s")
             ]);
 
+            $payment_id = 'TEM' . rand(111111111, 999999999);
             $order_id = DB::table('orders')->insertGetId([
                 'user_id' => $uid,
                 'billing_address_id' => $billing_address_id,
@@ -405,7 +432,7 @@ class UserController extends Controller
                 'order_status' => 1,
                 'payment_type' => $payment_type,
                 'payment_status' => 1,
-                'payment_id' => 'TEM' . rand(111111111, 999999999),
+                'payment_id' => $payment_id,
                 'total_amount' => $totalCartAmount,
                 'created_at' => date("Y-m-d h:i:s"),
                 'updated_at' => date("Y-m-d h:i:s")
@@ -439,7 +466,14 @@ class UserController extends Controller
 
         return response()->json([
             'status' => $status,
-            'msg' => $msg
+            'msg' => $msg,
+            'user_id' => $uid,
+            'user_name' => $user_name,
+            'user_email' => $user_email,
+            'user_phone' => $user_phone,
+            'order_id' => $order_id,
+            'payment_type' => $payment_type,
+            'totalCartAmount' => $totalCartAmount
         ]);
     }
 
@@ -448,6 +482,120 @@ class UserController extends Controller
     {
         if ($request->session()->has('ORDER_ID')) {
             return view('user.order-placed');
+        } else {
+            return redirect('/');
+        }
+    }
+
+    public function order_details(Request $request, $id)
+    {
+        $result['order'] = DB::table('orders')
+            ->where(['orders.id' => $id])
+            // ->leftJoin('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->leftJoin('customer_address', 'orders.billing_address_id', '=', 'customer_address.id')
+            // ->leftJoin('customer_address', 'orders.shipping_address_id', '=', 'customer_address.id')
+            ->leftJoin('order_status', 'orders.order_status', '=', 'order_status.id')
+            ->leftJoin('payment_status', 'orders.payment_status', '=', 'payment_status.id')
+            // ->leftJoin('products', 'order_details.product_id', '=', 'products.id')
+            // ->leftJoin('product_attr', 'order_details.product_attr_id', '=', 'product_attr.id')
+            // ->leftJoin('sizes', 'product_attr.size_id', '=', 'sizes.id')
+            // ->leftJoin('colors', 'product_attr.color_id', '=', 'colors.id')
+            ->select('orders.id', 'orders.total_amount')
+            ->get();
+
+        foreach ($result['order'] as $list1) {
+            $result['orderDetails'] = DB::table('order_details')
+                ->where(['order_details.order_id' => $list1->id])
+                // ->select('orders.id', 'orders.total_amount')
+                ->get();
+            foreach ($result['orderDetails'] as $list2) {
+                $result['product'] = DB::table('products')
+                    ->where(['products.id' => $list2->product_id])
+                    ->get();
+            }
+        }
+
+        prx($result);
+    }
+
+    public function payment_success(Request $request)
+    {
+        if ($request->session()->has('ORDER_ID') && $request->session()->has('USER_ID')) {
+            $user_id = $request->post('user_id');
+            $order_id = $request->post('order_id');
+            $payment_id = $request->post('payment_id');
+            $payment_type = $request->post('payment_type');
+
+            if ($payment_type == 'Gateway') {
+
+                DB::table('orders')
+                    ->where(['id' => $order_id, 'user_id' => $user_id])
+                    ->update(['payment_status' => 3, 'payment_id' => $payment_id]);
+
+                $status = "success";
+                $msg = "Order placed successfully";
+            } else {
+                $status = "error";
+                $msg = "Someting went wrong";
+            }
+
+            return response()->json([
+                'status' => $status,
+                'msg' => $msg,
+            ]);
+            // return redirect('order_placed');
+        } else {
+            return redirect('/');
+        }
+    }
+
+    public function update_billing_address(Request $request)
+    {
+        if ($request->session()->has('USER_ID')) {
+
+            $uid = $request->session()->get('USER_ID');
+            $address_type = $request->post('address-type');
+            if ($address_type == 'Billing') {
+                $updateAddArr = [
+                    'name' => $request->post('b-name'),
+                    'address' => $request->post('b-address'),
+                    'city' => $request->post('b-city'),
+                    'state' => $request->post('b-state'),
+                    'zip' => $request->post('b-pin'),
+                    'company' => $request->post('b-company'),
+                    'gstin' => $request->post('b-gstin'),
+                    'updated_at' => date("Y-m-d h:i:s")
+                ];
+
+                $result = DB::table('customer_address')
+                    ->where(['uid' => $uid, 'address_id' => 1])
+                    ->limit(1)
+                    ->update($updateAddArr);
+
+                $msg =  'Billing address updated successfully';
+            }
+            // Shipping Address
+            elseif ($address_type == 'Shipping') {
+                $updateAddArr = [
+                    'name' => $request->post('s-name'),
+                    'address' => $request->post('s-address'),
+                    'city' => $request->post('s-city'),
+                    'state' => $request->post('s-state'),
+                    'zip' => $request->post('s-pin'),
+                    'company' => $request->post('s-comapny'),
+                    'gstin' => $request->post('s-gstin'),
+                    'updated_at' => date("Y-m-d h:i:s")
+                ];
+
+                $result = DB::table('customer_address')
+                    ->where(['uid' => $uid, 'address_id' => 2])
+                    ->limit(1)
+                    ->update($updateAddArr);
+
+                $msg =  'Shipping address updated successfully';
+            }
+
+            return redirect('/my-account')->with('address_msg', $msg);
         } else {
             return redirect('/');
         }

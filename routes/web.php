@@ -138,3 +138,7 @@ Route::post('/apply_coupon', [UserController::class, 'apply_coupon']);
 Route::post('/remove_coupon', [UserController::class, 'remove_coupon']);
 Route::post('/place_order', [UserController::class, 'place_order']);
 Route::get('/order_placed', [UserController::class, 'order_placed']);
+Route::post('/payment-success', [UserController::class, 'payment_success']);
+
+Route::post('/update-address', [UserController::class, 'update_billing_address']);
+Route::get('/my-account/order-details/{id}', [UserController::class, 'order_details']);

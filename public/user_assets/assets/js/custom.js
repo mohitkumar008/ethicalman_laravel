@@ -88,17 +88,58 @@ function remove_coupon() {
 }
 
 function place_order() {
+    var token = $('#coupon_token').val();
     jQuery('#place-order-btn').html('Please wait...');
-    // alert('s');
     jQuery.ajax({
         url: '/place_order',
         data: jQuery('#billing-address-from, #shipping-address-from, #coupon_code_form, #payment_method_form').serialize(),
         type: 'post',
         success: function (data) {
             if (data.status == 'success') {
-                window.location.href = "order_placed";
+                if (data.payment_type == 'Gateway') {
+                    var options = {
+                        "key": "rzp_test_cPY1RE9Kn38kqy",
+                        "amount": data.totalCartAmount * 100,
+                        "currency": "INR",
+                        "name": "The Ethical Man",
+                        "description": "Thank you for shopping",
+                        "image": "https://www.ethicalman.in/wp-content/uploads/2022/01/TEM-Footer-Logo-150x150.png",
+                        "handler": function (response) {
+                            jQuery.ajax({
+                                method: 'post',
+                                url: '/payment-success',
+                                data: {
+                                    'user_id': data.user_id,
+                                    'order_id': data.order_id,
+                                    'payment_id': response.razorpay_payment_id,
+                                    'payment_type': data.payment_type,
+                                    '_token': token
+                                },
+                                success: function (result) {
+                                    if (result.status == 'success') {
+                                        window.location.href = "order_placed";
+                                    }
+                                }
+                            })
+                        },
+                        "prefill": {
+                            "name": data.user_name,
+                            "email": data.user_email,
+                            "contact": data.user_phone
+                        },
+                        "theme": {
+                            "color": "#3399cc"
+                        }
+                    };
+                    var rzp1 = new Razorpay(options);
+                    rzp1.open();
+
+                } else if (data.payment_type == 'COD') {
+
+                    window.location.href = "order_placed";
+                    jQuery('#place-order-btn').html(data.msg);
+                }
             }
-            jQuery('#place-order-btn').html(data.msg);
         }
     })
 }

@@ -89,36 +89,50 @@
                                 <div class="col-md-12">
                                     <label for="inputFirst4" class="form-label fs-6 f-600">Full Name<span
                                             class="vstar">*</span></label>
-                                    <input type="text" class="form-control" name="b-name" id="inputFirst4">
+                                    <input type="text" class="form-control"
+                                        value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->name }} @endif"
+                                        name="b-name" id="inputFirst4">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="inputEmail4" class="form-label fs-6 f-600">Address<span
                                             class="vstar">*</span></label>
-                                    <input type="email" class="form-control" name="b-address" id="inputEmail4">
+                                    <input type="email" class="form-control"
+                                        value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->address }} @endif"
+                                        name="b-address" id="inputEmail4">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="inputEmail4" class="form-label fs-6 f-600">Town / City<span
                                             class="vstar">*</span></label>
-                                    <input type="email" class="form-control" name="b-city" id="inputEmail4">
+                                    <input type="email" class="form-control"
+                                        value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->city }} @endif"
+                                        name="b-city" id="inputEmail4">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="inputEmail4" class="form-label fs-6 f-600">State<span
                                             class="vstar">*</span></label>
-                                    <input type="email" class="form-control" name="b-state" id="inputEmail4">
+                                    <input type="email" class="form-control"
+                                        value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->state }} @endif"
+                                        name="b-state" id="inputEmail4">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="inputEmail4" class="form-label fs-6 f-600">PIN<span
                                             class="vstar">*</span></label>
-                                    <input type="email" class="form-control" name="b-pin" id="inputEmail4">
+                                    <input type="email" class="form-control"
+                                        value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->zip }} @endif"
+                                        name="b-pin" id="inputEmail4">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="inputDisplayname4" class="form-label fs-6 f-600">Company name
                                         (optional)</label>
-                                    <input type="text" class="form-control" name="b-company" id="inputDisplayname4">
+                                    <input type="text" class="form-control"
+                                        value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->company }} @endif"
+                                        name="b-company" id="inputDisplayname4">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="inputDisplayname4" class="form-label fs-6 f-600">GSTIN (optional)</label>
-                                    <input type="text" class="form-control" name="b-gstin" id="inputDisplayname4">
+                                    <input type="text" class="form-control"
+                                        value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->gstin }} @endif"
+                                        name="b-gstin" id="inputDisplayname4">
                                 </div>
                                 @if (!session()->has('USER_LOGGEDIN'))
                                     <div class="col-md-12">
@@ -159,40 +173,51 @@
                                             <div class="col-md-12">
                                                 <label for="inputFirst4" class="form-label fs-6 f-600">Full Name<span
                                                         class="vstar">*</span></label>
-                                                <input type="text" class="form-control" name="s-name" id="inputFirst4">
+                                                <input type="text" class="form-control"
+                                                    value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->name }} @endif"
+                                                    name="s-name" id="inputFirst4">
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="inputEmail4" class="form-label fs-6 f-600">Address<span
                                                         class="vstar">*</span></label>
-                                                <input type="email" class="form-control" name="s-address"
-                                                    id="inputEmail4">
+                                                <input type="email" class="form-control"
+                                                    value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->address }} @endif"
+                                                    name="s-address" id="inputEmail4">
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="inputEmail4" class="form-label fs-6 f-600">Town / City<span
                                                         class="vstar">*</span></label>
-                                                <input type="email" class="form-control" name="s-city" id="inputEmail4">
+                                                <input type="email" class="form-control"
+                                                    value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->city }} @endif"
+                                                    name="s-city" id="inputEmail4">
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="inputEmail4" class="form-label fs-6 f-600">State<span
                                                         class="vstar">*</span></label>
-                                                <input type="email" class="form-control" name="s-state" id="inputEmail4">
+                                                <input type="email" class="form-control"
+                                                    value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->state }} @endif"
+                                                    name="s-state" id="inputEmail4">
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="inputEmail4" class="form-label fs-6 f-600">PIN<span
                                                         class="vstar">*</span></label>
-                                                <input type="email" class="form-control" name="s-pin" id="inputEmail4">
+                                                <input type="email" class="form-control"
+                                                    value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->zip }} @endif"
+                                                    name="s-pin" id="inputEmail4">
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="inputDisplayname4" class="form-label fs-6 f-600">Company name
                                                     (optional)</label>
-                                                <input type="text" class="form-control" name="s-comapny"
-                                                    id="inputDisplayname4">
+                                                <input type="text" class="form-control"
+                                                    value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->company }} @endif"
+                                                    name="s-comapny" id="inputDisplayname4">
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="inputDisplayname4" class="form-label fs-6 f-600">GSTIN
                                                     (optional)</label>
-                                                <input type="text" class="form-control" name="s-gstin"
-                                                    id="inputDisplayname4">
+                                                <input type="text" class="form-control"
+                                                    value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->gstin }} @endif"
+                                                    name="s-gstin" id="inputDisplayname4">
                                             </div>
                                         </form>
                                     </div>
@@ -217,7 +242,8 @@
                                 $totalPrice += $list->qty * $list->price;
                             @endphp
                             <div class="row">
-                                <div class="col-lg-6 col-6">{{ $list->name }} - {{ $list->size }} × {{ $list->qty }}
+                                <div class="col-lg-6 col-6">{{ $list->name }} - {{ $list->size }} ×
+                                    {{ $list->qty }}
                                 </div>
                                 <div class="col-lg-6 col-6"><b>₹{{ $list->qty * $list->price }}</b></div>
                             </div>
@@ -303,4 +329,5 @@
     </section>
 @endsection
 @section('additional_js')
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 @endsection
