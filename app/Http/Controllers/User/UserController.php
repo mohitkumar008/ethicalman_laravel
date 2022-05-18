@@ -443,7 +443,7 @@ class UserController extends Controller
                     $getTotalCartItemsArr['order_id'] = $order_id;
                     $getTotalCartItemsArr['product_id'] = $list->pid;
                     $getTotalCartItemsArr['product_attr_id'] = $list->attrid;
-                    $getTotalCartItemsArr['price'] = $list->price;
+                    $getTotalCartItemsArr['price'] = $list->price * $list->qty;
                     $getTotalCartItemsArr['qty'] = $list->qty;
                     $getTotalCartItemsArr['created_at'] = date("Y-m-d h:i:s");
                     $getTotalCartItemsArr['updated_at'] = date("Y-m-d h:i:s");
@@ -487,36 +487,6 @@ class UserController extends Controller
         }
     }
 
-    public function order_details(Request $request, $id)
-    {
-        $result['order'] = DB::table('orders')
-            ->where(['orders.id' => $id])
-            // ->leftJoin('order_details', 'orders.id', '=', 'order_details.order_id')
-            ->leftJoin('customer_address', 'orders.billing_address_id', '=', 'customer_address.id')
-            // ->leftJoin('customer_address', 'orders.shipping_address_id', '=', 'customer_address.id')
-            ->leftJoin('order_status', 'orders.order_status', '=', 'order_status.id')
-            ->leftJoin('payment_status', 'orders.payment_status', '=', 'payment_status.id')
-            // ->leftJoin('products', 'order_details.product_id', '=', 'products.id')
-            // ->leftJoin('product_attr', 'order_details.product_attr_id', '=', 'product_attr.id')
-            // ->leftJoin('sizes', 'product_attr.size_id', '=', 'sizes.id')
-            // ->leftJoin('colors', 'product_attr.color_id', '=', 'colors.id')
-            ->select('orders.id', 'orders.total_amount')
-            ->get();
-
-        foreach ($result['order'] as $list1) {
-            $result['orderDetails'] = DB::table('order_details')
-                ->where(['order_details.order_id' => $list1->id])
-                // ->select('orders.id', 'orders.total_amount')
-                ->get();
-            foreach ($result['orderDetails'] as $list2) {
-                $result['product'] = DB::table('products')
-                    ->where(['products.id' => $list2->product_id])
-                    ->get();
-            }
-        }
-
-        prx($result);
-    }
 
     public function payment_success(Request $request)
     {
@@ -599,5 +569,41 @@ class UserController extends Controller
         } else {
             return redirect('/');
         }
+    }
+
+    public function order_details(Request $request, $id)
+    {
+        $result['productDetails'] = DB::table('order_details')
+            ->leftJoin('orders', 'orders.id', '=', 'order_details.order_id')
+            // ->leftJoin('customer_address', 'orders.billing_address_id', '=', 'customer_address.id')
+            // ->leftJoin('customer_address', 'orders.shipping_address_id', '=', 'customer_address.id')
+            // ->leftJoin('order_status', 'orders.order_status', '=', 'order_status.id')
+            // ->leftJoin('payment_status', 'orders.payment_status', '=', 'payment_status.id')
+            ->leftJoin('product_attr', 'product_attr.id', '=', 'order_details.product_attr_id')
+            ->leftJoin('products', 'products.id', '=', 'order_details.product_id')
+            // ->leftJoin('sizes', 'product_attr.size_id', '=', 'sizes.id')
+            // ->leftJoin('colors', 'product_attr.color_id', '=', 'colors.id')
+            // ->select('orders.id as order_id', 'orders.total_amount as totalamount', 'orders.created_at as order_date', 'orders.payment_type')
+            ->where(['orders.id' => $id])
+            ->get();
+
+        // foreach ($result['order'] as $list1) {
+        //     $result['orderDetails'] = DB::table('order_details')
+        //         ->where(['order_details.order_id' => $list1->order_id])
+        //         ->get();
+        //     foreach ($result['orderDetails'] as $list2) {
+        //         $result['product'][$list2->id] = DB::table('products')
+        //             ->where(['products.id' => $list2->product_id])
+        //             ->get();
+        //         $result['productAttr'][$list2->id] = DB::table('product_attr')
+        //             ->where(['product_attr.id' => $list2->product_attr_id])
+        //             ->leftJoin('sizes', 'product_attr.size_id', '=', 'sizes.id')
+        //             ->leftJoin('colors', 'product_attr.color_id', '=', 'colors.id')
+        //             ->get();
+        //     }
+        // }
+
+        prx($result);
+        return view('user.order-details', $result);
     }
 }

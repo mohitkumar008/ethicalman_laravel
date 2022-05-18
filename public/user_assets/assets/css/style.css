@@ -384,3 +384,14 @@ section.contact .contact-form {
     background: white;
     padding: 2.5em;
 }
+
+/* Order Detals page */
+section.order-details-page .heading-row .col-12 {
+    border: 3px dashed #ff5151;
+}
+
+section.order-details-page table thead tr th:nth-child(2),
+section.order-details-page table tbody tr td:nth-child(2),
+section.order-details-page table tfoot tr td:nth-child(2) {
+    text-align: end;
+}
