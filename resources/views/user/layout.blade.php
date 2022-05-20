@@ -18,6 +18,26 @@
     <link rel="stylesheet" href="{{ asset('user_assets/assets/css/responsive.css') }}">
 
     <title>@yield('page_title')</title>
+
+    <style>
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            top: 130%;
+            right: 0%;
+            margin-top: 0.125rem;
+        }
+
+    </style>
+    <script>
+        $(document).ready(function() {
+            $(".dropdown").hover(function() {
+                var dropdownMenu = $(this).children(".dropdown-menu");
+                if (dropdownMenu.is(":visible")) {
+                    dropdownMenu.parent().toggleClass("open");
+                }
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -59,12 +79,21 @@
                     <li class="nav-item">
                         <a class="nav-link px-3 fs-6" href="{{ url('/my-account') }}">My Account</a>
                     </li>
-                    <li class="nav-item d-flex">
+                    <li class="nav-item">
                         <a class="nav-link px-2 fs-5 text-red" href="#"><i class="bi bi-search"></i></a>
-                        <a class="nav-link px-2 fs-3 py-0 text-red" href="/cart"><i class="bi bi-bag cart-icon"
-                                value='0'></i></a>
                     </li>
-
+                    <li class="nav-item dropdown">
+                        <a class="nav-link px-2 fs-3 py-0 text-red" href="/cart"><i class="bi bi-cart3 cart-icon"
+                                value=''></i></a>
+                        {{-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul> --}}
+                    </li>
                 </ul>
             </div>
         </div>

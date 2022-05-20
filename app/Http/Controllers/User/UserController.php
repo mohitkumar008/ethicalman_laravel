@@ -394,8 +394,30 @@ class UserController extends Controller
                 $s_gstin = $b_gstin;
             }
 
+            $findBillingAddress = DB::table('customer_address')
+                ->where(['uid' => $uid, 'address_id' => 1])
+                ->get();
 
-            $billing_address_id = DB::table('customer_address')->insertGetId([
+            $findShippingAddress = DB::table('customer_address')
+                ->where(['uid' => $uid, 'address_id' => 2])
+                ->get();
+
+            if (!isset($findBillingAddress[0])) {
+                DB::table('customer_address')->insertGetId([
+                    'uid' => $uid,
+                    'address_id' => 1,
+                    'name' => $b_name,
+                    'address' => $b_address,
+                    'city' => $b_city,
+                    'state' => $b_state,
+                    'zip' => $b_pin,
+                    'company' => $b_company,
+                    'gstin' => $b_gstin,
+                    'created_at' => date("Y-m-d h:i:s"),
+                    'updated_at' => date("Y-m-d h:i:s")
+                ]);
+            }
+            $billing_address_id = DB::table('order_address')->insertGetId([
                 'uid' => $uid,
                 'address_id' => 1,
                 'name' => $b_name,
@@ -409,7 +431,22 @@ class UserController extends Controller
                 'updated_at' => date("Y-m-d h:i:s")
             ]);
 
-            $shipping_address_id = DB::table('customer_address')->insertGetId([
+            if (!isset($findShippingAddress[0])) {
+                DB::table('customer_address')->insertGetId([
+                    'uid' => $uid,
+                    'address_id' => 2,
+                    'name' => $s_name,
+                    'address' => $s_address,
+                    'city' => $s_city,
+                    'state' => $s_state,
+                    'zip' => $s_pin,
+                    'company' => $s_company,
+                    'gstin' => $s_gstin,
+                    'created_at' => date("Y-m-d h:i:s"),
+                    'updated_at' => date("Y-m-d h:i:s")
+                ]);
+            }
+            $shipping_address_id = DB::table('order_address')->insertGetId([
                 'uid' => $uid,
                 'address_id' => 2,
                 'name' => $s_name,
@@ -519,7 +556,7 @@ class UserController extends Controller
         }
     }
 
-    public function update_billing_address(Request $request)
+    public function update_address(Request $request)
     {
         if ($request->session()->has('USER_ID')) {
 
@@ -537,7 +574,7 @@ class UserController extends Controller
                     'updated_at' => date("Y-m-d h:i:s")
                 ];
 
-                $result = DB::table('customer_address')
+                $result = DB::table('order_address')
                     ->where(['uid' => $uid, 'address_id' => 1])
                     ->limit(1)
                     ->update($updateAddArr);
@@ -557,7 +594,7 @@ class UserController extends Controller
                     'updated_at' => date("Y-m-d h:i:s")
                 ];
 
-                $result = DB::table('customer_address')
+                $result = DB::table('order_address')
                     ->where(['uid' => $uid, 'address_id' => 2])
                     ->limit(1)
                     ->update($updateAddArr);
@@ -571,39 +608,71 @@ class UserController extends Controller
         }
     }
 
+    public function update_account_info(Request $request)
+    {
+        if ($request->session()->has('USER_ID')) {
+
+            $uid = $request->session()->get('USER_ID');
+
+            $accname = $request->post('accname');
+            $currpassword = $request->post('currpassword');
+            $newpassword = $request->post('newpassword');
+            $newcpassword = $request->post('newcpassword');
+
+            if ($accname != "") {
+                $result = DB::table('customers')
+                    ->where(['id' => $uid])
+                    ->update(['name' => $accname]);
+                if ($result) {
+                    $msg =  'Changes saved successfully';
+                }
+                if ($currpassword != "" && $newpassword != "" && $newcpassword != "") {
+                    $userifnfo = Customer::where(['id' => $uid])->first();
+
+                    if ($userifnfo) {
+                        if (Hash::check($currpassword, $userifnfo->password)) {
+                            if ($newpassword === $newcpassword) {
+                                $userifnfo->password = Hash::make($newpassword);
+                                $userifnfo->save();
+                                $msg =  'Password saved successfully';
+                            } else {
+                                $msg =  'New Password and Confirm Password not match';
+                            }
+                        } else {
+                            $msg =  'Please enter correct current password';
+                        }
+                    }
+                }
+            } else {
+                $msg =  '*Full Name is required';
+            }
+
+            return redirect('/my-account')->with('address_msg', $msg);
+        } else {
+            return redirect('/');
+        }
+    }
+
     public function order_details(Request $request, $id)
     {
         $result['productDetails'] = DB::table('order_details')
             ->leftJoin('orders', 'orders.id', '=', 'order_details.order_id')
+            ->leftJoin('customer_address as baddress', 'orders.billing_address_id', '=', 'baddress.id')
+            ->leftJoin('customer_address as saddress', 'orders.shipping_address_id', '=', 'saddress.id')
+            ->leftJoin('coupons', 'orders.coupon_id', '=', 'coupons.id')
+            ->leftJoin('product_attr', 'product_attr.id', '=', 'order_details.product_attr_id')
+            ->leftJoin('products', 'products.id', '=', 'order_details.product_id')
+            ->leftJoin('sizes', 'product_attr.size_id', '=', 'sizes.id')
+            ->leftJoin('colors', 'product_attr.color_id', '=', 'colors.id')
             // ->leftJoin('customer_address', 'orders.billing_address_id', '=', 'customer_address.id')
             // ->leftJoin('customer_address', 'orders.shipping_address_id', '=', 'customer_address.id')
             // ->leftJoin('order_status', 'orders.order_status', '=', 'order_status.id')
             // ->leftJoin('payment_status', 'orders.payment_status', '=', 'payment_status.id')
-            ->leftJoin('product_attr', 'product_attr.id', '=', 'order_details.product_attr_id')
-            ->leftJoin('products', 'products.id', '=', 'order_details.product_id')
-            // ->leftJoin('sizes', 'product_attr.size_id', '=', 'sizes.id')
-            // ->leftJoin('colors', 'product_attr.color_id', '=', 'colors.id')
-            // ->select('orders.id as order_id', 'orders.total_amount as totalamount', 'orders.created_at as order_date', 'orders.payment_type')
+            ->select('orders.*', 'orders.id as order_id', 'orders.created_at as order_date', 'products.name as product_name', 'products.slug as product_slug', 'order_details.qty as totalqty', 'order_details.price as subtotal', 'sizes.size as size', 'colors.color as color', 'coupons.code as coupon_code', 'coupons.value as coupon_val', 'coupons.type as coupon_type', 'baddress.name as bname', 'baddress.address as baddress', 'baddress.city as bcity', 'baddress.state as bstate', 'baddress.zip as bzip', 'baddress.company as bcompany', 'baddress.gstin as bgstin',  'saddress.name as sname', 'saddress.address as saddress', 'saddress.city as scity', 'saddress.state as sstate', 'saddress.zip as szip', 'saddress.company as scompany', 'saddress.gstin as sgstin',)
             ->where(['orders.id' => $id])
             ->get();
 
-        // foreach ($result['order'] as $list1) {
-        //     $result['orderDetails'] = DB::table('order_details')
-        //         ->where(['order_details.order_id' => $list1->order_id])
-        //         ->get();
-        //     foreach ($result['orderDetails'] as $list2) {
-        //         $result['product'][$list2->id] = DB::table('products')
-        //             ->where(['products.id' => $list2->product_id])
-        //             ->get();
-        //         $result['productAttr'][$list2->id] = DB::table('product_attr')
-        //             ->where(['product_attr.id' => $list2->product_attr_id])
-        //             ->leftJoin('sizes', 'product_attr.size_id', '=', 'sizes.id')
-        //             ->leftJoin('colors', 'product_attr.color_id', '=', 'colors.id')
-        //             ->get();
-        //     }
-        // }
-
-        prx($result);
+        // prx($result);
         return view('user.order-details', $result);
     }
 }

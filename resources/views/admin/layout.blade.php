@@ -255,8 +255,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ url('admin/product/product-list') }}"
-                                class="nav-link @yield('product_select')">
+                            <a href="{{ url('admin/product/product-list') }}" class="nav-link @yield('product_select')">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Products</p>
                             </a>
@@ -286,6 +285,14 @@
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>
                                     Users
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/order') }}" class="nav-link @yield('order_select')">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    Order
                                 </p>
                             </a>
                         </li>

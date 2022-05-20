@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -93,6 +94,9 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/customer/status/{type}/{id}', [CustomerController::class, 'status']);
     Route::get('admin/customer/edit-customer/delete-attr/{id}/{slug}', [CustomerController::class, 'deleteAttr']);
     Route::get('admin/customer/edit-customer/delete-image/{id}/{slug}', [CustomerController::class, 'deleteimage']);
+
+    // OrderController
+    Route::get('admin/order', [OrderController::class, 'index']);
 });
 
 
@@ -140,5 +144,6 @@ Route::post('/place_order', [UserController::class, 'place_order']);
 Route::get('/order_placed', [UserController::class, 'order_placed']);
 Route::post('/payment-success', [UserController::class, 'payment_success']);
 
-Route::post('/update-address', [UserController::class, 'update_billing_address']);
+Route::post('/update-address', [UserController::class, 'update_address']);
+Route::post('/update-account-info', [UserController::class, 'update_account_info']);
 Route::get('/my-account/order-details/{id}', [UserController::class, 'order_details']);

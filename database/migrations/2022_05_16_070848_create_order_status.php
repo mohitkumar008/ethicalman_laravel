@@ -21,7 +21,7 @@ return new class extends Migration
         });
 
         DB::table('order_status')->insert([
-            ['order_status' => 'Pending'],
+            ['order_status' => 'Placed'],
             ['order_status' => 'Processing'],
             ['order_status' => 'On Hold'],
             ['order_status' => 'In Delivery'],

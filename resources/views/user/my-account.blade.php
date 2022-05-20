@@ -54,8 +54,9 @@
                             aria-labelledby="v-pills-dashboard-tab">
                             <p>Hello <b>{{ $userinfo[0]->name }}</b> (not <b>{{ $userinfo[0]->name }}</b>? <a
                                     href="{{ url('logout') }}">Log out</a> )</p>
-                            <p>From your account dashboard you can view your <a href="">recent orders</a>, manage your <a
-                                    href="">shipping and billing addresses</a>, and <a href="">edit your password and
+                            <p>From your account dashboard you can view your <a href="javascript:void(0)">recent orders</a>,
+                                manage your <a href="javascript:void(0)">shipping and billing addresses</a>, and <a
+                                    href="javascript:void(0)">edit your password and
                                     account details</a>.</p>
                         </div>
                         <div class="tab-pane fade" id="v-pills-orders" role="tabpanel"
@@ -63,7 +64,7 @@
                             <table class="table table-bordered table-hover text-center">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Order</th>
+                                        <th scope="col">S. No</th>
                                         <th scope="col">Date</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Total</th>
@@ -73,7 +74,7 @@
                                 <tbody>
                                     @foreach ($orders as $list)
                                         <tr>
-                                            <td><a href="">{{ $list->order_id }}</a></td>
+                                            <td><a href="">{{ $loop->iteration }}</a></td>
                                             <td>
                                                 {{ \Carbon\Carbon::parse($list->created_at)->isoFormat('MMM Do, YYYY') }}
                                             </td>
@@ -283,26 +284,26 @@
                             aria-labelledby="v-pills-account-tab">
                             <div class="row">
                                 <div class="col-lg-10">
-                                    <form class="row g-3">
-                                        <div class="col-md-6">
-                                            <label for="inputFirst4" class="form-label fs-6 f-600">First Name<span
+                                    <form class="row g-3" method="post"
+                                        action="{{ url('/update-account-info') }}">
+                                        @csrf
+                                        <div class="col-md-12">
+                                            <label for="inputAccName4" class="form-label fs-6 f-600">Full Name<span
                                                     class="vstar">*</span></label>
-                                            <input type="text" class="form-control" id="inputFirst4">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="inputLast4" class="form-label fs-6 f-600">Last Name<span
-                                                    class="vstar">*</span></label>
-                                            <input type="text" class="form-control" id="inputLast4">
+                                            <input type="text" name="accname" class="form-control"
+                                                value="{{ $userinfo[0]->name }}" id="inputAccName4">
                                         </div>
                                         <div class="col-md-12">
-                                            <label for="inputDisplayname4" class="form-label fs-6 f-600">Display Name<span
+                                            <label for="inputAccEmail4" class="form-label fs-6 f-600">Email<span
                                                     class="vstar">*</span></label>
-                                            <input type="text" class="form-control" id="inputDisplayname4">
+                                            <input type="text" class="form-control" value="{{ $userinfo[0]->email }}"
+                                                id="inputAccEmail4" readonly="readonly">
                                         </div>
                                         <div class="col-md-12">
-                                            <label for="inputEmail4" class="form-label fs-6 f-600">Email<span
+                                            <label for="inputAccPhone4" class="form-label fs-6 f-600">Phone<span
                                                     class="vstar">*</span></label>
-                                            <input type="text" class="form-control" id="inputEmail4">
+                                            <input type="tel" class="form-control" value="{{ $userinfo[0]->phone }}"
+                                                id="inputAccPhone4" readonly="readonly">
                                         </div>
                                         <div class="col-md-12">
                                             <p>Password change</p>
@@ -311,21 +312,25 @@
                                         <div class="col-md-12">
                                             <label for="inputCPassword4" class="form-label fs-6 f-600">Current password
                                                 (leave blank to leave unchanged)</label>
-                                            <input type="password" class="form-control" id="inputCPassword4">
+                                            <input type="password" name="currpassword" class="form-control"
+                                                id="inputCPassword4">
                                         </div>
                                         <div class="col-md-12">
                                             <label for="inputNPassword4" class="form-label fs-6 f-600">New password (leave
                                                 blank to leave unchanged)</label>
-                                            <input type="password" class="form-control" id="inputNPassword4">
+                                            <input type="password" name="newpassword" class="form-control"
+                                                id="inputNPassword4">
                                         </div>
                                         <div class="col-md-12">
                                             <label for="inputCNPassword4" class="form-label fs-6 f-600">Confirm new
                                                 password</label>
-                                            <input type="password" class="form-control" id="inputCNPassword4">
+                                            <input type="password" name="newcpassword" class="form-control"
+                                                id="inputCNPassword4">
                                         </div>
 
                                         <div class="col-12">
-                                            <button type="submit" class="btn btn-red">Save Changes</button>
+                                            <input type="submit" class="btn btn-red" name="accinfoupdate"
+                                                value="Save Changes" />
                                         </div>
                                     </form>
                                 </div>
