@@ -12,7 +12,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $result['data'] = Product::all();
+        $result['data'] = Product::all()->sortDesc();
         return view('admin/product', $result);
     }
 

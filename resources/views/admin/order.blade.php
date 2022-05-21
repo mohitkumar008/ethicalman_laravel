@@ -30,29 +30,9 @@
                 <div class="col-lg-12 col-md-12">
                     <div class="card">
                         <div class="card-header  d-flex justify-content-between align-items-center">
-                            @if (session('add_msg'))
-                                <h6 class="card-title text-success">
-                                    {{ session('add_msg') }}
-                                </h6>
-                            @endif
                             @if (session('update_msg'))
                                 <h6 class="card-title text-success">
                                     {{ session('update_msg') }}
-                                </h6>
-                            @endif
-                            @if (session('delete_msg'))
-                                <h6 class="card-title text-warning">
-                                    {{ session('delete_msg') }}
-                                </h6>
-                            @endif
-                            @if (session('activate_msg'))
-                                <h6 class="card-title text-success">
-                                    {{ session('activate_msg') }}
-                                </h6>
-                            @endif
-                            @if (session('deactivate_msg'))
-                                <h6 class="card-title text-warning">
-                                    {{ session('deactivate_msg') }}
                                 </h6>
                             @endif
                             {{-- <a href="{{ url('admin/product/add-product') }}" class="btn bg-gradient-primary ml-auto">Add
@@ -94,10 +74,13 @@
                                                     <tr class="odd">
                                                         {{-- <td class="dtr-control sorting_1" tabindex="0">
                                                             {{ $loop->iteration }}</td> --}}
-                                                        <td>{{ $list->id }}</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td><a
+                                                                href="{{ url('admin/order/order-details/' . $list->id . '') }}">#{{ $list->id }}&nbsp;{{ $user[0]->name }}</a>
+                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($list->created_at)->isoFormat('MMM Do, YYYY') }}
+                                                        </td>
+                                                        <td>{{ $orderStatus[0]->order_status }}</td>
+                                                        <td>Rs {{ $list->total_amount }}</td>
 
                                                     </tr>
                                                 @endforeach

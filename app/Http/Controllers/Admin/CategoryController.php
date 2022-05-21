@@ -11,7 +11,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $result['data'] = Category::all();
+        $result['data'] = Category::all()->sortDesc();
         return view('admin/category', $result);
     }
 

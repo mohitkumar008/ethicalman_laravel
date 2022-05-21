@@ -56,6 +56,7 @@ class UserController extends Controller
             $result['product_attr'][$list->id] = DB::table('product_attr')
                 ->leftJoin('sizes', 'sizes.id', '=', 'product_attr.size_id')
                 ->leftJoin('colors', 'colors.id', '=', 'product_attr.color_id')
+                ->orderBy('sizes.size', 'desc')
                 ->where('pid', $list->id)
                 ->get();
         }

@@ -97,6 +97,8 @@ Route::group(['middleware' => 'admin_auth'], function () {
 
     // OrderController
     Route::get('admin/order', [OrderController::class, 'index']);
+    Route::get('admin/order/order-details/{id}', [OrderController::class, 'order_details']);
+    Route::post('admin/change_order_status', [OrderController::class, 'change_order_status']);
 });
 
 

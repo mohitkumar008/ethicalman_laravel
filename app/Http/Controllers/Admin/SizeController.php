@@ -10,7 +10,7 @@ class SizeController extends Controller
 {
     public function index()
     {
-        $result['data'] = Size::all();
+        $result['data'] = Size::orderBy('size')->get();
         return view('admin/size', $result);
     }
 

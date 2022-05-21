@@ -10,7 +10,7 @@ class ColorController extends Controller
 {
     public function index()
     {
-        $result['data'] = Color::all();
+        $result['data'] = Color::all()->sortDesc();
         return view('admin/color', $result);
     }
 
