@@ -69,25 +69,29 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                                        <table id="example2"
+                                            class="table table-bordered table-hover dataTable dtr-inline projects"
                                             role="grid" aria-describedby="example2_info">
                                             <thead>
                                                 <tr role="row">
                                                     <th class="sorting sorting_desc" tabindex="0" aria-controls="example2"
                                                         rowspan="1" colspan="1"
                                                         aria-label="S.No: activate to sort column ascending"
-                                                        aria-sort="descending">S.No</th>
+                                                        aria-sort="descending" style="width: 5%">S.No</th>
                                                     <th class="sorting" tabindex="0" aria-controls="example2"
                                                         rowspan="1" colspan="1"
-                                                        aria-label="Color: activate to sort column ascending">
+                                                        aria-label="Color: activate to sort column ascending"
+                                                        style="width: 35%">
                                                         Color</th>
                                                     <th class="sorting" tabindex="0" aria-controls="example2"
                                                         rowspan="1" colspan="1"
-                                                        aria-label="Color Slug: activate to sort column ascending">
+                                                        aria-label="Color Slug: activate to sort column ascending"
+                                                        style="width: 35%">
                                                         Color Slug</th>
                                                     <th class="sorting" tabindex="0" aria-controls="example2"
                                                         rowspan="1" colspan="1"
-                                                        aria-label="Action: activate to sort column ascending">
+                                                        aria-label="Action: activate to sort column ascending"
+                                                        style="width: 25%">
                                                         Action</th>
                                                 </tr>
                                             </thead>
@@ -98,25 +102,25 @@
                                                             {{ $loop->iteration }}</td>
                                                         <td>{{ $list->color }}</td>
                                                         <td>{{ $list->slug }}</td>
-                                                        <td>
+                                                        <td class="project-actions text-right">
                                                             <a href="{{ url('admin/product/color/edit-color/' . $list->id) }}"
-                                                                class="btn btn-app m-0 p-1 h-auto">
-                                                                <i class="fas fa-edit"></i>
+                                                                class="btn btn-primary btn-sm">
+                                                                <i class="fas fa-pencil-alt"></i> Edit
                                                             </a>
                                                             @if ($list->status == '1')
                                                                 <a href="{{ url('admin/product/color/status/deactivate/' . $list->id) }}"
-                                                                    class="btn btn-app m-0 p-1 h-auto">
-                                                                    <i class="fas fa-eye-slash"></i>
+                                                                    class="btn btn-warning btn-sm">
+                                                                    <i class="fas fa-eye-slash"></i> Deactivate
                                                                 </a>
                                                             @else
                                                                 <a href="{{ url('admin/product/color/status/activate/' . $list->id) }}"
-                                                                    class="btn btn-app m-0 p-1 h-auto">
-                                                                    <i class="fas fa-eye"></i>
+                                                                    class="btn btn-success btn-sm">
+                                                                    <i class="fas fa-eye"></i> Activate
                                                                 </a>
                                                             @endif
                                                             <a href="{{ url('admin/product/color/delete/' . $list->id) }}"
-                                                                class="btn btn-app m-0 p-1 h-auto">
-                                                                <i class="fas fa-trash"></i>
+                                                                class="btn btn-danger btn-sm">
+                                                                <i class="fas fa-trash"></i> Delete
                                                             </a>
                                                         </td>
                                                     </tr>

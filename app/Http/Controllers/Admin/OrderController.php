@@ -11,9 +11,11 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $result['data'] = Order::all();
-        $result['user'] = DB::table('customers')->where(['id' => $result['data'][0]->user_id])->get();
-        $result['orderStatus'] = DB::table('order_status')->where(['id' => $result['data'][0]->order_status])->get();
+        $result['data'] = Order::select('orders.*', 'orders.id as order_id', 'customers.id', 'customers.name', 'order_status.id', 'order_status.order_status')
+            ->leftJoin('customers', 'orders.user_id', '=', 'customers.id')
+            ->leftJoin('order_status', 'orders.order_status', '=', 'order_status.id')
+            ->get();
+
         // prx($result);
 
         return view('admin/order', $result);

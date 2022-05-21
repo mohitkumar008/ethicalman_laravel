@@ -66,6 +66,15 @@ class UserController extends Controller
                 ->get();
         }
 
+        $result['related_product'] = Product::select('products.*', 'categories.category_name')
+            ->leftJoin('categories', 'categories.id', '=', 'products.cid')
+            ->where('products.status', '1')->inRandomOrder()->take(4)->get();
+        foreach ($result['related_product'] as $list) {
+            $result['related_prod_attr'][$list->id] = DB::table('product_attr')
+                ->where('pid', $list->id)
+                ->get();
+        }
+
         // echo "<pre>";
         // print_r($result['product_attr']);
         // die();
@@ -658,17 +667,13 @@ class UserController extends Controller
     {
         $result['productDetails'] = DB::table('order_details')
             ->leftJoin('orders', 'orders.id', '=', 'order_details.order_id')
-            ->leftJoin('customer_address as baddress', 'orders.billing_address_id', '=', 'baddress.id')
-            ->leftJoin('customer_address as saddress', 'orders.shipping_address_id', '=', 'saddress.id')
+            ->leftJoin('order_address as baddress', 'orders.billing_address_id', '=', 'baddress.id')
+            ->leftJoin('order_address as saddress', 'orders.shipping_address_id', '=', 'saddress.id')
             ->leftJoin('coupons', 'orders.coupon_id', '=', 'coupons.id')
             ->leftJoin('product_attr', 'product_attr.id', '=', 'order_details.product_attr_id')
             ->leftJoin('products', 'products.id', '=', 'order_details.product_id')
             ->leftJoin('sizes', 'product_attr.size_id', '=', 'sizes.id')
             ->leftJoin('colors', 'product_attr.color_id', '=', 'colors.id')
-            // ->leftJoin('customer_address', 'orders.billing_address_id', '=', 'customer_address.id')
-            // ->leftJoin('customer_address', 'orders.shipping_address_id', '=', 'customer_address.id')
-            // ->leftJoin('order_status', 'orders.order_status', '=', 'order_status.id')
-            // ->leftJoin('payment_status', 'orders.payment_status', '=', 'payment_status.id')
             ->select('orders.*', 'orders.id as order_id', 'orders.created_at as order_date', 'products.name as product_name', 'products.slug as product_slug', 'order_details.qty as totalqty', 'order_details.price as subtotal', 'sizes.size as size', 'colors.color as color', 'coupons.code as coupon_code', 'coupons.value as coupon_val', 'coupons.type as coupon_type', 'baddress.name as bname', 'baddress.address as baddress', 'baddress.city as bcity', 'baddress.state as bstate', 'baddress.zip as bzip', 'baddress.company as bcompany', 'baddress.gstin as bgstin',  'saddress.name as sname', 'saddress.address as saddress', 'saddress.city as scity', 'saddress.state as sstate', 'saddress.zip as szip', 'saddress.company as scompany', 'saddress.gstin as sgstin',)
             ->where(['orders.id' => $id])
             ->get();

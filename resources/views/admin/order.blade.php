@@ -47,10 +47,6 @@
                                             role="grid" aria-describedby="example1_info">
                                             <thead>
                                                 <tr role="row">
-                                                    {{-- <th class="sorting sorting_desc" tabindex="0" aria-controls="example2"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="S.No: activate to sort column ascending"
-                                                        aria-sort="descending">S.No</th> --}}
                                                     <th class="sorting" tabindex="0" aria-controls="example2"
                                                         rowspan="1" colspan="1"
                                                         aria-label="Order: activate to sort column ascending">
@@ -72,14 +68,12 @@
                                             <tbody>
                                                 @foreach ($data as $list)
                                                     <tr class="odd">
-                                                        {{-- <td class="dtr-control sorting_1" tabindex="0">
-                                                            {{ $loop->iteration }}</td> --}}
                                                         <td><a
-                                                                href="{{ url('admin/order/order-details/' . $list->id . '') }}">#{{ $list->id }}&nbsp;{{ $user[0]->name }}</a>
+                                                                href="{{ url('admin/order/order-details/' . $list->order_id . '') }}">#{{ $list->order_id }}&nbsp;{{ $list->name }}</a>
                                                         </td>
                                                         <td>{{ \Carbon\Carbon::parse($list->created_at)->isoFormat('MMM Do, YYYY') }}
                                                         </td>
-                                                        <td>{{ $orderStatus[0]->order_status }}</td>
+                                                        <td>{{ $list->order_status }}</td>
                                                         <td>Rs {{ $list->total_amount }}</td>
 
                                                     </tr>
