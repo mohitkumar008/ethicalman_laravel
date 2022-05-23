@@ -1,15 +1,9 @@
 @extends('user/layout')
 @section('page_title', $data[0]->name . ' | The Ethical Man')
 @section('additional_css')
-    <!-- xZoom Plugin -->
-
-    <script src="{{ asset('user_assets/assets/plugins/xZoom/jquery.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ asset('user_assets/plugins/xZoom/xzoom.css') }}" media="all" />
-    <link type="text/css" rel="stylesheet" media="all"
-        href="{{ asset('user_assets/plugins/xZoom/magnific-popup.css') }}" />
-    <script type="text/javascript" src="{{ asset('user_assets/assets/plugins/xZoom/xzoom.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('user_assets/assets/plugins/xZoom/magnific-popup.js') }}"></script>
-
+    <link rel="stylesheet" href="{{ asset('user_assets/assets/plugins/smooth/css/smoothproducts.css') }}">
+    <link rel="stylesheet" href="{{ asset('user_assets/assets/plugins/OwlCarousel/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('user_assets/assets/plugins/OwlCarousel/owl.theme.default.min.css') }}">
     <style>
         /* Rating Star Widgets Style */
         .rating-stars ul {
@@ -49,33 +43,26 @@
 @section('content-wrapper')
     <section class="product-info py-5">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
+            <div class="row alert-box">
+                @if (session('review_msg'))
+                    <div class="col-lg-10 col-md-10 col-12 mx-auto">
+                        <p><i class="bi bi-patch-check-fill text-red me-2"></i> {{ session('review_msg') }}</p>
+                    </div>
+                @endif
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-5 ml-auto">
                     <!-- Product images -->
-                    <div id="magnific">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="xzoom-container w-100 text-center">
-                                    <img class="xzoom5 w-70" id="xzoom-magnific"
-                                        src="{{ asset('storage/media/' . $data[0]->image . '') }}"
-                                        xoriginal="{{ asset('storage/media/' . $data[0]->image . '') }}" />
-                                    <div class="xzoom-thumbs">
-                                        @foreach ($prod_img[$data[0]->id] as $list)
-                                            <a href="{{ asset('storage/media/' . $list->images . '') }}">
-                                                <img class="xzoom-gallery5" width="80"
-                                                    src="{{ asset('storage/media/' . $list->images . '') }}"
-                                                    xpreview="{{ asset('storage/media/' . $list->images . '') }}"
-                                                    title="The description goes here">
-                                            </a>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12"></div>
-                        </div>
+                    <div class="sp-wrap text-center">
+                        <a href="{{ asset('storage/media/' . $data[0]->image . '') }}"><img
+                                src="{{ asset('storage/media/' . $data[0]->image . '') }}" alt="" width="100%"></a>
+                        @foreach ($prod_img[$data[0]->id] as $list)
+                            <a href="{{ asset('storage/media/' . $list->images . '') }}"><img
+                                    src="{{ asset('storage/media/' . $list->images . '') }}" alt=""></a>
+                        @endforeach
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -238,16 +225,47 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Set up your HTML -->
+                                <div class="owl-carousel">
+                                    @foreach ($rating as $list)
+                                        <div>
+                                            <div class="card" style="width: 18rem;">
+                                                <div class="card-body">
+                                                    <h5 class="card-title row align-items-center">
+                                                        <div class="product-rating">
+                                                            <?php
+                                                            $fill = '-fill';
+                                                            $j = $list->stars;
+                                                            ?>
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                @if ($j < $i)
+                                                                    @php($fill = '')
+                                                                @endif
+                                                                <i class='bi bi-star{{ $fill }}'></i>
+                                                            @endfor
+                                                        </div>
+                                                    </h5>
+                                                    <h6 class="card-subtitle mb-2 text-muted">- {{ $list->name }}</h6>
+                                                    <p class="card-text">{{ $list->comment }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
                                 <div class="review-form border border-2 rounded p-3">
                                     <div class="first-review">
                                         <h4>Be the first to review “The Ethical Man Classic Purple Shirt”</h4>
                                         <p>Your email address will not be published. Required fields are marked *</p>
                                     </div>
                                     <div class='rating-widget'>
-                                        <form class="row g-3">
+                                        <form class="row g-3" method="post"
+                                            action="{{ url('/submit-rating/' . $data[0]->slug . '') }}"
+                                            enctype="multipart/form-data">
+                                            @csrf
                                             <div class="col-md-12 my-1">
                                                 <label for="inputEmail4" class="form-label">Your rating *</label>
                                                 <div class='rating-stars'>
+                                                    <input type="hidden" name="review-star" id="reviewstar">
                                                     <ul id='stars' class="m-0">
                                                         <li class='star' title='Poor' data-value='1'>
                                                             <i class='fa fa-star fa-fw'></i>
@@ -269,20 +287,23 @@
                                             </div>
                                             <div class="col-12 my-1">
                                                 <label for="inputReviewText4" class="form-label">Your review *</label>
-                                                <textarea class="form-control" id="inputReviewText4" rows="3"></textarea>
+                                                <textarea class="form-control" name="review-comment" id="inputReviewText4" rows="3"></textarea>
                                             </div>
                                             <div class="col-12 my-1">
                                                 <label for="reviewImg" class="form-label">Choose pictures (maxsize:
                                                     20000 kB, max files: 2)</label>
-                                                <input class="form-control form-control-sm" id="reviewImg" type="file">
+                                                <input class="form-control form-control-sm" name="review-img"
+                                                    id="reviewImg" type="file">
                                             </div>
                                             <div class="col-md-6 my-1">
                                                 <label for="inputReviewName4" class="form-label">Name</label>
-                                                <input type="text" class="form-control" id="inputReviewName4">
+                                                <input type="text" class="form-control" name="review-name"
+                                                    id="inputReviewName4">
                                             </div>
                                             <div class="col-md-6 my-1">
                                                 <label for="inputReviewEmail4" class="form-label">Email</label>
-                                                <input type="email" class="form-control" id="inputReviewEmail4">
+                                                <input type="email" class="form-control" name="review-email"
+                                                    id="inputReviewEmail4">
                                             </div>
                                             <div class="col-12 my-2">
                                                 <button type="submit" class="btn btn-sm  bg-red text-white">SUBMIT</button>
@@ -336,7 +357,28 @@
     </form>
 @endsection
 @section('additional_js')
-    <script src="{{ asset('user_assets/assets/plugins/xZoom/setup.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('user_assets/assets/plugins/smooth/js/jquery-2.1.3.min.js') }}">
+    </script>
+    <script src="{{ asset('user_assets/assets/plugins/OwlCarousel/owl.carousel.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('user_assets/assets/plugins/smooth/js/smoothproducts.min.js') }}">
+    </script>
+    <script type="text/javascript">
+        /* wait for images to load */
+        $(window).load(function() {
+            $('.sp-wrap').smoothproducts();
+        });
+        $(document).ready(function() {
+            $(".owl-carousel").owlCarousel({
+                center: true,
+                autoplay: false,
+                autoplayTimeout: 5000,
+                autoplayHoverPause: false,
+                loop: true,
+                items: 3,
+                loop: true,
+            });
+        });
+    </script>
     <script>
         $(document).ready(function() {
 
@@ -375,23 +417,10 @@
 
                 // JUST RESPONSE (Not needed)
                 var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10);
-                var msg = "";
-                if (ratingValue > 1) {
-                    msg = "Thanks! You rated this " + ratingValue + " stars.";
-                } else {
-                    msg = "We will improve ourselves. You rated this " + ratingValue + " stars.";
-                }
-                responseMessage(msg);
-
+                $('#reviewstar').val(ratingValue);
             });
 
 
         });
-
-
-        function responseMessage(msg) {
-            $('.success-box').fadeIn(200);
-            $('.success-box div.text-message').html("<span>" + msg + "</span>");
-        }
     </script>
 @endsection

@@ -59,6 +59,11 @@ class UserController extends Controller
                 ->orderBy('sizes.size', 'desc')
                 ->where('pid', $list->id)
                 ->get();
+
+            $result['rating'] = DB::table('ratings')
+                ->where('pid', $list->id)
+                ->leftJoin('customers', 'ratings.uid', '=', 'customers.id')
+                ->get();
         }
         foreach ($result['data'] as $list) {
             $result['prod_img'][$list->id] = DB::table('product_images')
@@ -76,7 +81,7 @@ class UserController extends Controller
         }
 
         // echo "<pre>";
-        // print_r($result['product_attr']);
+        // print_r($result);
         // die();
         return view('user/product_info', $result);
     }
@@ -680,5 +685,26 @@ class UserController extends Controller
 
         // prx($result);
         return view('user.order-details', $result);
+    }
+
+    public function submit_rating(Request $request, $slug)
+    {
+        // prx($_POST);
+        if ($request->session()->has('USER_ID')) {
+            $uid = $request->session()->get('USER_ID');
+            $findProduct = DB::table('products')->where('slug', $slug)->get();
+            $pid = $findProduct[0]->id;
+            // $submitRating = ;
+            DB::table('ratings')->insert([
+                'pid' => $pid,
+                'uid' => $uid,
+                'stars' => $request->post('review-star'),
+                'comment' => $request->post('review-comment'),
+                'images' => $request->post('review-img'),
+                'created_at' => date("Y-m-d h:i:s"),
+                'updated_at' => date("Y-m-d h:i:s")
+            ]);
+            return redirect('product/' . $slug . '')->with('review_msg', 'Thank you for rating us:)');
+        }
     }
 }

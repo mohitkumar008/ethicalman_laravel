@@ -149,3 +149,4 @@ Route::post('/payment-success', [UserController::class, 'payment_success']);
 Route::post('/update-address', [UserController::class, 'update_address']);
 Route::post('/update-account-info', [UserController::class, 'update_account_info']);
 Route::get('/my-account/order-details/{id}', [UserController::class, 'order_details']);
+Route::post('/submit-rating/{slug}', [UserController::class, 'submit_rating']);

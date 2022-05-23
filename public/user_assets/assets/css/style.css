@@ -219,6 +219,7 @@ section.products .row .col-lg-3 {
 
 .product-list .product-detail .product-rating i,
 .related-products .product-detail .product-rating i,
+.card .product-rating i,
 section.products .product-detail .product-rating i {
     color: #ff5151;
 }
