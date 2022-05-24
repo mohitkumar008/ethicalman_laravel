@@ -117,7 +117,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-10 mx-auto">
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -148,7 +148,7 @@
                         <div class="tab-pane fade" id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab">
                             <div class="review-rating m-3">
                                 <h4 class="m-2">Review</h4>
-                                <div class="review-star my-3">
+                                {{-- <div class="review-star my-3">
                                     <div class="star-rating row align-items-center">
                                         <div class="product-rating col-lg-2">
                                             <i class="bi bi-star-fill"></i>
@@ -156,6 +156,7 @@
                                             <i class="bi bi-star-fill"></i>
                                             <i class="bi bi-star-fill"></i>
                                             <i class="bi bi-star-fill"></i>
+                                            <span>(0)</span>
                                         </div>
                                         <div class="col-lg-10 p-0">
                                             <div class="progress" style="height: .5rem;">
@@ -171,6 +172,7 @@
                                             <i class="bi bi-star-fill"></i>
                                             <i class="bi bi-star-fill"></i>
                                             <i class="bi bi-star"></i>
+                                            <span>(0)</span>
                                         </div>
                                         <div class="col-lg-10 p-0">
                                             <div class="progress" style="height: .5rem;">
@@ -186,6 +188,7 @@
                                             <i class="bi bi-star-fill"></i>
                                             <i class="bi bi-star"></i>
                                             <i class="bi bi-star"></i>
+                                            <span>(0)</span>
                                         </div>
                                         <div class="col-lg-10 p-0">
                                             <div class="progress" style="height: .5rem;">
@@ -201,6 +204,7 @@
                                             <i class="bi bi-star"></i>
                                             <i class="bi bi-star"></i>
                                             <i class="bi bi-star"></i>
+                                            <span>(0)</span>
                                         </div>
                                         <div class="col-lg-10 p-0">
                                             <div class="progress" style="height: .5rem;">
@@ -216,6 +220,7 @@
                                             <i class="bi bi-star"></i>
                                             <i class="bi bi-star"></i>
                                             <i class="bi bi-star"></i>
+                                            <span>(0)</span>
                                         </div>
                                         <div class="col-lg-10 p-0">
                                             <div class="progress" style="height: .5rem;">
@@ -224,12 +229,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <!-- Set up your HTML -->
                                 <div class="owl-carousel">
+                                    <?php
+                                    $hideratingform = '';
+                                    ?>
                                     @foreach ($rating as $list)
+                                        @if ($list->uid == session('USER_ID'))
+                                            @php($hideratingform = 'd-none')
+                                        @endif
                                         <div>
-                                            <div class="card" style="width: 18rem;">
+                                            <div class="card m-auto" style="width: 18rem;">
                                                 <div class="card-body">
                                                     <h5 class="card-title row align-items-center">
                                                         <div class="product-rating">
@@ -245,18 +256,24 @@
                                                             @endfor
                                                         </div>
                                                     </h5>
-                                                    <h6 class="card-subtitle mb-2 text-muted">- {{ $list->name }}</h6>
+                                                    <h6 class="card-subtitle mb-1 text-muted">{{ $list->name }}</h6>
                                                     <p class="card-text">{{ $list->comment }}</p>
+                                                    <p class="text-end m-0">- <em>
+                                                            {{ \Carbon\Carbon::parse($list->created_at)->isoFormat('MMM Do, YYYY') }}
+                                                        </em></p>
                                                 </div>
                                             </div>
                                         </div>
                                     @endforeach
                                 </div>
-                                <div class="review-form border border-2 rounded p-3">
-                                    <div class="first-review">
-                                        <h4>Be the first to review “The Ethical Man Classic Purple Shirt”</h4>
-                                        <p>Your email address will not be published. Required fields are marked *</p>
-                                    </div>
+                                <div class="review-form border border-2 rounded p-3 {{ $hideratingform }}">
+                                    @if (!isset($rating[0]))
+                                        <div class="first-review">
+                                            <h4>Be the first to review “The Ethical Man Classic Purple Shirt”</h4>
+                                            <p>Your email address will not be published. Required fields are marked *</p>
+                                        </div>
+                                    @endif
+                                    <br>
                                     <div class='rating-widget'>
                                         <form class="row g-3" method="post"
                                             action="{{ url('/submit-rating/' . $data[0]->slug . '') }}"
@@ -292,19 +309,21 @@
                                             <div class="col-12 my-1">
                                                 <label for="reviewImg" class="form-label">Choose pictures (maxsize:
                                                     20000 kB, max files: 2)</label>
-                                                <input class="form-control form-control-sm" name="review-img"
-                                                    id="reviewImg" type="file">
+                                                <input class="form-control form-control-sm" name="review-img" id="reviewImg"
+                                                    type="file">
                                             </div>
-                                            <div class="col-md-6 my-1">
-                                                <label for="inputReviewName4" class="form-label">Name</label>
-                                                <input type="text" class="form-control" name="review-name"
-                                                    id="inputReviewName4">
-                                            </div>
-                                            <div class="col-md-6 my-1">
-                                                <label for="inputReviewEmail4" class="form-label">Email</label>
-                                                <input type="email" class="form-control" name="review-email"
-                                                    id="inputReviewEmail4">
-                                            </div>
+                                            @if (session('USER_ID') == '')
+                                                <div class="col-md-6 my-1">
+                                                    <label for="inputReviewName4" class="form-label">Name</label>
+                                                    <input type="text" class="form-control" name="review-name"
+                                                        id="inputReviewName4">
+                                                </div>
+                                                <div class="col-md-6 my-1">
+                                                    <label for="inputReviewEmail4" class="form-label">Email</label>
+                                                    <input type="email" class="form-control" name="review-email"
+                                                        id="inputReviewEmail4">
+                                                </div>
+                                            @endif
                                             <div class="col-12 my-2">
                                                 <button type="submit" class="btn btn-sm  bg-red text-white">SUBMIT</button>
                                             </div>
@@ -316,13 +335,13 @@
                     </div>
                 </div>
             </div>
-            <div class="row my-3 related-products">
+            <div class="row my-3 related-products justify-content-center">
                 <div class="col-10 mx-auto">
-                    <h5 class="f-700 text-black">Related Products</h5>
+                    <h5 class="f-700 text-black mb-3">Related Products</h5>
                     <div class="row">
                         @foreach ($related_product as $list)
                             <div class="col-lg-3 col-md-3 col-sm-6">
-                                <div class="card border-0" style="width: 90%;">
+                                <div class="card border-0 m-auto" style="width: 90%;">
                                     <a href="{{ url('product/' . $list->slug . '') }}" class="product-img-link">
                                         <img src="{{ asset('storage/media/' . $list->image) }}" class="card-img-top"
                                             alt="...">
@@ -369,13 +388,12 @@
         });
         $(document).ready(function() {
             $(".owl-carousel").owlCarousel({
-                center: true,
+                // center: true,
                 autoplay: false,
                 autoplayTimeout: 5000,
                 autoplayHoverPause: false,
-                loop: true,
-                items: 3,
-                loop: true,
+                loop: false,
+                rewind: true
             });
         });
     </script>

@@ -61,7 +61,7 @@ class UserController extends Controller
                 ->get();
 
             $result['rating'] = DB::table('ratings')
-                ->where('pid', $list->id)
+                ->where(['pid' => $list->id, 'ratings.status' => 1])
                 ->leftJoin('customers', 'ratings.uid', '=', 'customers.id')
                 ->get();
         }
@@ -216,8 +216,12 @@ class UserController extends Controller
             $result['shippingAddress'] = DB::table('customer_address')
                 ->where(['uid' => $uid, 'address_id' => 2])
                 ->get();
-            // prx($result);
-            return view('user.my-account', $result);
+            // prx($result['userinfo']);
+            if (isset($result['userinfo'][0])) {
+                return view('user.my-account', $result);
+            } else {
+                return redirect('logout');
+            }
         } else {
             return view('user.login-register');
         }
@@ -243,12 +247,12 @@ class UserController extends Controller
         $model->save();
 
         // Send verificaton mail
-        $data = ['name' => $request->post('username'), 'rand_id' => $rand_id];
-        $user['to'] = $request->post('email');
-        Mail::send('user/email_verification', $data, function ($messages) use ($user) {
-            $messages->to($user['to']);
-            $messages->subject('Email Verification | The Ethical Man');
-        });
+        $dataVar = ['name' => $request->post('username'), 'rand_id' => $rand_id];
+        $userEmail = $request->post('email');
+        $mailSubject = 'Congratulations! You account created successfully';
+        $template = 'new_registration';
+        //Mail function
+        send_mail($dataVar, $userEmail, $mailSubject, $template);
 
         return redirect('my-account')->with('register_msg', "Account created successfully. Please login to continue...");
     }
@@ -706,5 +710,17 @@ class UserController extends Controller
             ]);
             return redirect('product/' . $slug . '')->with('review_msg', 'Thank you for rating us:)');
         }
+    }
+
+    public function template()
+    {
+        // Send verificaton mail
+        $data = ['name' => 'MOhit Kumar'];
+        $user['to'] = 'mohit.itechverse@gmail.com';
+        Mail::send('emailTemplate.new_registration', $data, function ($messages) use ($user) {
+            $messages->to($user['to']);
+            $messages->subject('Email Verification | The Ethical Man');
+        });
+        return view('emailTemplate.new_registration');
     }
 }

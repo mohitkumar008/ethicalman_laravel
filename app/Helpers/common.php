@@ -1,6 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+
+
+function test()
+{
+    dd(":(");
+}
 
 function prx($arr)
 {
@@ -37,11 +44,6 @@ function getTotalCartItems()
         ->get();
 
     return $result;
-}
-
-function test()
-{
-    dd(":(");
 }
 
 function apply_coupon($coupon)
@@ -117,4 +119,16 @@ function apply_coupon($coupon)
         'discount_price' => $discount_price,
         'totalCartAmount' => $totalCartAmount
     ]);
+}
+
+function send_mail($dataVar, $userEmail, $mailSubject, $template)
+{
+    // Send verificaton mail
+    $data = $dataVar;
+    $user['to'] = $userEmail;
+    $user['subject'] = $mailSubject;
+    Mail::send('emailTemplate.' . $template, $data, function ($messages) use ($user) {
+        $messages->to($user['to']);
+        $messages->subject($user['subject']);
+    });
 }

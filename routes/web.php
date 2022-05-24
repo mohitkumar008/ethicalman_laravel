@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -99,6 +100,11 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/order', [OrderController::class, 'index']);
     Route::get('admin/order/order-details/{id}', [OrderController::class, 'order_details']);
     Route::post('admin/change_order_status', [OrderController::class, 'change_order_status']);
+
+    // ReviewController
+    Route::get('admin/review', [ReviewController::class, 'index']);
+    Route::get('admin/review/{status}/{id}', [ReviewController::class, 'change_review_status']);
+    Route::get('admin/review/delete/delete-review/{id}', [ReviewController::class, 'delete_review']);
 });
 
 
@@ -150,3 +156,5 @@ Route::post('/update-address', [UserController::class, 'update_address']);
 Route::post('/update-account-info', [UserController::class, 'update_account_info']);
 Route::get('/my-account/order-details/{id}', [UserController::class, 'order_details']);
 Route::post('/submit-rating/{slug}', [UserController::class, 'submit_rating']);
+
+Route::get('/template', [UserController::class, 'template']);
