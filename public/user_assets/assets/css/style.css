@@ -366,7 +366,7 @@ section.my-account table td {
 }
 
 /* Cart */
-section.cart .alert-box p {
+.alert-box p {
     background: rgb(239 239 239 / 65%);
     border-top: 2px solid #f64242;
     padding: 15px;
@@ -395,4 +395,13 @@ section.order-details-page table thead tr th:nth-child(2),
 section.order-details-page table tbody tr td:nth-child(2),
 section.order-details-page table tfoot tr td:nth-child(2) {
     text-align: end;
+}
+
+#verify_otp_label,
+#new_password_label,
+#newc_password_label,
+#btn-verify-otp,
+#btn-verify-password,
+#password-changed-success {
+    display: none;
 }

@@ -512,6 +512,18 @@ class UserController extends Controller
 
                 $status = "success";
                 $msg = "Order placed successfully";
+
+                //Get order details
+                $result = getOrderDetails($order_id);
+
+                //Mail function starts
+                $dataVar = $result;
+                $userEmail = $user_email;
+                $mailSubject = 'Thank you for your order';
+                $template = 'order_placed_template';
+                send_mail($dataVar, $userEmail, $mailSubject, $template);
+                //Mail function ends
+
             } else {
                 $status = "error";
                 $msg = "Please try after sometime!";
@@ -654,6 +666,15 @@ class UserController extends Controller
                                 $userifnfo->password = Hash::make($newpassword);
                                 $userifnfo->save();
                                 $msg =  'Password saved successfully';
+
+                                //Mail function start
+                                $dataVar = ['name' => $userifnfo->name];
+                                $userEmail = $userifnfo->email;
+                                $mailSubject = 'Password reset';
+                                $template = 'pass_reset_success';
+                                send_mail($dataVar, $userEmail, $mailSubject, $template);
+                                //Mail function ends
+
                             } else {
                                 $msg =  'New Password and Confirm Password not match';
                             }
@@ -674,19 +695,7 @@ class UserController extends Controller
 
     public function order_details(Request $request, $id)
     {
-        $result['productDetails'] = DB::table('order_details')
-            ->leftJoin('orders', 'orders.id', '=', 'order_details.order_id')
-            ->leftJoin('order_address as baddress', 'orders.billing_address_id', '=', 'baddress.id')
-            ->leftJoin('order_address as saddress', 'orders.shipping_address_id', '=', 'saddress.id')
-            ->leftJoin('coupons', 'orders.coupon_id', '=', 'coupons.id')
-            ->leftJoin('product_attr', 'product_attr.id', '=', 'order_details.product_attr_id')
-            ->leftJoin('products', 'products.id', '=', 'order_details.product_id')
-            ->leftJoin('sizes', 'product_attr.size_id', '=', 'sizes.id')
-            ->leftJoin('colors', 'product_attr.color_id', '=', 'colors.id')
-            ->select('orders.*', 'orders.id as order_id', 'orders.created_at as order_date', 'products.name as product_name', 'products.slug as product_slug', 'order_details.qty as totalqty', 'order_details.price as subtotal', 'sizes.size as size', 'colors.color as color', 'coupons.code as coupon_code', 'coupons.value as coupon_val', 'coupons.type as coupon_type', 'baddress.name as bname', 'baddress.address as baddress', 'baddress.city as bcity', 'baddress.state as bstate', 'baddress.zip as bzip', 'baddress.company as bcompany', 'baddress.gstin as bgstin',  'saddress.name as sname', 'saddress.address as saddress', 'saddress.city as scity', 'saddress.state as sstate', 'saddress.zip as szip', 'saddress.company as scompany', 'saddress.gstin as sgstin',)
-            ->where(['orders.id' => $id])
-            ->get();
-
+        $result = getOrderDetails($id);
         // prx($result);
         return view('user.order-details', $result);
     }
@@ -712,15 +721,81 @@ class UserController extends Controller
         }
     }
 
-    public function template()
+    public function forget_password(Request $request)
     {
-        // Send verificaton mail
-        $data = ['name' => 'MOhit Kumar'];
-        $user['to'] = 'mohit.itechverse@gmail.com';
-        Mail::send('emailTemplate.new_registration', $data, function ($messages) use ($user) {
-            $messages->to($user['to']);
-            $messages->subject('Email Verification | The Ethical Man');
-        });
-        return view('emailTemplate.new_registration');
+        if ($request->post('action') == 'verifyemail') {
+            $findEmail = DB::table('customers')->where(['email' => $request->post('email')])->first();
+            // prx($findEmail->name);
+            if (isset($findEmail)) {
+                $otp = rand(1111, 9999);
+                $request->session()->put('verificaton_otp', $otp);
+                //Mail function starts
+                $dataVar = ['name' => $findEmail->name, 'otp' => $otp];
+                $userEmail = $request->post('email');
+                $mailSubject = 'Verification Otp';
+                $template = 'forget_pass_otp';
+                send_mail($dataVar, $userEmail, $mailSubject, $template);
+                //Mail function ends
+                $status = 'success';
+                $msg = '<p class="text-danger"><i class="bi bi-check-circle-fill text-danger me-2"></i> An otp has been sent on your email. Please enter the otp in the next field.</p>';
+            } else {
+                $status = 'error';
+                $msg = '<p class="text-danger"><i class="bi bi-exclamation-circle-fill text-red me-2"></i> Email does not exist! Please enter correct email address</p>';
+            }
+        }
+        //verifyotp
+        elseif ($request->post('action') == 'verifyotp') {
+            if ($request->post('otp') == $request->session()->get('verificaton_otp')) {
+
+                $status = 'success';
+                $msg = '<p class="text-danger"><i class="bi bi-check-circle-fill text-danger me-2"></i> Otp verified successfully</p>';
+            } else {
+                $status = 'error';
+                $msg = '<p class="text-danger"><i class="bi bi-check-circle-fill text-danger me-2"></i> Otp Incorrect</p>';
+            }
+        }
+        //changepassword
+        elseif ($request->post('action') == 'changepassword') {
+            $email = $request->post('email');
+            $newpass = $request->post('new_password');
+            $newcpass = $request->post('newc_password');
+            $findEmail = DB::table('customers')->where(['email' => $email])->first();
+
+            $hashpass = Hash::make($newpass);
+            DB::table('customers')->where(['email' => $email])->update(['password' => $hashpass]);
+
+            $status = 'success';
+            $msg = '<p class="text-danger"><i class="bi bi-check-circle-fill text-danger me-2"></i> Password changed successfully</p>';
+        }
+
+
+        return response()->json([
+            'status' => $status,
+            'msg' => $msg
+        ]);
+    }
+
+    public function sms()
+    {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://www.smsalert.co.in/api/push.json?apikey=624fbde40defc&sender=TEMAIM&mobileno=9899199392&text=Hello%20Cozy",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
+
+        // return view('emailTemplate.order_placed_template');
     }
 }

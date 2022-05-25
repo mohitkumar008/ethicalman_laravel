@@ -55,8 +55,9 @@
                                 <p class="text-danger">{{ session('login_error') }}</p>
                             @endif
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 d-flex align-items-center justify-content-between">
                             <button type="submit" class="btn btn-red">Login</button>
+                            <a class="text-red" href="{{ url('/forget-password') }}">Forget Password?</a>
                         </div>
                     </form>
                 </div>

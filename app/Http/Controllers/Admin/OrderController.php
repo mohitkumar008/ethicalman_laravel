@@ -26,8 +26,8 @@ class OrderController extends Controller
         $result['productDetails'] = DB::table('order_details')
             ->leftJoin('orders', 'orders.id', '=', 'order_details.order_id')
             ->leftJoin('customers as customer', 'orders.user_id', '=', 'customer.id')
-            ->leftJoin('customer_address as baddress', 'orders.billing_address_id', '=', 'baddress.id')
-            ->leftJoin('customer_address as saddress', 'orders.shipping_address_id', '=', 'saddress.id')
+            ->leftJoin('order_address as baddress', 'orders.billing_address_id', '=', 'baddress.id')
+            ->leftJoin('order_address as saddress', 'orders.shipping_address_id', '=', 'saddress.id')
             ->leftJoin('coupons', 'orders.coupon_id', '=', 'coupons.id')
             ->leftJoin('product_attr', 'product_attr.id', '=', 'order_details.product_attr_id')
             ->leftJoin('products', 'products.id', '=', 'order_details.product_id')
@@ -51,6 +51,23 @@ class OrderController extends Controller
         $order_id = $request->post('order_id');
         $order_status = $request->post('order_status');
         $result['user'] = DB::table('orders')->where(['id' => $order_id])->update(['order_status' => $order_status]);
+        $result['getDetails'] = DB::table('orders')->where(['orders.id' => $order_id])
+            ->leftJoin('customers', 'orders.user_id',  '=', 'customers.id')
+            ->get();
+
+        //Get order details
+        $data = getOrderDetails($order_id);
+        //Mail function starts
+        $dataVar = $data;
+        $userEmail = $result['getDetails'][0]->email;
+        if ($data['productDetails'][0]->order_status == 'Completed') {
+            $mailSubject = 'You order has been delivered successfully | The Ethical Man';
+        } else {
+            $mailSubject = 'Thank you for your order';
+        }
+        $template = 'order_placed_template';
+        send_mail($dataVar, $userEmail, $mailSubject, $template);
+        //Mail function ends
 
         return redirect('admin/order')->with('update_msg', 'Order updated successfully');
     }

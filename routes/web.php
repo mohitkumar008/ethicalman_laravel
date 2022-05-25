@@ -157,4 +157,8 @@ Route::post('/update-account-info', [UserController::class, 'update_account_info
 Route::get('/my-account/order-details/{id}', [UserController::class, 'order_details']);
 Route::post('/submit-rating/{slug}', [UserController::class, 'submit_rating']);
 
-Route::get('/template', [UserController::class, 'template']);
+Route::get('/forget-password', function () {
+    return view('user.forget-password');
+});
+
+Route::post('/forget-password-verification-send', [UserController::class, 'forget_password']);
