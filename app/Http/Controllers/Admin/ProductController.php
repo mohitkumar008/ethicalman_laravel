@@ -141,6 +141,9 @@ class ProductController extends Controller
     public function update(Request $request)
     {
 
+        // echo "<pre>";
+        // print_r($_FILES);
+        // prx($_POST);
         $request->validate([
             'product_name' => 'required',
             'slug' => 'required|unique:products,slug,' . $request->post('pid'),
@@ -199,9 +202,10 @@ class ProductController extends Controller
             // die();
 
             if ($request->hasFile("attrimg." . $key)) {
+                $rand = rand(1111111111, 9999999999);
                 $attrimage = $request->file("attrimg." . $key);
                 $ext = $attrimage->extension();
-                $image_name = time() . '.' . $ext;
+                $image_name = $rand . '.' . $ext;
                 $request->file("attrimg." . $key)->storeAs('/public/media', $image_name);
                 $productAttrArr['attr_img'] = $image_name;
             }
@@ -219,18 +223,19 @@ class ProductController extends Controller
         // Product images start
         $piidArr = $request->post('piid');
         foreach ($piidArr as $key => $val) {
-            $productImgAttrArr['pid'] = $request->post('pid');
+            $productImgArr['pid'] = $request->post('pid');
             if ($request->hasFile("productimg." . $key)) {
+                $rand = rand(1111111111, 9999999999);
                 $attrimage = $request->file("productimg." . $key);
                 $ext = $attrimage->extension();
-                $image_name = time() . '.' . $ext;
+                $image_name = $rand . '.' . $ext;
                 $request->file("productimg." . $key)->storeAs('/public/media', $image_name);
-                $productImgAttrArr['images'] = $image_name;
+                $productImgArr['images'] = $image_name;
             }
             if ($piidArr[$key] != "") {
-                DB::table('product_images')->where(['id' => $piidArr[$key]])->update($productImgAttrArr);
+                DB::table('product_images')->where(['id' => $piidArr[$key]])->update($productImgArr);
             } else {
-                DB::table('product_images')->insert($productImgAttrArr);
+                DB::table('product_images')->insert($productImgArr);
             }
         }
         // Product images ends
