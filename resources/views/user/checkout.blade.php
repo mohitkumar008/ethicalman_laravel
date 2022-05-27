@@ -66,13 +66,6 @@
                         </div>
                     </div>
                 @endif
-                {{-- <div class="col-lg-10 col-md-10 col-12 mx-auto">
-                    <p><i class="bi bi-calendar3 text-red me-2"></i> Have a coupon? <a href="">Click here to enter your
-                            code</a></p>
-                </div> --}}
-                {{-- <div class="col-lg-10 col-md-10 col-12 mx-auto">
-                    <p><i class="bi bi-patch-check-fill text-red me-2"></i> Coupon code applied successfully</p>
-                </div> --}}
                 <div class="col-lg-10 col-md-10 col-12 mx-auto" id="coupon_code_msg">
 
                 </div>
@@ -87,68 +80,125 @@
                             <form class="row g-3" id="billing-address-from">
                                 @csrf
                                 <div class="col-md-12">
-                                    <label for="inputFirst4" class="form-label fs-6 f-600">Full Name<span
+                                    <label for="inputbFirst4" class="form-label fs-6 f-600">Full Name<span
                                             class="vstar">*</span></label>
                                     <input type="text" class="form-control"
                                         value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->name }} @endif"
-                                        name="b-name" id="inputFirst4">
+                                        name="b-name" id="inputbFirst4">
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="inputEmail4" class="form-label fs-6 f-600">Address<span
+                                    <label for="inputbaddress4" class="form-label fs-6 f-600">Address<span
                                             class="vstar">*</span></label>
-                                    <input type="email" class="form-control"
+                                    <input type="text" class="form-control"
                                         value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->address }} @endif"
-                                        name="b-address" id="inputEmail4">
+                                        name="b-address" id="inputbaddress4">
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="inputEmail4" class="form-label fs-6 f-600">Town / City<span
+                                    <label for="inputbcity4" class="form-label fs-6 f-600">Town / City<span
                                             class="vstar">*</span></label>
-                                    <input type="email" class="form-control"
+                                    <input type="text" class="form-control"
                                         value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->city }} @endif"
-                                        name="b-city" id="inputEmail4">
+                                        name="b-city" id="inputbcity4">
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="inputEmail4" class="form-label fs-6 f-600">State<span
-                                            class="vstar">*</span></label>
-                                    <input type="email" class="form-control"
-                                        value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->state }} @endif"
-                                        name="b-state" id="inputEmail4">
+                                    <div class="form-group">
+                                        <label for="inputbstate4" class="form-label fs-6 f-600">State<span
+                                                class="vstar">*</span></label>
+                                        <select name="b-state" id="inputbstate4" class="form-control">
+                                            @if (isset($billingAddress[0]))
+                                                <option label="{{ $billingAddress[0]->state }}"
+                                                    value="{{ $billingAddress[0]->state }}" selected="selected">
+                                                    {{ $billingAddress[0]->state }}
+                                                </option>
+                                            @else
+                                                <option label="Please Select State" selected="selected">Please Select
+                                            @endif
+                                            State</option>
+                                            <option label="Andaman and Nicobar Islands" value="Andaman and Nicobar Islands">
+                                                Andaman and Nicobar
+                                                Islands</option>
+                                            <option label="Andhra Pradesh" value="Andhra Pradesh">Andhra
+                                                Pradesh
+                                            </option>
+                                            <option label="Arunachal Pradesh" value="Arunachal Pradesh">Arunachal Pradesh
+                                            </option>
+                                            <option label="Assam" value="Assam">Assam</option>
+                                            <option label="Bihar" value="Bihar">Bihar</option>
+                                            <option label="Chandigarh" value="Chandigarh">Chandigarh</option>
+                                            <option label="Dadra and Nagar Haveli" value="Dadra and Nagar Haveli">Dadra and
+                                                Nagar Haveli
+                                            </option>
+                                            <option label="Daman and Diu" value="Daman and Diu">Daman and Diu</option>
+                                            <option label="Delhi" value="Delhi">Delhi</option>
+                                            <option label="Goa" value="Goa">Goa</option>
+                                            <option label="Gujarat" value="Gujarat">Gujarat</option>
+                                            <option label="Haryana" value="Haryana">Haryana</option>
+                                            <option label="Himachal Pradesh" value="Himachal Pradesh">Himachal Pradesh
+                                            </option>
+                                            <option label="Jammu and Kashmir" value="Jammu and Kashmir">Jammu and Kashmir
+                                            </option>
+                                            <option label="Karnataka" value="Karnataka">Karnataka</option>
+                                            <option label="Kerala" value="Kerala">Kerala</option>
+                                            <option label="Lakshadweep Islands" value="Lakshadweep Islands">Lakshadweep
+                                                Islands</option>
+                                            <option label="Madhya Pradesh" value="Madhya Pradesh">Madhya Pradesh</option>
+                                            <option label="Maharashtra" value="Maharashtra">Maharashtra</option>
+                                            <option label="Manipur" value="Manipur">Manipur</option>
+                                            <option label="Meghalaya" value="Meghalaya">Meghalaya</option>
+                                            <option label="Mizoram" value="Mizoram">Mizoram</option>
+                                            <option label="Nagaland" value="Nagaland">Nagaland</option>
+                                            <option label="Odisha" value="Odisha">Odisha</option>
+                                            <option label="Pondicherry" value="Pondicherry">Pondicherry</option>
+                                            <option label="Punjab" value="Punjab">Punjab</option>
+                                            <option label="Rajasthan" value="Rajasthan">Rajasthan</option>
+                                            <option label="Sikkim" value="Sikkim">Sikkim</option>
+                                            <option label="Tamil Nadu" value="Tamil Nadu">Tamil Nadu</option>
+                                            <option label="Tripura" value="1504">Tripura</option>
+                                            <option label="Uttar Pradesh" value="Uttar Pradesh">Uttar Pradesh</option>
+                                            <option label="West Bengal" value="West Bengal">West Bengal</option>
+                                            <option label="Jharkhand" value="Jharkhand">Jharkhand</option>
+                                            <option label="Uttarakhand" value="Uttarakhand">Uttarakhand</option>
+                                            <option label="Chhattisgarh" value="Chhattisgarh">Chhattisgarh</option>
+                                            <option label="Telangana" value="Telangana">Telangana</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="inputEmail4" class="form-label fs-6 f-600">PIN<span
+                                    <label for="inputbpin4" class="form-label fs-6 f-600">PIN<span
                                             class="vstar">*</span></label>
-                                    <input type="email" class="form-control"
+                                    <input type="text" class="form-control"
                                         value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->zip }} @endif"
-                                        name="b-pin" id="inputEmail4">
+                                        name="b-pin" id="inputbpin4">
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="inputDisplayname4" class="form-label fs-6 f-600">Company name
+                                    <label for="inputbcompany4" class="form-label fs-6 f-600">Company name
                                         (optional)</label>
                                     <input type="text" class="form-control"
                                         value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->company }} @endif"
-                                        name="b-company" id="inputDisplayname4">
+                                        name="b-company" id="inputbcompany4">
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="inputDisplayname4" class="form-label fs-6 f-600">GSTIN (optional)</label>
+                                    <label for="inputbgst4" class="form-label fs-6 f-600">GSTIN (optional)</label>
                                     <input type="text" class="form-control"
                                         value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->gstin }} @endif"
-                                        name="b-gstin" id="inputDisplayname4">
+                                        name="b-gstin" id="inputbgst4">
                                 </div>
                                 @if (!session()->has('USER_LOGGEDIN'))
                                     <div class="col-md-12">
-                                        <label for="inputEmail4" class="form-label fs-6 f-600">Phone<span
+                                        <label for="inputbphone4" class="form-label fs-6 f-600">Phone<span
                                                 class="vstar">*</span></label>
-                                        <input type="email" class="form-control" name="b-phone" id="inputEmail4">
+                                        <input type="tel" class="form-control" name="b-phone" id="inputbphone4">
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="inputEmail4" class="form-label fs-6 f-600">Account Email<span
+                                        <label for="inputbemail4" class="form-label fs-6 f-600">Account Email<span
                                                 class="vstar">*</span></label>
-                                        <input type="email" class="form-control" name="b-email" id="inputEmail4">
+                                        <input type="email" class="form-control" name="b-email" id="inputbemail4">
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="inputEmail4" class="form-label fs-6 f-600">Account Password<span
+                                        <label for="inputbpassword4" class="form-label fs-6 f-600">Account Password<span
                                                 class="vstar">*</span></label>
-                                        <input type="email" class="form-control" name="b-password" id="inputEmail4">
+                                        <input type="password" class="form-control" name="b-password"
+                                            id="inputbpassword4">
                                     </div>
                                 @endif
 
@@ -159,10 +209,15 @@
                                 <div class="form-check mb-3" class=" collapsed" data-bs-toggle="collapse"
                                     data-bs-target="#flush-collapseTwo" aria-expanded="false"
                                     aria-controls="flush-collapseTwo">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        <h5 class="fs-6 f-700">Ship to different address?</h5>
-                                    </label>
+                                    <form id="shipToDifferentAddress-from">
+                                        <input class="form-check-input" type="checkbox" name="shipToDifferentAddress"
+                                            value="shipToDifferentAddress" id="flexCheckshipToDifferentAddress"
+                                            onclick="shipToDifferentAdd()">
+                                        <label class="form-check-label" for="flexCheckshipToDifferentAddress"
+                                            onclick="shipToDifferentAdd()">
+                                            <h5 class="fs-6 f-700">Ship to different address?</h5>
+                                        </label>
+                                    </form>
                                 </div>
                                 <hr>
                                 <div id="flush-collapseTwo" class="accordion-collapse collapse"
@@ -171,53 +226,109 @@
                                         <form class="row g-3" id="shipping-address-from">
                                             @csrf
                                             <div class="col-md-12">
-                                                <label for="inputFirst4" class="form-label fs-6 f-600">Full Name<span
+                                                <label for="inputsFirst4" class="form-label fs-6 f-600">Full Name<span
                                                         class="vstar">*</span></label>
                                                 <input type="text" class="form-control"
                                                     value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->name }} @endif"
-                                                    name="s-name" id="inputFirst4">
+                                                    name="s-name" id="inputsFirst4">
                                             </div>
                                             <div class="col-md-12">
-                                                <label for="inputEmail4" class="form-label fs-6 f-600">Address<span
+                                                <label for="inputsaddress4" class="form-label fs-6 f-600">Address<span
                                                         class="vstar">*</span></label>
-                                                <input type="email" class="form-control"
+                                                <input type="text" class="form-control"
                                                     value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->address }} @endif"
-                                                    name="s-address" id="inputEmail4">
+                                                    name="s-address" id="inputsaddress4">
                                             </div>
                                             <div class="col-md-12">
-                                                <label for="inputEmail4" class="form-label fs-6 f-600">Town / City<span
-                                                        class="vstar">*</span></label>
+                                                <label for="inputscity4" class="form-label fs-6 f-600">Town / City<span
+                                                        class="text">*</span></label>
                                                 <input type="email" class="form-control"
                                                     value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->city }} @endif"
-                                                    name="s-city" id="inputEmail4">
+                                                    name="s-city" id="inputscity4">
                                             </div>
                                             <div class="col-md-12">
-                                                <label for="inputEmail4" class="form-label fs-6 f-600">State<span
+                                                <label for="inputsstate4" class="form-label fs-6 f-600">State<span
                                                         class="vstar">*</span></label>
-                                                <input type="email" class="form-control"
-                                                    value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->state }} @endif"
-                                                    name="s-state" id="inputEmail4">
+                                                <select name="s-state" id="inputsstate4" class="form-control">
+                                                    @if (isset($shippingAddress[0]))
+                                                        <option label="{{ $shippingAddress[0]->state }}"
+                                                            value="{{ $shippingAddress[0]->state }}" selected="selected">
+                                                            {{ $shippingAddress[0]->state }}
+                                                        </option>
+                                                    @else
+                                                        <option label="Please Select State" selected="selected">Please
+                                                            Select
+                                                    @endif
+                                                    <option label="Andaman and Nicobar Islands"
+                                                        value="Andaman and Nicobar Islands">Andaman and Nicobar
+                                                        Islands</option>
+                                                    <option label="Andhra Pradesh" value="Andhra Pradesh">Andhra Pradesh
+                                                    </option>
+                                                    <option label="Arunachal Pradesh" value="Arunachal Pradesh">Arunachal
+                                                        Pradesh</option>
+                                                    <option label="Assam" value="Assam">Assam</option>
+                                                    <option label="Bihar" value="Bihar">Bihar</option>
+                                                    <option label="Chandigarh" value="Chandigarh">Chandigarh</option>
+                                                    <option label="Dadra and Nagar Haveli" value="Dadra and Nagar Haveli">
+                                                        Dadra and Nagar Haveli
+                                                    </option>
+                                                    <option label="Daman and Diu" value="Daman and Diu">Daman and Diu
+                                                    </option>
+                                                    <option label="Delhi" value="Delhi">Delhi</option>
+                                                    <option label="Goa" value="Goa">Goa</option>
+                                                    <option label="Gujarat" value="Gujarat">Gujarat</option>
+                                                    <option label="Haryana" value="Haryana">Haryana</option>
+                                                    <option label="Himachal Pradesh" value="Himachal Pradesh">Himachal
+                                                        Pradesh</option>
+                                                    <option label="Jammu and Kashmir" value="Jammu and Kashmir">Jammu and
+                                                        Kashmir</option>
+                                                    <option label="Karnataka" value="Karnataka">Karnataka</option>
+                                                    <option label="Kerala" value="Kerala">Kerala</option>
+                                                    <option label="Lakshadweep Islands" value="Lakshadweep Islands">
+                                                        Lakshadweep Islands</option>
+                                                    <option label="Madhya Pradesh" value="Madhya Pradesh">Madhya Pradesh
+                                                    </option>
+                                                    <option label="Maharashtra" value="Maharashtra">Maharashtra</option>
+                                                    <option label="Manipur" value="Manipur">Manipur</option>
+                                                    <option label="Meghalaya" value="Meghalaya">Meghalaya</option>
+                                                    <option label="Mizoram" value="Mizoram">Mizoram</option>
+                                                    <option label="Nagaland" value="Nagaland">Nagaland</option>
+                                                    <option label="Odisha" value="Odisha">Odisha</option>
+                                                    <option label="Pondicherry" value="Pondicherry">Pondicherry</option>
+                                                    <option label="Punjab" value="Punjab">Punjab</option>
+                                                    <option label="Rajasthan" value="Rajasthan">Rajasthan</option>
+                                                    <option label="Sikkim" value="Sikkim">Sikkim</option>
+                                                    <option label="Tamil Nadu" value="Tamil Nadu">Tamil Nadu</option>
+                                                    <option label="Tripura" value="1504">Tripura</option>
+                                                    <option label="Uttar Pradesh" value="Uttar Pradesh">Uttar Pradesh
+                                                    </option>
+                                                    <option label="West Bengal" value="West Bengal">West Bengal</option>
+                                                    <option label="Jharkhand" value="Jharkhand">Jharkhand</option>
+                                                    <option label="Uttarakhand" value="Uttarakhand">Uttarakhand</option>
+                                                    <option label="Chhattisgarh" value="Chhattisgarh">Chhattisgarh</option>
+                                                    <option label="Telangana" value="Telangana">Telangana</option>
+                                                </select>
                                             </div>
                                             <div class="col-md-12">
-                                                <label for="inputEmail4" class="form-label fs-6 f-600">PIN<span
+                                                <label for="inputspin4" class="form-label fs-6 f-600">PIN<span
                                                         class="vstar">*</span></label>
-                                                <input type="email" class="form-control"
+                                                <input type="number" class="form-control"
                                                     value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->zip }} @endif"
-                                                    name="s-pin" id="inputEmail4">
+                                                    name="s-pin" id="inputspin4">
                                             </div>
                                             <div class="col-md-12">
-                                                <label for="inputDisplayname4" class="form-label fs-6 f-600">Company name
+                                                <label for="inputscompany4" class="form-label fs-6 f-600">Company name
                                                     (optional)</label>
                                                 <input type="text" class="form-control"
                                                     value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->company }} @endif"
-                                                    name="s-comapny" id="inputDisplayname4">
+                                                    name="s-comapny" id="inputscompany4">
                                             </div>
                                             <div class="col-md-12">
-                                                <label for="inputDisplayname4" class="form-label fs-6 f-600">GSTIN
+                                                <label for="inputsgst4" class="form-label fs-6 f-600">GSTIN
                                                     (optional)</label>
                                                 <input type="text" class="form-control"
                                                     value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->gstin }} @endif"
-                                                    name="s-gstin" id="inputDisplayname4">
+                                                    name="s-gstin" id="inputsgst4">
                                             </div>
                                         </form>
                                     </div>
@@ -309,8 +420,8 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="" id="termsPolicy">
+                                    <label class="form-check-label" for="termsPolicy">
                                         <b>I have read and agree to the website <a href="" class="text-red">terms and
                                                 conditions</a><span class="vstar">*</span></b>
                                     </label>
@@ -319,6 +430,9 @@
                             <div class="col-12">
                                 <button class="btn bg-red f-600 fs-6 text-white w-100" type="button" id="place-order-btn"
                                     style="z-index: 0;" onclick="place_order();">PLACE ORDER</button>
+                                <small>
+                                    <p class="text-danger pt-2" id="required_error"></p>
+                                </small>
                             </div>
                         </div>
                     </div>

@@ -216,7 +216,7 @@ class UserController extends Controller
             $result['shippingAddress'] = DB::table('customer_address')
                 ->where(['uid' => $uid, 'address_id' => 2])
                 ->get();
-            // prx($result['userinfo']);
+            // prx($result);
             if (isset($result['userinfo'][0])) {
                 return view('user.my-account', $result);
             } else {
@@ -359,6 +359,7 @@ class UserController extends Controller
 
     public function place_order(Request $request)
     {
+        // prx($_POST);
         if ($request->session()->has('USER_LOGGEDIN')) {
             $uid = $request->session()->get('USER_ID');
             $usertype = "Customer";
@@ -378,8 +379,8 @@ class UserController extends Controller
             foreach ($getTotalCartItems as $list) {
                 $totalCartAmount += $list->price * $list->qty;
             }
-            if ($request->post('coupon_code') != "") {
-                $coupon = apply_coupon($request->post('coupon_code'));
+            if (trim($request->post('coupon_code')) != "") {
+                $coupon = apply_coupon(trim($request->post('coupon_code')));
                 $coupon_data = json_decode($coupon, true);
                 if ($coupon_data['status'] == 'success') {
                     $totalCartAmount = $coupon_data['totalCartAmount'];
@@ -387,23 +388,23 @@ class UserController extends Controller
                 }
             }
 
-            $b_name = $request->post('b-name');
-            $b_address = $request->post('b-address');
-            $b_city = $request->post('b-city');
-            $b_state = $request->post('b-state');
-            $b_pin = $request->post('b-pin');
-            $b_company = $request->post('b-company');
-            $b_gstin = $request->post('b-gstin');
-            $s_name = $request->post('s-name');
-            $s_address = $request->post('s-address');
-            $s_city = $request->post('s-city');
-            $s_state = $request->post('s-state');
-            $s_pin = $request->post('s-pin');
-            $s_company = $request->post('s-company');
-            $s_gstin = $request->post('s-gstin');
-            $payment_type = $request->post('payment_method');
-
-            if ($s_name == "" || $s_address == "" || $s_city == "" || $s_state == "" || $s_pin == "") {
+            $b_name = trim($request->post('b-name'));
+            $b_address = trim($request->post('b-address'));
+            $b_city = trim($request->post('b-city'));
+            $b_state = trim($request->post('b-state'));
+            $b_pin = trim($request->post('b-pin'));
+            $b_company = trim($request->post('b-company'));
+            $b_gstin = trim($request->post('b-gstin'));
+            $s_name = trim($request->post('s-name'));
+            $s_address = trim($request->post('s-address'));
+            $s_city = trim($request->post('s-city'));
+            $s_state = trim($request->post('s-state'));
+            $s_pin = trim($request->post('s-pin'));
+            $s_company = trim($request->post('s-company'));
+            $s_gstin = trim($request->post('s-gstin'));
+            $payment_type = trim($request->post('payment_method'));
+            $shipToDifferentAddress = $request->post('shipToDifferentAddress');
+            if (!isset($shipToDifferentAddress)) {
                 $s_name = $b_name;
                 $s_address = $b_address;
                 $s_city = $b_city;

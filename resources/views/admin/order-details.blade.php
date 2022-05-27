@@ -12,6 +12,11 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0">Order Details</h1>
+                    <span class="text-warning">
+                        @if (session('shipment_status'))
+                            {{ session('shipment_status') }}
+                        @endif
+                    </span>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -52,9 +57,9 @@
                                 {{-- <b>Invoice #007612</b><br> --}}
                                 <br>
                                 <address>
-                                    <strong>{{ $productDetails[0]->name }}</strong><br>
-                                    Phone: {{ $productDetails[0]->phone }}<br>
-                                    Email: {{ $productDetails[0]->email }}
+                                    <strong>{{ $productDetails[0]->cname }}</strong><br>
+                                    Phone: {{ $productDetails[0]->cphone }}<br>
+                                    Email: {{ $productDetails[0]->cemail }}
                                 </address>
                             </div>
                             <!-- /.col -->
@@ -218,8 +223,10 @@
                         <!-- this row will not appear when printing -->
                         <div class="row no-print">
                             <div class="col-12 text-center my-3">
-                                <a href="" rel="noopener" target="_blank" class="btn btn-default"><i
-                                        class="fas fa-print"></i> Print</a>
+                                @if ($productDetails[0]->shipped_status == 0)
+                                    <a href="{{ url('admin/order/order-details/send-to-shiprocket/' . $productDetails[0]->order_id . '') }}"
+                                        class="btn btn-default bg-primary">Send to ShipRocket</a>
+                                @endif
                             </div>
                         </div>
                     </div>

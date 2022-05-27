@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -105,6 +106,9 @@ Route::group(['middleware' => 'admin_auth'], function () {
     Route::get('admin/review', [ReviewController::class, 'index']);
     Route::get('admin/review/{status}/{id}', [ReviewController::class, 'change_review_status']);
     Route::get('admin/review/delete/delete-review/{id}', [ReviewController::class, 'delete_review']);
+
+    //ShippingController
+    Route::get('admin/order/order-details/send-to-shiprocket/{id}', [ShippingController::class, 'shipOrder']);
 });
 
 

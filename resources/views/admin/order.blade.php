@@ -3,6 +3,18 @@
 @section('order_select', 'active')
 {{-- Additional CSS --}}
 @section('additional_css')
+    <style>
+        .ribbon-wrapper {
+            height: 50px;
+            overflow: hidden;
+            position: absolute;
+            right: -2px;
+            top: -2px;
+            width: 75px;
+            z-index: 10;
+        }
+
+    </style>
 @endsection
 
 {{-- Main Content --}}
@@ -49,6 +61,10 @@
                                                 <tr role="row">
                                                     <th class="sorting" tabindex="0" aria-controls="example2"
                                                         rowspan="1" colspan="1"
+                                                        aria-label="S.No: activate to sort column ascending" width="5%">
+                                                        S.No</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
                                                         aria-label="Order: activate to sort column ascending">
                                                         Order</th>
                                                     <th class="sorting" tabindex="0" aria-controls="example2"
@@ -68,13 +84,23 @@
                                             <tbody>
                                                 @foreach ($data as $list)
                                                     <tr class="odd">
+                                                        <td>{{ $loop->iteration }}</td>
                                                         <td><a
                                                                 href="{{ url('admin/order/order-details/' . $list->order_id . '') }}">#{{ $list->order_id }}&nbsp;{{ $list->name }}</a>
+
                                                         </td>
                                                         <td>{{ \Carbon\Carbon::parse($list->created_at)->isoFormat('MMM Do, YYYY') }}
                                                         </td>
                                                         <td>{{ $list->order_status }}</td>
-                                                        <td>Rs {{ $list->total_amount }}</td>
+                                                        <td class="position-relative">Rs {{ $list->total_amount }}
+                                                            @if ($list->shipped == 1)
+                                                                <div class="ribbon-wrapper">
+                                                                    <div class="ribbon bg-success">
+                                                                        Shipped
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+                                                        </td>
 
                                                     </tr>
                                                 @endforeach
