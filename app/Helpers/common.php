@@ -35,13 +35,18 @@ function getTotalCartItems()
     } else {
         $uid = session()->get('USER_TEMP_ID');
     }
-    $result = DB::table('cart')
+    $result['cart'] = DB::table('cart')
         ->where('uid', $uid)
         ->leftJoin('products', 'cart.pid', '=', 'products.id')
         ->leftJoin('product_attr', 'cart.pattrid', '=', 'product_attr.id')
         ->leftJoin('sizes', 'product_attr.size_id', '=', 'sizes.id')
         ->select('cart.id', 'cart.qty', 'products.name', 'products.image', 'sizes.size', 'product_attr.price', 'products.id as pid', 'product_attr.id as attrid')
         ->get();
+    $result['totalCartAmount'] = 0;
+    $result['totalCartCount'] = count($result['cart']);
+    foreach ($result['cart'] as $list) {
+        $result['totalCartAmount'] += $list->price * $list->qty;
+    }
 
     return $result;
 }

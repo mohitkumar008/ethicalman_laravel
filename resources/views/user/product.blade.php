@@ -8,15 +8,23 @@
         <div class="container">
             <div class="row py-5 px-4">
                 <div class="col-6">
-                    <a href="/">Home</a><span> / </span><span>Product</span>
+                    <a href="/">Home</a><span class="text-red"> / </span><span class="text-red">Product</span>
                 </div>
                 <div class="col-3 offset-3 text-end">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected value="">Sort by popularity</option>
-                        <option value="">Sort by average rating</option>
-                        <option value="">Sort by latest</option>
-                        <option value="">Sort by price : low to high</option>
-                        <option value="">Sort by price : high to low</option>
+                    <select class="form-select" aria-label="Default select example" id="sortBy" onchange="sortBy()">
+                        <option @if ($_GET['sort'] == '' || $_GET['sort'] == 'default') {{ 'selected' }} @endif value="default">Sort by default
+                        </option>
+                        <option @if ($_GET['sort'] == 'latest') {{ 'selected' }} @endif value="latest">Sort by latest
+                        </option>
+                        <option @if ($_GET['sort'] == 'a-z') {{ 'selected' }} @endif value="a-z">Sort by A-Z
+                        </option>
+                        <option @if ($_GET['sort'] == 'z-a') {{ 'selected' }} @endif value="z-a">Sort by Z-A
+                        </option>
+                        <option @if ($_GET['sort'] == 'low_to_high') {{ 'selected' }} @endif value="low_to_high">Sort by
+                            price : low to high</option>
+                        <option @if ($_GET['sort'] == 'high_to_low') {{ 'selected' }} @endif value="high_to_low">Sort by
+                            price : high to low</option>
+                        {{-- <option value="avg_rating">Sort by average rating</option> --}}
                     </select>
                 </div>
             </div>
@@ -47,6 +55,9 @@
             </div>
         </div>
     </section>
+    <form id="filterProduct">
+        <input type="hidden" name="sort" id="sort">
+    </form>
 @endsection
 @section('additional_js')
 @endsection

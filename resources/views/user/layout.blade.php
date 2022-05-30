@@ -18,29 +18,14 @@
     <link rel="stylesheet" href="{{ asset('user_assets/assets/css/responsive.css') }}">
 
     <title>@yield('page_title')</title>
-
-    <style>
-        .dropdown:hover .dropdown-menu {
-            display: block;
-            top: 130%;
-            right: 0%;
-            margin-top: 0.125rem;
-        }
-
-    </style>
     <script>
-        $(document).ready(function() {
-            $(".dropdown").hover(function() {
-                var dropdownMenu = $(this).children(".dropdown-menu");
-                if (dropdownMenu.is(":visible")) {
-                    dropdownMenu.parent().toggleClass("open");
-                }
-            });
-        });
+        let PRODUCT_IMG = "{{ asset('storage/media/') }}";
+        let ROOT_URL = "{{ url('/') }}";
     </script>
 </head>
 
 <body>
+
     <!-- Topbar -->
     <div class="container-fluid border-bottom">
         <div class="row">
@@ -52,8 +37,8 @@
     <!-- Topbar ends -->
 
     <!-- Navbar -->
-    {{-- <nav class="navbar sticky-top navbar-expand-lg navbar-light border-bottom bg-white"> --}}
-    <nav class="navbar navbar-expand-lg navbar-light border-bottom bg-white">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light border-bottom bg-white">
+        {{-- <nav class="navbar navbar-expand-lg navbar-light border-bottom bg-white"> --}}
         <div class="container">
             <a class="navbar-brand" href="#">
                 <img src="{{ asset('user_assets/images/ethicalman-logo.png') }}" alt="" class="img-fluid">
@@ -82,20 +67,50 @@
                     <li class="nav-item">
                         <a class="nav-link px-2 fs-5 text-red" href="#"><i class="bi bi-search"></i></a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link px-2 fs-3 py-0 text-red" href="/cart"><i class="bi bi-cart3 cart-icon"
-                                value=''></i></a>
-                        {{-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul> --}}
+                    <li class="nav-item dropdown" id="cart">
+                        <a class="nav-link px-2 fs-3 py-0 "><i class="bi bi-cart3 cart-icon text-red" value=''></i></a>
                     </li>
                 </ul>
             </div>
+        </div>
+        @php
+            $getTotalCartItems = getTotalCartItems();
+            // prx($getTotalCartItems);
+        @endphp
+
+        <div class="shopping-cart" style="display: none;">
+            @if ($getTotalCartItems['totalCartCount'] == 0)
+                <div class="shopping-cart-header">
+                    No items in cart..
+                </div>
+            @else
+                <div class="shopping-cart-header">
+                    <div class=""><i class="bi bi-cart3 cart-icon text-red"></i><span
+                            class="badge">{{ $getTotalCartItems['totalCartCount'] }}</span></div>
+                    <div class="shopping-cart-total">
+                        <span class="lighter-text">Total:</span>
+                        <span class="main-color-text">₹{{ $getTotalCartItems['totalCartAmount'] }}</span>
+                    </div>
+                </div>
+                <ul class="shopping-cart-items">
+                    @foreach ($getTotalCartItems['cart'] as $list)
+                        <li class="clearfix">
+                            <img src="{{ asset('storage/media/' . $list->image . '') }}" width="25%"
+                                alt="{{ $list->name }}" />
+                            <span class="item-name">{{ $list->name }}</span>
+                            <span class="item-price text-red">₹{{ $list->price }}</span>
+                            <span class="item-quantity">x</span>
+                            <span class="item-quantity">Quantity: {{ $list->qty }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+                <div class="text-center">
+                    <a href="{{ url('/cart') }}" class="btn bg-red rounded-pill text-white me-auto px-4">View
+                        Cart</a>
+                    <a href="{{ url('/checkout') }}"
+                        class="btn bg-red rounded-pill text-white me-auto px-4">Checkout</a>
+                </div>
+            @endif
         </div>
     </nav>
     <!-- Navbar ends -->
@@ -178,10 +193,13 @@
         </div>
     </section>
 
+    <script type="text/javascript" src="{{ asset('user_assets/assets/plugins/smooth/js/jquery-2.1.3.min.js') }}">
+    </script>
     @section('additional_js')
     @show
     <script src="{{ asset('user_assets/assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('user_assets/assets/js/custom.js') }}"></script>
+    <script></script>
 </body>
 
 </html>

@@ -7,8 +7,43 @@ function add_to_cart(pid) {
         url: '/add_to_cart',
         data: jQuery('#addtocartform').serialize(),
         type: 'post',
-        success: function (data) {
-            alert('Product ' + data);
+        success: function (response) {
+            alert('Product ' + response.status);
+
+            let html = `
+            <div class="shopping-cart-header">
+                <div class=""><i class="bi bi-cart3 cart-icon text-red"></i><span
+                        class="badge">${response.data.totalCartCount}</span></div>
+                <div class="shopping-cart-total">
+                    <span class="lighter-text">Total:</span>
+                    <span class="main-color-text">₹${response.data.totalCartAmount}</span>
+                </div>
+            </div>
+            <ul class="shopping-cart-items">
+            `;
+            for (let data of response.data.cart) {
+                html += `
+                <li class="clearfix">
+                    <img src="${PRODUCT_IMG + '/' + data.image}" width="25%"
+                        alt="${data.name}" />
+                    <span class="item-name">${data.name}</span>
+                    <span class="item-price text-red">₹${data.price}</span>
+                    <span class="item-quantity">x</span>
+                    <span class="item-quantity">Quantity: ${data.qty}</span>
+                </li>
+                `;
+            }
+            html += `
+            </ul>
+            <div class="text-center">
+                <a href="${ROOT_URL}/cart" class="btn bg-red rounded-pill text-white me-auto px-4">View
+                    Cart</a>
+                <a href="${ROOT_URL}/checkout"
+                    class="btn bg-red rounded-pill text-white me-auto px-4">Checkout</a>
+            </div>
+            `;
+            jQuery('.shopping-cart').html(html);
+            // console.log(productList);
         }
     })
 }
@@ -236,4 +271,18 @@ function shipToDifferentAdd() {
     $('#inputscity4').val('');
     $('#inputsstate4').val('');
     $('#inputspin4').val('');
+}
+
+
+$("#cart").on("click", function () {
+    $(".shopping-cart").fadeToggle("fast");
+});
+// $("#cart").hover(function () {
+//     $(".shopping-cart").fadeIn("slow");
+// });
+
+function sortBy() {
+    // alert($('#sortBy').val());
+    $('#sort').val($('#sortBy').val())
+    $('#filterProduct').submit();
 }

@@ -405,3 +405,103 @@ section.order-details-page table tfoot tr td:nth-child(2) {
 #password-changed-success {
     display: none;
 }
+
+/* Navbar cart popup */
+#cart {
+    cursor: pointer;
+}
+
+.badge {
+    background-color: rgb(99, 148, 248);
+    border-radius: 15px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+    height: 25px;
+    width: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.shopping-cart {
+    background: rgb(242 242 242) none repeat scroll 0 0;
+    border-radius: 3px;
+    float: right;
+    /* margin: 20px 0; */
+    padding: 20px;
+    width: 320px;
+    position: absolute;
+    z-index: 50;
+    right: 5%;
+    top: 100%;
+}
+
+.shopping-cart .shopping-cart-header {
+    border-bottom: 1px solid rgb(232, 232, 232);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.shopping-cart .shopping-cart-header .shopping-cart-total {
+    float: right;
+}
+
+.shopping-cart .shopping-cart-items {
+    padding: 20px 10px;
+    padding-bottom: 0;
+    list-style: none;
+    height: auto;
+    max-height: 270px;
+    overflow-y: auto;
+}
+
+.shopping-cart .shopping-cart-items::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+.shopping-cart .shopping-cart-items::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.shopping-cart .shopping-cart-items::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+.shopping-cart .shopping-cart-items::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.shopping-cart .shopping-cart-items li {
+    margin-bottom: 18px;
+}
+
+.shopping-cart .shopping-cart-items img {
+    float: left;
+    margin-right: 12px;
+}
+
+.shopping-cart .shopping-cart-items .item-name {
+    display: block;
+    font-size: 16px;
+    padding-top: 10px;
+}
+
+.shopping-cart .shopping-cart-items .item-price {
+    color: rgb(99, 148, 248);
+    font-size: 12px;
+}
+
+.shopping-cart .shopping-cart-items .item-quantity {
+    color: rgb(171, 176, 190);
+    font-size: 13px;
+}
+
+
+.cart-icon {
+    float: left;
+    font-size: 24px;
+    margin-right: 7px;
+}

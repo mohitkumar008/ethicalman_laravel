@@ -266,7 +266,7 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <div class="review-form border border-2 rounded p-3 {{ $hideratingform }}">
+                                <div class="review-form border border-2 rounded mt-4 p-3 {{ $hideratingform }}">
                                     @if (!isset($rating[0]))
                                         <div class="first-review">
                                             <h4>Be the first to review “The Ethical Man Classic Purple Shirt”</h4>
@@ -376,8 +376,6 @@
     </form>
 @endsection
 @section('additional_js')
-    <script type="text/javascript" src="{{ asset('user_assets/assets/plugins/smooth/js/jquery-2.1.3.min.js') }}">
-    </script>
     <script src="{{ asset('user_assets/assets/plugins/OwlCarousel/owl.carousel.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('user_assets/assets/plugins/smooth/js/smoothproducts.min.js') }}">
     </script>

@@ -34,17 +34,31 @@ class UserController extends Controller
 
     public function product(Request $request)
     {
-        $result['product'] = Product::select('products.*', 'categories.category_name')
-            ->leftJoin('categories', 'categories.id', '=', 'products.cid')
-            ->where('products.status', '1')->get();
+        $sort = "";
+        if ($request->get('sort') != null) {
+            $sort = $request->get('sort');
+        }
+        $query = Product::select('products.*', 'categories.category_name');
+        $query =  $query->leftJoin('categories', 'categories.id', '=', 'products.cid');
+        $query =  $query->where('products.status', '1');
+        if ($sort == 'z-a') {
+            $query =  $query->orderBy('products.name', 'DESC');
+        } elseif ($sort == 'a-z') {
+            $query =  $query->orderBy('products.name', 'ASC');
+        } elseif ($sort == 'latest') {
+            $query =  $query->orderBy('products.id', 'DESC');
+        } elseif ($sort == 'default') {
+            $query =  $query->orderBy('products.id', 'ASC');
+        }
+        $query =  $query->get();
+
+        $result['product'] = $query;
         foreach ($result['product'] as $list) {
             $result['prod_attr'][$list->id] = DB::table('product_attr')
                 ->where('pid', $list->id)
                 ->get();
-            // echo "<pre>";
-            // print_r($result);
-            // die();
         }
+
         return view('user.product', $result);
     }
 
@@ -119,7 +133,11 @@ class UserController extends Controller
             $check = DB::table('cart')
                 ->where(['id' => $update_id])
                 ->update(['qty' => $qty, 'updated_at' => date("Y-m-d h:i:s")]);
-            $msg = "Updated";
+            $data = getTotalCartItems();
+            $msg = [
+                'status' => "Updated",
+                'data' => $data,
+            ];
         } else {
             $id = DB::table('cart')->insertGetId([
                 'pid' => $pid,
@@ -130,9 +148,14 @@ class UserController extends Controller
                 'created_at' => date("Y-m-d h:i:s"),
                 'updated_at' => date("Y-m-d h:i:s")
             ]);
-            $msg = "Added";
+            $data = getTotalCartItems();
+            $msg = [
+                'status' => "Added",
+                'data' => $data,
+            ];
         }
-        return response()->json(json_encode($msg));
+
+        return response()->json($msg);
     }
 
     public function cart(Request $request)
@@ -606,7 +629,7 @@ class UserController extends Controller
                     'updated_at' => date("Y-m-d h:i:s")
                 ];
 
-                $result = DB::table('order_address')
+                $result = DB::table('customer_address')
                     ->where(['uid' => $uid, 'address_id' => 1])
                     ->limit(1)
                     ->update($updateAddArr);
@@ -626,7 +649,7 @@ class UserController extends Controller
                     'updated_at' => date("Y-m-d h:i:s")
                 ];
 
-                $result = DB::table('order_address')
+                $result = DB::table('customer_address')
                     ->where(['uid' => $uid, 'address_id' => 2])
                     ->limit(1)
                     ->update($updateAddArr);

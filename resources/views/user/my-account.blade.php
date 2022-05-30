@@ -177,9 +177,82 @@
                                                     <div class="col-md-12">
                                                         <label for="inputStateB" class="form-label fs-6 f-600">State<span
                                                                 class="vstar">*</span></label>
-                                                        <input type="text" class="form-control"
-                                                            value="@if (isset($billingAddress[0])) {{ $billingAddress[0]->state }} @endif"
-                                                            name="b-state" id="inputStateB">
+                                                        <select name="b-state" id="inputsstate4" class="form-control">
+                                                            @if (isset($billingAddress[0]))
+                                                                <option label="{{ $billingAddress[0]->state }}"
+                                                                    value="{{ $billingAddress[0]->state }}"
+                                                                    selected="selected">
+                                                                    {{ $billingAddress[0]->state }}
+                                                                </option>
+                                                            @else
+                                                                <option label="Please Select State" selected="selected">
+                                                                    Please
+                                                                    Select
+                                                            @endif
+                                                            <option label="Andaman and Nicobar Islands"
+                                                                value="Andaman and Nicobar Islands">Andaman and Nicobar
+                                                                Islands</option>
+                                                            <option label="Andhra Pradesh" value="Andhra Pradesh">Andhra
+                                                                Pradesh
+                                                            </option>
+                                                            <option label="Arunachal Pradesh" value="Arunachal Pradesh">
+                                                                Arunachal
+                                                                Pradesh</option>
+                                                            <option label="Assam" value="Assam">Assam</option>
+                                                            <option label="Bihar" value="Bihar">Bihar</option>
+                                                            <option label="Chandigarh" value="Chandigarh">Chandigarh
+                                                            </option>
+                                                            <option label="Dadra and Nagar Haveli"
+                                                                value="Dadra and Nagar Haveli">
+                                                                Dadra and Nagar Haveli
+                                                            </option>
+                                                            <option label="Daman and Diu" value="Daman and Diu">Daman and
+                                                                Diu
+                                                            </option>
+                                                            <option label="Delhi" value="Delhi">Delhi</option>
+                                                            <option label="Goa" value="Goa">Goa</option>
+                                                            <option label="Gujarat" value="Gujarat">Gujarat</option>
+                                                            <option label="Haryana" value="Haryana">Haryana</option>
+                                                            <option label="Himachal Pradesh" value="Himachal Pradesh">
+                                                                Himachal
+                                                                Pradesh</option>
+                                                            <option label="Jammu and Kashmir" value="Jammu and Kashmir">
+                                                                Jammu and
+                                                                Kashmir</option>
+                                                            <option label="Karnataka" value="Karnataka">Karnataka</option>
+                                                            <option label="Kerala" value="Kerala">Kerala</option>
+                                                            <option label="Lakshadweep Islands" value="Lakshadweep Islands">
+                                                                Lakshadweep Islands</option>
+                                                            <option label="Madhya Pradesh" value="Madhya Pradesh">Madhya
+                                                                Pradesh
+                                                            </option>
+                                                            <option label="Maharashtra" value="Maharashtra">Maharashtra
+                                                            </option>
+                                                            <option label="Manipur" value="Manipur">Manipur</option>
+                                                            <option label="Meghalaya" value="Meghalaya">Meghalaya</option>
+                                                            <option label="Mizoram" value="Mizoram">Mizoram</option>
+                                                            <option label="Nagaland" value="Nagaland">Nagaland</option>
+                                                            <option label="Odisha" value="Odisha">Odisha</option>
+                                                            <option label="Pondicherry" value="Pondicherry">Pondicherry
+                                                            </option>
+                                                            <option label="Punjab" value="Punjab">Punjab</option>
+                                                            <option label="Rajasthan" value="Rajasthan">Rajasthan</option>
+                                                            <option label="Sikkim" value="Sikkim">Sikkim</option>
+                                                            <option label="Tamil Nadu" value="Tamil Nadu">Tamil Nadu
+                                                            </option>
+                                                            <option label="Tripura" value="1504">Tripura</option>
+                                                            <option label="Uttar Pradesh" value="Uttar Pradesh">Uttar
+                                                                Pradesh
+                                                            </option>
+                                                            <option label="West Bengal" value="West Bengal">West Bengal
+                                                            </option>
+                                                            <option label="Jharkhand" value="Jharkhand">Jharkhand</option>
+                                                            <option label="Uttarakhand" value="Uttarakhand">Uttarakhand
+                                                            </option>
+                                                            <option label="Chhattisgarh" value="Chhattisgarh">Chhattisgarh
+                                                            </option>
+                                                            <option label="Telangana" value="Telangana">Telangana</option>
+                                                        </select>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <label for="inputPinB" class="form-label fs-6 f-600">PIN<span
@@ -242,9 +315,82 @@
                                                     <div class="col-md-12">
                                                         <label for="inputStateS" class="form-label fs-6 f-600">State<span
                                                                 class="vstar">*</span></label>
-                                                        <input type="text" class="form-control"
-                                                            value="@if (isset($shippingAddress[0])) {{ $shippingAddress[0]->state }} @endif"
-                                                            name="s-state" id="inputStateS">
+                                                        <select name="s-state" id="inputsstate4" class="form-control">
+                                                            @if (isset($shippingAddress[0]))
+                                                                <option label="{{ $shippingAddress[0]->state }}"
+                                                                    value="{{ $shippingAddress[0]->state }}"
+                                                                    selected="selected">
+                                                                    {{ $shippingAddress[0]->state }}
+                                                                </option>
+                                                            @else
+                                                                <option label="Please Select State" selected="selected">
+                                                                    Please
+                                                                    Select
+                                                            @endif
+                                                            <option label="Andaman and Nicobar Islands"
+                                                                value="Andaman and Nicobar Islands">Andaman and Nicobar
+                                                                Islands</option>
+                                                            <option label="Andhra Pradesh" value="Andhra Pradesh">Andhra
+                                                                Pradesh
+                                                            </option>
+                                                            <option label="Arunachal Pradesh" value="Arunachal Pradesh">
+                                                                Arunachal
+                                                                Pradesh</option>
+                                                            <option label="Assam" value="Assam">Assam</option>
+                                                            <option label="Bihar" value="Bihar">Bihar</option>
+                                                            <option label="Chandigarh" value="Chandigarh">Chandigarh
+                                                            </option>
+                                                            <option label="Dadra and Nagar Haveli"
+                                                                value="Dadra and Nagar Haveli">
+                                                                Dadra and Nagar Haveli
+                                                            </option>
+                                                            <option label="Daman and Diu" value="Daman and Diu">Daman and
+                                                                Diu
+                                                            </option>
+                                                            <option label="Delhi" value="Delhi">Delhi</option>
+                                                            <option label="Goa" value="Goa">Goa</option>
+                                                            <option label="Gujarat" value="Gujarat">Gujarat</option>
+                                                            <option label="Haryana" value="Haryana">Haryana</option>
+                                                            <option label="Himachal Pradesh" value="Himachal Pradesh">
+                                                                Himachal
+                                                                Pradesh</option>
+                                                            <option label="Jammu and Kashmir" value="Jammu and Kashmir">
+                                                                Jammu and
+                                                                Kashmir</option>
+                                                            <option label="Karnataka" value="Karnataka">Karnataka</option>
+                                                            <option label="Kerala" value="Kerala">Kerala</option>
+                                                            <option label="Lakshadweep Islands" value="Lakshadweep Islands">
+                                                                Lakshadweep Islands</option>
+                                                            <option label="Madhya Pradesh" value="Madhya Pradesh">Madhya
+                                                                Pradesh
+                                                            </option>
+                                                            <option label="Maharashtra" value="Maharashtra">Maharashtra
+                                                            </option>
+                                                            <option label="Manipur" value="Manipur">Manipur</option>
+                                                            <option label="Meghalaya" value="Meghalaya">Meghalaya</option>
+                                                            <option label="Mizoram" value="Mizoram">Mizoram</option>
+                                                            <option label="Nagaland" value="Nagaland">Nagaland</option>
+                                                            <option label="Odisha" value="Odisha">Odisha</option>
+                                                            <option label="Pondicherry" value="Pondicherry">Pondicherry
+                                                            </option>
+                                                            <option label="Punjab" value="Punjab">Punjab</option>
+                                                            <option label="Rajasthan" value="Rajasthan">Rajasthan</option>
+                                                            <option label="Sikkim" value="Sikkim">Sikkim</option>
+                                                            <option label="Tamil Nadu" value="Tamil Nadu">Tamil Nadu
+                                                            </option>
+                                                            <option label="Tripura" value="1504">Tripura</option>
+                                                            <option label="Uttar Pradesh" value="Uttar Pradesh">Uttar
+                                                                Pradesh
+                                                            </option>
+                                                            <option label="West Bengal" value="West Bengal">West Bengal
+                                                            </option>
+                                                            <option label="Jharkhand" value="Jharkhand">Jharkhand</option>
+                                                            <option label="Uttarakhand" value="Uttarakhand">Uttarakhand
+                                                            </option>
+                                                            <option label="Chhattisgarh" value="Chhattisgarh">Chhattisgarh
+                                                            </option>
+                                                            <option label="Telangana" value="Telangana">Telangana</option>
+                                                        </select>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <label for="inputPinS" class="form-label fs-6 f-600">PIN<span
