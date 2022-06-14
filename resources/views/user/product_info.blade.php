@@ -72,7 +72,7 @@
                     </nav>
                     <h3>{{ $data[0]->name }}</h3>
                     <h4>₹1,499.00</h4>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-6">
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" placeholder="Enter Pincode"
@@ -81,7 +81,8 @@
                                     style="z-index: 0;">Check Pincode</button>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
+                    <br>
                     <div class="product-detail">
                         {!! $data[0]->short_desc !!}
                     </div>
