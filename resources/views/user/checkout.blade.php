@@ -125,7 +125,8 @@
                                             <option label="Assam" value="Assam">Assam</option>
                                             <option label="Bihar" value="Bihar">Bihar</option>
                                             <option label="Chandigarh" value="Chandigarh">Chandigarh</option>
-                                            <option label="Dadra and Nagar Haveli" value="Dadra and Nagar Haveli">Dadra and
+                                            <option label="Dadra and Nagar Haveli" value="Dadra and Nagar Haveli">Dadra
+                                                and
                                                 Nagar Haveli
                                             </option>
                                             <option label="Daman and Diu" value="Daman and Diu">Daman and Diu</option>
@@ -252,7 +253,8 @@
                                                 <select name="s-state" id="inputsstate4" class="form-control">
                                                     @if (isset($shippingAddress[0]))
                                                         <option label="{{ $shippingAddress[0]->state }}"
-                                                            value="{{ $shippingAddress[0]->state }}" selected="selected">
+                                                            value="{{ $shippingAddress[0]->state }}"
+                                                            selected="selected">
                                                             {{ $shippingAddress[0]->state }}
                                                         </option>
                                                     @else
@@ -305,7 +307,8 @@
                                                     <option label="West Bengal" value="West Bengal">West Bengal</option>
                                                     <option label="Jharkhand" value="Jharkhand">Jharkhand</option>
                                                     <option label="Uttarakhand" value="Uttarakhand">Uttarakhand</option>
-                                                    <option label="Chhattisgarh" value="Chhattisgarh">Chhattisgarh</option>
+                                                    <option label="Chhattisgarh" value="Chhattisgarh">Chhattisgarh
+                                                    </option>
                                                     <option label="Telangana" value="Telangana">Telangana</option>
                                                 </select>
                                             </div>
@@ -348,7 +351,7 @@
                         @php
                             $totalPrice = 0;
                         @endphp
-                        @foreach ($cartData as $list)
+                        @foreach ($cartData['cart'] as $list)
                             @php
                                 $totalPrice += $list->qty * $list->price;
                             @endphp
@@ -378,7 +381,8 @@
                             <div id="enter-coupon">
                                 <form id="coupon_code_form">
                                     <div class="input-group">
-                                        <input type="hidden" name="_token" id="coupon_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="_token" id="coupon_token"
+                                            value="{{ csrf_token() }}">
                                         <input type="text" class="form-control" name="coupon_code" id="coupon_code"
                                             placeholder="Coupon Code" aria-label="Enter Coupon"
                                             aria-describedby="applyCoupon" required>
@@ -398,15 +402,15 @@
                             <div class="col-12">
                                 <form id="payment_method_form">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" value="COD" name="payment_method"
-                                            id="flexRadioDefault1" checked>
+                                        <input class="form-check-input" type="radio" value="COD"
+                                            name="payment_method" id="flexRadioDefault1" checked>
                                         <label class="form-check-label" for="flexRadioDefault1">
                                             Cash on delivery
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" value="Gateway" name="payment_method"
-                                            id="flexRadioDefault2">
+                                        <input class="form-check-input" type="radio" value="Gateway"
+                                            name="payment_method" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
                                             Credit Card/Debit Card/NetBanking
                                         </label>
@@ -422,14 +426,16 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="" id="termsPolicy">
                                     <label class="form-check-label" for="termsPolicy">
-                                        <b>I have read and agree to the website <a href="" class="text-red">terms and
+                                        <b>I have read and agree to the website <a href="" class="text-red">terms
+                                                and
                                                 conditions</a><span class="vstar">*</span></b>
                                     </label>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn bg-red f-600 fs-6 text-white w-100" type="button" id="place-order-btn"
-                                    style="z-index: 0;" onclick="place_order();">PLACE ORDER</button>
+                                <button class="btn bg-red f-600 fs-6 text-white w-100" type="button"
+                                    id="place-order-btn" style="z-index: 0;" onclick="place_order();">PLACE
+                                    ORDER</button>
                                 <small>
                                     <p class="text-danger pt-2" id="required_error"></p>
                                 </small>

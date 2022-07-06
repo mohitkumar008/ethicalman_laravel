@@ -345,8 +345,8 @@ class UserController extends Controller
         $result['shippingAddress'] = DB::table('customer_address')
             ->where(['uid' => $uid, 'address_id' => 2])
             ->get();
-        // prx($result);
-        if (isset($result['cartData'][0])) {
+        // prx($result['cartData']);
+        if (isset($result['cartData']['cart'])) {
             return view('user.checkout', $result);
         } else {
             return redirect('/');
@@ -399,7 +399,7 @@ class UserController extends Controller
             $coupon_id = 0;
             $getTotalCartItems = getTotalCartItems();
             // prx($getTotalCartItems);
-            foreach ($getTotalCartItems as $list) {
+            foreach ($getTotalCartItems['cart'] as $list) {
                 $totalCartAmount += $list->price * $list->qty;
             }
             if (trim($request->post('coupon_code')) != "") {
@@ -519,7 +519,7 @@ class UserController extends Controller
             ]);
 
             if ($order_id > 0) {
-                foreach ($getTotalCartItems as $list) {
+                foreach ($getTotalCartItems['cart'] as $list) {
                     $getTotalCartItemsArr['order_id'] = $order_id;
                     $getTotalCartItemsArr['product_id'] = $list->pid;
                     $getTotalCartItemsArr['product_attr_id'] = $list->attrid;
@@ -545,7 +545,7 @@ class UserController extends Controller
                 $userEmail = $user_email;
                 $mailSubject = 'Thank you for your order';
                 $template = 'order_placed_template';
-                send_mail($dataVar, $userEmail, $mailSubject, $template);
+                // send_mail($dataVar, $userEmail, $mailSubject, $template);
                 //Mail function ends
 
             } else {

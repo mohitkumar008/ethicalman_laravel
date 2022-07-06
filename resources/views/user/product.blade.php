@@ -12,17 +12,17 @@
                 </div>
                 <div class="col-3 offset-3 text-end">
                     <select class="form-select" aria-label="Default select example" id="sortBy" onchange="sortBy()">
-                        <option @if ($_GET['sort'] == '' || $_GET['sort'] == 'default') {{ 'selected' }} @endif value="default">Sort by default
+                        <option @if (isset($_GET['sort']) && ($_GET['sort'] == '' || $_GET['sort'] == 'default')) {{ 'selected' }} @endif value="default">Sort by default
                         </option>
-                        <option @if ($_GET['sort'] == 'latest') {{ 'selected' }} @endif value="latest">Sort by latest
+                        <option @if (isset($_GET['sort']) && $_GET['sort'] == 'latest') {{ 'selected' }} @endif value="latest">Sort by latest
                         </option>
-                        <option @if ($_GET['sort'] == 'a-z') {{ 'selected' }} @endif value="a-z">Sort by A-Z
+                        <option @if (isset($_GET['sort']) && $_GET['sort'] == 'a-z') {{ 'selected' }} @endif value="a-z">Sort by A-Z
                         </option>
-                        <option @if ($_GET['sort'] == 'z-a') {{ 'selected' }} @endif value="z-a">Sort by Z-A
+                        <option @if (isset($_GET['sort']) && $_GET['sort'] == 'z-a') {{ 'selected' }} @endif value="z-a">Sort by Z-A
                         </option>
-                        <option @if ($_GET['sort'] == 'low_to_high') {{ 'selected' }} @endif value="low_to_high">Sort by
+                        <option @if (isset($_GET['sort']) && $_GET['sort'] == 'low_to_high') {{ 'selected' }} @endif value="low_to_high">Sort by
                             price : low to high</option>
-                        <option @if ($_GET['sort'] == 'high_to_low') {{ 'selected' }} @endif value="high_to_low">Sort by
+                        <option @if (isset($_GET['sort']) && $_GET['sort'] == 'high_to_low') {{ 'selected' }} @endif value="high_to_low">Sort by
                             price : high to low</option>
                         {{-- <option value="avg_rating">Sort by average rating</option> --}}
                     </select>
@@ -33,7 +33,8 @@
                     <div class="col-lg-4 col-md-3 col-sm-6">
                         <div class="card border-0" style="width: 90%;">
                             <a href="product/{{ $list->slug }}" class="product-img-link">
-                                <img src="{{ asset('storage/media/' . $list->image) }}" class="card-img-top" alt="...">
+                                <img src="{{ asset('storage/media/' . $list->image) }}" class="card-img-top"
+                                    alt="...">
                             </a>
                             <div class="card-body px-1 py-2 product-detail">
                                 <span class="product-category">{{ $list->category_name }}</span>
