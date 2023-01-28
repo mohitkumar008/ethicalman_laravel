@@ -31,7 +31,7 @@ class ProductController extends Controller
             'desc' => 'required',
             'keywords' => 'required',
         ]);
-
+        DB::beginTransaction();
         $model = new Product();
         $model->name = $request->post('product_name');
         $model->slug = $request->post('slug');
@@ -104,7 +104,7 @@ class ProductController extends Controller
             DB::table('product_images')->insert($productImgAttrArr);
         }
         // Product images ends
-
+        DB::commit();
         return redirect('admin/product/product-list')->with('add_msg', "Product added successfully:)");
     }
 

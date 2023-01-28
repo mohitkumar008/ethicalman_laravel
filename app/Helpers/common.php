@@ -129,13 +129,14 @@ function apply_coupon($coupon)
 function send_mail($dataVar, $userEmail, $mailSubject, $template)
 {
     // Send verificaton mail
-    $data = $dataVar;
-    $user['to'] = $userEmail;
-    $user['subject'] = $mailSubject;
-    Mail::send('emailTemplate.' . $template, $data, function ($messages) use ($user) {
-        $messages->to($user['to']);
-        $messages->subject($user['subject']);
-    });
+    // $data = $dataVar;
+    // $user['to'] = $userEmail;
+    // $user['subject'] = $mailSubject;
+    // Mail::send('emailTemplate.' . $template, $data, function ($messages) use ($user) {
+    //     $messages->to($user['to']);
+    //     $messages->subject($user['subject']);
+    // });
+    return true;
 }
 
 

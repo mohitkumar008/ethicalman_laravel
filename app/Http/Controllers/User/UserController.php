@@ -25,10 +25,8 @@ class UserController extends Controller
             $result['prod_attr'][$list->id] = DB::table('product_attr')
                 ->where('pid', $list->id)
                 ->get();
-            // echo "<pre>";
-            // print_r($result);
-            // die();
         }
+        // dd($result);
         return view('user.index', $result);
     }
 
@@ -275,7 +273,7 @@ class UserController extends Controller
         $mailSubject = 'Congratulations! You account created successfully';
         $template = 'new_registration';
         //Mail function
-        send_mail($dataVar, $userEmail, $mailSubject, $template);
+        // send_mail($dataVar, $userEmail, $mailSubject, $template);
 
         return redirect('my-account')->with('register_msg', "Account created successfully. Please login to continue...");
     }

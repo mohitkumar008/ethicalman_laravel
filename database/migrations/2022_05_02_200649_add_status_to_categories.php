@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->integer('status')->after('category_slug');
+            $table->integer('status')->default(1)->after('category_slug');
         });
     }
 
